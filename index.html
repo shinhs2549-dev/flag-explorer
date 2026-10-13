@@ -125,9 +125,73 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .collect button{position:relative;padding:0;border-radius:8px;aspect-ratio:4/3;overflow:visible}
 .collect img{width:100%;height:100%;display:block;border-radius:7px;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
 .collect .new img{filter:grayscale(1) brightness(1.15);opacity:.35}
-.collect .k0 img{opacity:.75}
 .collect i{position:absolute;right:-6px;top:-7px;width:20px;height:20px}
 .collect i svg{width:100%;height:100%}
+.collect-head small{font-size:12px}
+.flag-q{position:relative;align-self:center;background:var(--card);border-radius:24px;padding:16px;box-shadow:0 4px 0 var(--line);display:flex;align-items:center;gap:14px}
+.flag-q img{height:clamp(110px,24vw,190px);width:auto;border-radius:10px;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 8px 20px rgba(31,43,77,.14)}
+.q-line{text-align:center;font-size:clamp(24px,5vw,32px)}
+.treasure .eyebrow{font-family:var(--display);font-size:clamp(26px,6vw,38px);color:var(--o1)}
+.tcard{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border-radius:18px;padding:10px;box-shadow:0 0 0 3px var(--tc,var(--sun)),0 6px 0 var(--line);min-width:0}
+.tcard.t1{--tc:#FFC23D}.tcard.t2{--tc:#7FB8FF}.tcard.t3{--tc:#C89BFF}
+.tcard .tpic{width:100%;aspect-ratio:1/1;border-radius:12px;background:var(--sky);display:grid;place-items:center;overflow:hidden;position:relative}
+.tcard .tpic img{width:100%;height:100%;object-fit:contain}
+.tcard .tpic .tflag{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.28}
+.tcard .tpic span{position:relative;font-family:var(--display);font-size:clamp(14px,3vw,20px);padding:6px;text-align:center;overflow-wrap:anywhere}
+.tcard .tname{font-family:var(--display);font-size:16px;text-align:center;overflow-wrap:anywhere}
+.tcard .tkind{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-soft);text-align:center}
+.tcard .tkind img{width:16px;border-radius:2px}
+.tcard.big{width:min(300px,80%);padding:16px;gap:10px}
+.tcard.big .tname{font-size:clamp(30px,7vw,42px)}
+.tcard.big .tkind{font-size:16px}
+.tcard.big .tkind img{width:26px}
+.tcard.big .tpic span{font-size:clamp(28px,7vw,40px)}
+@media (prefers-reduced-motion:no-preference){.treasure .tcard.big{animation:pop .6s cubic-bezier(.2,1.4,.4,1)}}
+@keyframes pop{from{transform:scale(.4) rotate(-8deg);opacity:0}}
+.book{width:min(640px,100%)!important}
+.book-count{font-family:var(--display);font-weight:400;font-size:22px}
+.book-grid{display:flex;flex-direction:column;gap:8px}
+.book-row{display:grid;grid-template-columns:44px repeat(3,minmax(0,1fr));gap:8px;align-items:center}
+.bflag{width:44px;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.bslot{padding:0;border-radius:14px;min-width:0}
+.bslot .tcard{padding:6px;gap:3px}
+.bslot .tcard .tkind{display:none}
+.bslot .tcard .tname{font-size:13px}
+.bslot .tcard .tpic span{font-size:12px}
+.bslot.empty{aspect-ratio:1/1.18;border:2px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;color:var(--muted)}
+.bslot.empty span{font-size:12px}
+/* 보물 카드 뒤집기 */
+.flip{position:relative;width:min(300px,80%);aspect-ratio:3/4.3;padding:0;perspective:1200px;cursor:pointer}
+.flip-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,1.3,.5,1)}
+.flip.open .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center}
+.face.front{transform:rotateY(180deg)}
+.face.front .tcard.big{width:100%;height:100%;box-sizing:border-box;justify-content:center}
+.face.back,.bslot.shut{flex-direction:column;gap:6px;border-radius:20px;color:#fff;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35) 0 8%,transparent 9%),radial-gradient(circle at 75% 70%,rgba(255,255,255,.25) 0 6%,transparent 7%),
+  repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 10px,transparent 10px 20px),linear-gradient(150deg,var(--bc1),var(--bc2));
+  box-shadow:0 0 0 4px #fff,0 0 0 7px var(--bc1),0 8px 0 7px var(--line)}
+.t1{--bc1:#FFB627;--bc2:#FF7A45}.t2{--bc1:#4D9BFF;--bc2:#2F5FD0}.t3{--bc1:#B07BFF;--bc2:#6A3FD1}
+.face.back .bstars{font-size:30px;letter-spacing:4px;color:#FFE27A}
+.face.back .bq{font-family:var(--display);font-size:110px;line-height:1;text-shadow:0 4px 0 rgba(0,0,0,.15)}
+.face.back .bhint{font-family:var(--display);font-size:20px;opacity:.9}
+.light{position:absolute;inset:-40%;border-radius:50%;pointer-events:none;opacity:0;z-index:5;
+  background:radial-gradient(circle,#fff 0 18%,rgba(255,244,190,.9) 30%,rgba(255,230,140,.45) 48%,transparent 68%)}
+.flip.glow .light{animation:shine 1.5s ease-out forwards}
+.flip.glow:not(.open) .face.back{animation:shake .9s ease-in-out}
+@keyframes shine{0%{opacity:0;transform:scale(.3)}35%{opacity:1;transform:scale(1)}70%{opacity:.9;transform:scale(1.15)}100%{opacity:0;transform:scale(1.4)}}
+@keyframes shake{0%,100%{transform:none}20%{transform:rotate(-4deg) scale(1.03)}40%{transform:rotate(4deg) scale(1.06)}60%{transform:rotate(-3deg) scale(1.08)}80%{transform:rotate(2deg) scale(1.1)}}
+.flip:not(.glow) .face.back{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.flip-inner{transition:none}.flip .light,.flip .face.back{animation:none!important}}
+.reveal{background:rgba(31,43,77,.7)}
+.reveal-box{display:flex;flex-direction:column;align-items:center;gap:18px;width:min(360px,100%)}
+.bslot.shut{aspect-ratio:1/1.18;box-shadow:0 0 0 2px #fff,0 0 0 4px var(--bc1);gap:0;animation:bob 2.2s ease-in-out infinite}
+.bslot.shut .bstars{font-size:11px;color:#FFE27A}
+.bslot.shut .bq{font-family:var(--display);font-size:30px;line-height:1}
+.bslot.shut .bhint{font-family:var(--display);font-size:12px}
+.shop-btn{position:relative}
+.shop-btn .dot{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--o1);color:#fff;font-style:normal;font-size:12px;display:grid;place-items:center;padding:0 4px}
 .locked-levels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .locked-levels div{border-radius:18px;border:2px dashed var(--line);padding:14px;text-align:center;color:var(--ink-soft);font-size:14px}
 .locked-levels b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink)}
@@ -235,6 +299,40 @@ const ITEMS = [
   { id:'tiara',          name:'티아라',        price:30, x:50, y:13, w:34 },
 ];
 const ITEM = Object.fromEntries(ITEMS.map(i=>[i.id,i]));
+// 나라별 보물: [★ 대표 음식, ★★ 옷·동물·물건, ★★★ 유명한 곳]  (종류, 이름)
+// 그림은 IMG['t_나라코드_별수'] (예: t_kr_1) 가 들어오면 표시, 없으면 국기 카드로 보여 줌
+const TREASURE = {
+  kr:[['음식','비빔밥'],['전통 옷','한복'],['유명한 곳','경복궁']],
+  jp:[['음식','초밥'],['전통 옷','기모노'],['유명한 곳','후지산']],
+  cn:[['음식','딤섬'],['동물','판다'],['유명한 곳','만리장성']],
+  us:[['음식','햄버거'],['동물','흰머리수리'],['유명한 곳','자유의 여신상']],
+  fr:[['음식','크루아상'],['동물','수탉'],['유명한 곳','에펠탑']],
+  gb:[['음식','피시 앤 칩스'],['옷','근위병 모자'],['유명한 곳','빅벤']],
+  de:[['음식','프레첼'],['전통 옷','레더호젠'],['유명한 곳','노이슈반슈타인 성']],
+  it:[['음식','피자'],['물건','베네치아 가면'],['유명한 곳','피사의 사탑']],
+  ca:[['음식','메이플 시럽'],['동물','비버'],['유명한 곳','나이아가라 폭포']],
+  au:[['음식','미트 파이'],['동물','캥거루'],['유명한 곳','오페라 하우스']],
+  br:[['음식','슈하스코'],['옷','삼바 축제 옷'],['유명한 곳','예수상']],
+  in:[['음식','카레'],['전통 옷','사리'],['유명한 곳','타지마할']],
+  ru:[['음식','보르시'],['물건','마트료시카 인형'],['유명한 곳','성 바실리 성당']],
+  es:[['음식','파에야'],['옷','플라멩코 드레스'],['유명한 곳','사그라다 파밀리아']],
+  eg:[['음식','코샤리'],['동물','낙타'],['유명한 곳','피라미드']],
+  mx:[['음식','타코'],['물건','솜브레로 모자'],['유명한 곳','치첸이트사']],
+  vn:[['음식','쌀국수'],['전통 옷','아오자이'],['유명한 곳','하롱베이']],
+  th:[['음식','팟타이'],['동물','코끼리'],['유명한 곳','왓 아룬 사원']],
+  tr:[['음식','케밥'],['물건','파란 눈 부적'],['유명한 곳','카파도키아 열기구']],
+  nz:[['음식','파블로바'],['동물','키위새'],['유명한 곳','밀퍼드 사운드']],
+  ar:[['음식','엠파나다'],['옷','탱고 드레스'],['유명한 곳','이구아수 폭포']],
+  id:[['음식','나시고렝'],['동물','코모도왕도마뱀'],['유명한 곳','보로부두르 사원']],
+  sa:[['음식','캅사'],['전통 옷','토브'],['유명한 곳','코끼리 바위']],
+  se:[['음식','미트볼'],['물건','달라 목마'],['유명한 곳','얼음 호텔']],
+  za:[['음식','버니 차우'],['동물','아프리카펭귄'],['유명한 곳','테이블 마운틴']],
+  nl:[['음식','스트룹와플'],['물건','나막신'],['유명한 곳','풍차 마을']],
+  ch:[['음식','퐁뒤'],['동물','세인트버나드'],['유명한 곳','마터호른']],
+  pl:[['음식','피에로기'],['동물','유럽들소'],['유명한 곳','바벨 성']],
+  no:[['음식','연어'],['물건','바이킹 배'],['유명한 곳','피오르']],
+  ae:[['음식','루가이마트'],['동물','매'],['유명한 곳','부르즈 할리파']],
+};
 const STYLES = [
   { id:'basic',    name:'기본',   need:null, hint:'처음부터' },
   { id:'hanbok',   name:'한복',   need:'A',  hint:'A 통과' },
@@ -257,7 +355,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, owned:{}, placed:[], passed:{}, testLock:null, passMark:11, rate:0.9, style:'basic', allOpen:false };
+const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:null, passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
 function load(){
@@ -346,8 +444,10 @@ function burst(){
 function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),1800); }
 
 // ===== 진행 상태 =====
+function unopened(){ return LEVEL_A.list.reduce((n,c)=>n+TIERS.filter(t=>K(t)[c]>=1&&!S.opened[c+'_'+t]).length,0); }
+const NEED = 25; // 30개 중 25개를 맞히면 다음 별 단계·통과 테스트가 열림
 function learnedCount(t=S.tier){ return LEVEL_A.list.filter(c=>(K(t)[c]||0)>=1).length; }
-function tierDone(t){ return learnedCount(t)===LEVEL_A.list.length; }
+function tierDone(t){ return learnedCount(t)>=NEED; }
 function tierOpen(t){ return S.allOpen || t===1 || tierDone(t-1); }
 function testReady(){ return S.allOpen || tierDone(3); }
 // 이번 판 나라 고르기: 이 별 단계에서 아직 못 맞힌 나라 먼저, 그중 유명한 나라가 앞에 오기 쉽게 (랜덤 섞기)
@@ -392,7 +492,7 @@ function renderHome(){
   const st = STYLES.find(s=>s.id===S.style)||STYLES[0];
   const img = AVATAR_IMG[st.id];
   const learned = learnedCount(), total = LEVEL_A.list.length;
-  const testState = testLocked() ? '내일 다시 도전!' : testReady() ? (S.passed.A?'통과했어요! 또 해볼까요?':'15문제 · 4개 중에 골라요') : `나라 ${total-learned}개를 더 맞히면 열려요`;
+  const testState = testLocked() ? '내일 다시 도전!' : testReady() ? (S.passed.A?'통과했어요! 또 해볼까요?':'15문제 · 4개 중에 골라요') : `★★★ 단계에서 ${NEED}개를 맞히면 열려요`;
   $('#app').innerHTML = `
     <div class="bar">
       <div class="grow"><h1 class="title">국기 탐험대<small>나라 · 국기 · 수도</small></h1></div>
@@ -405,12 +505,12 @@ function renderHome(){
         <div class="level-head"><span class="level-badge">A</span><h2>유명한 나라 30개</h2></div>
         <div class="tiers">${TIERS.map(t=>{const open=tierOpen(t), done=tierDone(t);
           return `<button class="tier ${S.tier===t?'on':''} ${done?'done':''}" data-tier="${t}" ${open?'':'disabled'}>
-            <span class="tstars">${ICON.star.repeat(t)}</span><small>${open?(done?'완료':`${t+1}개 중에 고르기`):'잠김'}</small></button>`;}).join('')}</div>
+            <span class="tstars">${ICON.star.repeat(t)}</span><small>${open?(done?'통과':`${t+1}개 중에 고르기`):`앞 단계 ${NEED}개`}</small></button>`;}).join('')}</div>
         <button class="play-btn" id="playBtn">공부하기<small>${'★'.repeat(S.tier)} · 랜덤 나라 ${S.roundSize}개</small></button>
-        <div class="collect-head"><span>${'★'.repeat(S.tier)} 단계에서 맞힌 나라</span><b>${learned} / ${total}</b></div>
+        <div class="collect-head"><span>${'★'.repeat(S.tier)} 단계에서 맞힌 나라 <b>${learned}</b> / ${total} <small>(${NEED}개면 통과)</small></span><button class="shop-btn" id="bookBtn">보물 카드${unopened()?`<i class="dot">${unopened()}</i>`:''}</button></div>
         <div class="collect">${LEVEL_A.list.map(code=>{
           const k=K()[code]||0, c=C[code];
-          return `<button class="${k>=1?'k1':S.seen[code]?'k0':'new'}" data-c="${code}" aria-label="${c.name}">
+          return `<button class="${k>=1?'k1':'new'}" data-c="${code}" aria-label="${c.name}">
             <img src="${c.flag}" alt="">${k>=1?`<i>${ICON.star}</i>`:''}</button>`;}).join('')}</div>
         <button class="test-btn" id="testBtn" ${testReady()&&!testLocked()?'':'disabled'}>통과 테스트 <small>${testState}</small></button>
         <div class="locked-levels"><div><b>B 레벨</b>나라 60개 · 준비 중</div><div><b>C 레벨</b>나머지 나라 · 준비 중</div></div>
@@ -420,8 +520,9 @@ function renderHome(){
   document.querySelectorAll('[data-tier]').forEach(b=>b.onclick=()=>{ S.tier=+b.dataset.tier; save(); sfx.tap(); say(`별 ${['','하나','두 개','세 개'][S.tier]} 단계예요. ${S.tier+1}개 중에 골라요.`); renderHome(); });
   document.querySelectorAll('.collect [data-c]').forEach(b=>b.onclick=()=>{
     const c=C[b.dataset.c];
-    if(S.seen[c.code]) say(`${c.name}. 수도는 ${ieyo(c.capital)}.`); else say('아직 만나지 못한 나라예요. 공부하기에서 만나 봐요!');
+    if((K()[c.code]||0)>=1) say(`${c.name}. 수도는 ${ieyo(c.capital)}.`); else say('아직 맞히지 못한 나라예요. 이름, 위치, 수도를 다 맞히면 불이 켜져요!');
   });
+  $('#bookBtn').onclick=()=>{ sfx.tap(); openBook(); };
   bindWardrobe();
   $('#testBtn').onclick=()=>{ sfx.tap(); startTest(); };
   bindGear();
@@ -577,7 +678,7 @@ let P=null; // 진행 중인 판
 function startRound(){
   if(!tierOpen(S.tier)) S.tier=1;
   P={ mode:'stage', tier:S.tier, list:shuffle(pickRound()), idx:0, n:optCount(), earned:0, results:[], before:learnedCount() };
-  showIntro();
+  showName();
 }
 function pool(){ return LEVEL_A.list; }
 function playBar(){
@@ -590,20 +691,32 @@ function playBar(){
 }
 function bindBar(){ $('#homeBtn').onclick=()=>{ P=null; renderHome(); }; }
 
-function showIntro(){
-  const c=C[P.list[P.idx]]; P.firstTry=true;
+function showName(){
+  const c=C[P.list[P.idx]];
+  P.f={name:true,map:true,cap:true};   // 세 문제 모두 첫 시도에 맞혀야 불이 켜짐
   if(!S.seen[c.code]){ S.seen[c.code]=true; save(); }
+  const opts=shuffle([c.code,...sample(pool().filter(x=>x!==c.code),P.n-1)]);
+  const labels=opts.map(x=>C[x].name);
+  const q='이 국기는 어느 나라일까요?';
   $('#app').innerHTML = playBar()+`
-    <div class="intro">
-      <img src="${c.flag}" alt="${c.name} 국기">
-      <h2>${c.name}</h2>
-      <div class="cont">${c.continent}에 있는 나라</div>
-      <div class="row"><button class="speak" id="sp" aria-label="다시 듣기">${ICON.speak}</button><button class="big-btn" id="next">어디 있을까? ▶</button></div>
-    </div>`;
+    <div class="flag-q"><img src="${c.flag}" alt="국기"><button class="speak" id="sp" aria-label="다시 듣기">${ICON.speak}</button></div>
+    <h2 class="q-line">${q}</h2>
+    ${choicesHTML(labels)}`;
   bindBar();
-  const line=`이 국기는 ${c.name} 국기예요. ${eunNeun(c.name)} ${c.continent}에 있어요.`;
-  say(line); $('#sp').onclick=()=>say(line);
-  $('#next').onclick=()=>{ sfx.tap(); showMap(); };
+  readOptions(q,labels); $('#sp').onclick=()=>readOptions(q,labels);
+  let locked=false;
+  bindChoices(labels,(i,b)=>{
+    if(locked) return;
+    if(opts[i]===c.code){
+      locked=true; sfx.good(); burst(); b.classList.add('right');
+      if(P.f.name){ S.stars++; P.earned++; save(); }
+      say(`맞아요! ${c.name} 국기예요.`);
+      setTimeout(showMap,2300);
+    } else {
+      P.f.name=false; sfx.soft(); b.classList.add('gone');
+      say(`${eunNeun(labels[i])} 국기가 달라요. 다시 골라 볼까요?`);
+    }
+  });
 }
 
 function showMap(){
@@ -621,13 +734,13 @@ function showMap(){
     if(locked) return;
     if(opts[i]===c.code){
       locked=true; sfx.good(); burst();
-      if(P.firstTry){ S.stars++; P.earned++; save(); }
+      if(P.f.map){ S.stars++; P.earned++; save(); }
       document.querySelectorAll('.map-wrap .opt').forEach(g=>{ if(+g.dataset.i!==i) g.classList.add('gone'); else g.classList.add('win'); });
       document.querySelectorAll('.num-row button').forEach(b=>{ if(+b.dataset.i!==i) b.classList.add('gone'); });
       say(`맞아요! ${eunNeun(c.name)} 여기에 있어요.`);
       setTimeout(showCapital,2600);
     } else {
-      P.firstTry=false; sfx.soft();
+      P.f.map=false; sfx.soft();
       document.querySelector(`.map-wrap .opt[data-i="${i}"]`).classList.add('gone');
       document.querySelector(`.num-row button[data-i="${i}"]`).classList.add('gone');
       say(`거기는 ${ieyo(C[opts[i]].name)}. 다시 찾아볼까요?`);
@@ -657,7 +770,7 @@ function bindChoices(labels,onPick){
 }
 
 function showCapital(){
-  const c=C[P.list[P.idx]]; P.firstTry2=true;
+  const c=C[P.list[P.idx]];
   const labels=capitalOptions(c,P.n,P.n>=3);
   const q=`${c.name}의 수도는 어디일까요?`;
   $('#app').innerHTML = playBar()+`
@@ -670,27 +783,126 @@ function showCapital(){
     if(locked) return;
     if(labels[i]===c.capital){
       locked=true; sfx.good(); burst(); b.classList.add('right');
-      if(P.firstTry2){ S.stars++; P.earned++; save(); }
-      P.results[P.idx]=P.firstTry&&P.firstTry2;
-      if(P.results[P.idx]){ const k=K(P.tier); k[c.code]=(k[c.code]||0)+1; save(); }
-      say(`맞아요! ${c.name}의 수도는 ${ieyo(c.capital)}.`);
-      setTimeout(()=>{ P.idx++; if(P.idx<P.list.length) showIntro(); else roundDone(); },3000);
+      if(P.f.cap){ S.stars++; P.earned++; save(); }
+      const all = P.f.name&&P.f.map&&P.f.cap;
+      P.results[P.idx]=all;
+      const k=K(P.tier), firstLight = all && !(k[c.code]>=1);
+      if(all){ k[c.code]=(k[c.code]||0)+1; save(); }
+      const next=()=>{ P.idx++; if(P.idx<P.list.length) showName(); else roundDone(); };
+      if(firstLight){
+        say(`맞아요! ${c.name}의 수도는 ${ieyo(c.capital)}. 세 개 다 맞혔어요!`);
+        setTimeout(()=>showTreasure(c,P.tier,next),2800);
+      } else {
+        say(`맞아요! ${c.name}의 수도는 ${ieyo(c.capital)}.`+(all?'':' 다음에 한 번에 다 맞히면 불이 켜져요.'));
+        setTimeout(next,3000);
+      }
     } else {
-      P.firstTry2=false; sfx.soft(); b.classList.add('gone');
+      P.f.cap=false; sfx.soft(); b.classList.add('gone');
       const isTrap=c.traps.includes(labels[i]);
       say(isTrap?`${eunNeun(labels[i])} ${c.name}의 큰 도시지만 수도는 아니에요. 다시 골라 볼까요?`:`${eunNeun(labels[i])} 다른 나라의 수도예요. 다시 골라 볼까요?`);
     }
   });
 }
 
+// ===== 보물 =====
+function treasureCard(code,t,big){
+  const c=C[code], [kind,name]=TREASURE[code][t-1], img=IMG[`t_${code}_${t}`];
+  return `<div class="tcard t${t} ${big?'big':''}">
+    <div class="tpic">${img?`<img src="${img}" alt="${esc(name)}">`:`<img class="tflag" src="${c.flag}" alt=""><span>${esc(name)}</span>`}</div>
+    <div class="tname">${esc(name)}</div>
+    <div class="tkind"><img src="${c.flag}" alt="">${c.name} · ${kind}</div>
+  </div>`;
+}
+function treasureLine(code,t){
+  const c=C[code], [kind,name]=TREASURE[code][t-1];
+  if(kind==='유명한 곳') return `${c.name}의 유명한 곳, ${ieyo(name)}.`;
+  if(kind==='음식') return `${c.name}의 대표 음식, ${ieyo(name)}.`;
+  if(kind==='전통 옷') return `${c.name}의 전통 옷, ${ieyo(name)}.`;
+  return `${c.name}${hasBatchim(c.name)?'을':'를'} 대표하는 ${kind}, ${ieyo(name)}.`;
+}
+// 카드 뒷면 → 누르면 빛이 번쩍 → 뒤집히며 "짜잔!"
+const tkey=(code,t)=>code+'_'+t;
+function flipCardHTML(code,t){
+  return `<button class="flip t${t}" aria-label="보물 카드 열기">
+    <span class="light" aria-hidden="true"></span>
+    <span class="flip-inner">
+      <span class="face back"><span class="bstars">${'★'.repeat(t)}</span><span class="bq">?</span><span class="bhint">눌러 보세요</span></span>
+      <span class="face front">${treasureCard(code,t,true)}</span>
+    </span></button>`;
+}
+function sparkle(){ tone([[1047,.08],[1319,.08],[1568,.08],[2093,.25]]); }
+function bindFlip(root,code,t,onOpen){
+  const b=root.querySelector('.flip'); let done=false;
+  b.onclick=()=>{
+    if(done) return; done=true;
+    const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    b.classList.add('glow'); sparkle(); say('반짝반짝!');
+    setTimeout(()=>{
+      b.classList.add('open'); sfx.win(); burst();
+      S.opened[tkey(code,t)]=true; save();
+      say(`짜잔! ${treasureLine(code,t)}`);
+      onOpen&&onOpen();
+    }, still?100:900);
+  };
+}
+function showTreasure(c,t,next){
+  sfx.good();
+  $('#app').innerHTML = playBar()+`
+    <div class="intro treasure">
+      <div class="eyebrow">보물 카드를 받았어요!</div>
+      ${flipCardHTML(c.code,t)}
+      <div class="row" id="after" hidden><button class="speak" id="sp" aria-label="다시 듣기">${ICON.speak}</button><button class="big-btn" id="nx">좋아요 ▶</button></div>
+    </div>`;
+  bindBar();
+  say('보물 카드를 받았어요! 카드를 눌러서 열어 보세요.');
+  bindFlip($('#app'),c.code,t,()=>{
+    setTimeout(()=>{ $('#after').hidden=false; },700);
+    $('#sp').onclick=()=>say(treasureLine(c.code,t));
+    $('#nx').onclick=()=>{ sfx.tap(); next(); };
+  });
+}
+function openReveal(code,t,onClose){
+  const el=document.createElement('div'); el.className='sheet reveal';
+  el.innerHTML=`<div class="treasure reveal-box">${flipCardHTML(code,t)}<button class="big-btn plain" id="rc" hidden>닫기</button></div>`;
+  document.body.appendChild(el);
+  say('카드를 눌러서 열어 보세요.');
+  bindFlip(el,code,t,()=>setTimeout(()=>{ el.querySelector('#rc').hidden=false; },700));
+  el.querySelector('#rc').onclick=()=>{ el.remove(); onClose&&onClose(); };
+}
+function openBook(){
+  const el=document.createElement('div'); el.className='sheet';
+  const draw=()=>{
+    const got=TIERS.reduce((n,t)=>n+learnedCount(t),0);
+    const closed=LEVEL_A.list.reduce((n,c)=>n+TIERS.filter(t=>K(t)[c]>=1&&!S.opened[tkey(c,t)]).length,0);
+    el.innerHTML=`<div class="panel book">
+      <div class="shop-head"><h3>보물 카드</h3><b class="book-count">${got} / ${LEVEL_A.list.length*3}</b></div>
+      <p class="note">★ 음식 · ★★ 옷·동물·물건 · ★★★ 유명한 곳. 나라 이름, 위치, 수도를 한 번에 다 맞히면 받아요.${closed?` 아직 안 연 카드가 ${closed}장 있어요!`:''}</p>
+      <div class="book-grid">${LEVEL_A.list.map(code=>`
+        <div class="book-row"><img class="bflag" src="${C[code].flag}" alt="${C[code].name}">
+          ${TIERS.map(t=>{
+            if(!(K(t)[code]>=1)) return `<div class="bslot empty"><span>${'★'.repeat(t)}</span>?</div>`;
+            if(!S.opened[tkey(code,t)]) return `<button class="bslot shut t${t}" data-open="${t}" data-c="${code}" aria-label="안 연 보물 카드"><span class="bstars">${'★'.repeat(t)}</span><span class="bq">?</span><span class="bhint">열기!</span></button>`;
+            return `<button class="bslot" data-t="${t}" data-c="${code}">${treasureCard(code,t,false)}</button>`;
+          }).join('')}
+        </div>`).join('')}</div>
+      <button class="big-btn plain" id="close">닫기</button></div>`;
+    el.querySelectorAll('.bslot[data-t]').forEach(b=>b.onclick=()=>say(treasureLine(b.dataset.c,+b.dataset.t)));
+    el.querySelectorAll('.bslot[data-open]').forEach(b=>b.onclick=()=>{ sfx.tap(); openReveal(b.dataset.c,+b.dataset.open,draw); });
+    el.querySelector('#close').onclick=close;
+  };
+  const close=()=>{ el.remove(); try{speechSynthesis.cancel();}catch(e){} renderHome(); };
+  draw(); document.body.appendChild(el);
+  el.addEventListener('click',e=>{ if(e.target===el) close(); });
+}
+
 function roundDone(){
   sfx.win(); burst();
   const t=P.tier, total=LEVEL_A.list.length, now=learnedCount(t), gained=now-P.before;
-  const justFinished = P.before<total && now===total;   // 이번 판으로 이 별 단계를 끝냄
+  const justFinished = P.before<NEED && now>=NEED;   // 이번 판으로 이 별 단계 통과
   const names=['','하나','두 개','세 개'];
   let msg, btn;
-  if(justFinished && t<3){ msg=`별 ${names[t]} 단계를 모두 맞혔어요! 별 ${names[t+1]} 단계가 열렸어요.`; btn=`<button class="big-btn sun" id="nx">${'★'.repeat(t+1)} 단계 가기</button>`; }
-  else if(justFinished && t===3){ msg='별 세 개 단계까지 다 했어요! 이제 통과 테스트에 도전해 볼까요?'; btn=`<button class="big-btn sun" id="nx">통과 테스트 하러 가기</button>`; }
+  if(justFinished && t<3){ msg=`별 ${names[t]} 단계 통과! 별 ${names[t+1]} 단계가 열렸어요.`; btn=`<button class="big-btn sun" id="nx">${'★'.repeat(t+1)} 단계 가기</button>`; }
+  else if(justFinished && t===3){ msg='별 세 개 단계까지 통과했어요! 이제 통과 테스트에 도전해 볼까요?'; btn=`<button class="big-btn sun" id="nx">통과 테스트 하러 가기</button>`; }
   else { msg=`잘했어요! 별을 ${P.earned}개 모았어요.`+(gained>0?` 새로 맞힌 나라가 ${gained}개예요.`:''); btn=`<button class="big-btn" id="nx">한 판 더 ▶</button>`; }
   $('#app').innerHTML = playBar()+`
     <div class="intro result">
