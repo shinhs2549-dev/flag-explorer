@@ -86,6 +86,9 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .avatar-empty{text-align:center;color:var(--ink-soft);font-size:15px;padding:12px}
 .avatar-empty b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:var(--ink);margin-bottom:4px}
 .styles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.styles.scroll{display:flex;overflow-x:auto;gap:8px;align-items:center;padding-bottom:4px}
+.styles.scroll .style-chip{flex:none;min-width:72px;padding:10px 12px}
+.style-more{flex:none;font-size:12px;color:var(--ink-soft);padding:0 6px}
 .style-chip{border-radius:14px;padding:10px 4px;background:var(--sky);font-size:16px;display:flex;flex-direction:column;align-items:center;gap:2px}
 .style-chip small{font-family:var(--body);font-size:11px;color:var(--ink-soft)}
 .style-chip.on{background:var(--sun)}
@@ -257,14 +260,109 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .vplayer{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
 .vplayer::before{content:"";position:absolute;left:50%;bottom:-6px;width:70px;height:16px;margin-left:-35px;border-radius:50%;background:rgba(40,70,20,.22)}
 .vflip{transform-origin:50% 100%}
-.vplayer img{position:relative;height:125px;width:auto;max-width:none;display:block}
-.vplayer.walk img{animation:vhop .36s ease-in-out infinite}
+.vbody{position:relative;width:100px;height:133px}
+.vbody .vme{position:absolute;left:50%;bottom:0;height:125px;width:auto;max-width:none;transform:translateX(-50%)}
+.vstk{position:absolute;transform:translate(-50%,-50%);max-width:none;pointer-events:none}
+.vplayer.walk .vbody{animation:vhop .36s ease-in-out infinite}
 @keyframes vhop{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
 .vtarget{position:absolute;width:44px;height:18px;margin:-9px 0 0 -22px;border:3px solid #fff;border-radius:50%;pointer-events:none;z-index:1}
 .vtarget.ping{animation:vping .7s ease-out}
 @keyframes vping{from{transform:scale(.3);opacity:1}to{transform:scale(1.4);opacity:.3}}
 .vbubble{position:absolute;transform:translate(-50%,-100%);width:max-content;max-width:min(80vw,340px);background:#fff;color:var(--ink);border-radius:18px;padding:10px 14px;font-size:17px;line-height:1.5;box-shadow:0 4px 0 var(--line),0 6px 18px rgba(31,43,77,.18);z-index:20;pointer-events:none;text-align:center;text-wrap:pretty}
 .vbubble::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-9px;border:9px solid transparent;border-bottom:0;border-top-color:#fff}
+.vfriend{transform:translate(-50%,-100%) scaleX(var(--f,1));transform-origin:50% 100%;cursor:pointer}
+.vfriend img{display:block;max-width:none;width:auto;filter:drop-shadow(0 3px 2px rgba(40,70,20,.25))}
+.vfriend.walking{animation:vhopN .5s ease-in-out infinite}
+.vneed{position:absolute;left:50%;top:-30px;transform:translateX(-50%) scaleX(var(--f,1));width:30px;height:30px;border-radius:50%;background:var(--o1);color:#fff;font-family:var(--display);font-size:22px;display:grid;place-items:center;box-shadow:0 3px 0 #B8402F;animation:vbob 1s ease-in-out infinite}
+@keyframes vbob{50%{margin-top:-6px}}
+.vheart{color:#FF5C8A;font-size:30px;pointer-events:none;animation:vheartUp 1.3s ease-out forwards;text-shadow:0 2px 0 #fff}
+@keyframes vheartUp{from{opacity:0;margin-top:0}20%{opacity:1}to{opacity:0;margin-top:-70px}}
+.fcard{display:flex;gap:16px;align-items:center}
+.fpic{width:min(42%,180px);aspect-ratio:1/1;object-fit:contain;background:var(--sky);border-radius:16px;padding:8px}
+.fcard>div{min-width:0;display:flex;flex-direction:column;gap:8px}
+.fflag{display:flex;align-items:center;gap:6px;font-size:16px}
+.fflag img{width:28px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.fhearts{display:flex;flex-wrap:wrap;gap:2px;font-size:24px;line-height:1}
+.fhearts i{font-style:normal;color:#E3E7EF}.fhearts i.on{color:#FF5C8A}
+/* 가게 안 화면 */
+.vroom{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:var(--sky);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.vroom-bar{display:flex;align-items:center;gap:10px;padding:10px 16px}
+.vroom-bar h2{flex:1;min-width:0;font-size:26px;white-space:nowrap}
+.big-btn.sm{font-size:18px;padding:8px 16px;box-shadow:0 4px 0 var(--line)}
+.vroom-body{flex:1;min-height:0;position:relative;display:flex;gap:12px;padding:12px 16px 16px;background-size:cover;background-position:center bottom;overflow:auto}
+.room-food{background-color:#FCE9D2;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 40px,transparent 40px 80px),linear-gradient(#FFE7C7,#F4C9A0)}
+.room-clothes{background-color:#FBE3EE;background-image:radial-gradient(circle at 20% 30%,rgba(255,255,255,.6) 0 6px,transparent 7px),radial-gradient(circle at 70% 60%,rgba(255,255,255,.5) 0 5px,transparent 6px),linear-gradient(#FDEFF5,#F7D4E4);background-size:80px 80px,90px 90px,100% 100%}
+.vroom-npc{flex:none;width:clamp(90px,20vw,170px);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;position:relative}
+.vroom-npc>img{width:100%;height:auto;filter:drop-shadow(0 4px 4px rgba(31,43,77,.2))}
+.vroom-say{position:absolute;left:4px;top:4px;right:-140px;z-index:2;background:#fff;border-radius:16px;padding:10px 12px;font-size:16px;line-height:1.5;box-shadow:0 4px 0 var(--line);min-height:20px}
+.vroom-say:empty{display:none}
+.vroom-say.pop{animation:descIn .3s ease-out}
+.vroom-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px;padding-top:88px}
+@media (max-width:560px){.vroom-body{flex-direction:column}.vroom-npc{flex-direction:row;width:100%;justify-content:flex-start;align-items:flex-end}.vroom-npc>img{width:80px}.vroom-say{position:static;flex:1}.vroom-main{padding-top:0}}
+.rreq{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:8px 12px;box-shadow:0 0 0 3px var(--o1)}
+.rreq img{width:56px;height:56px;object-fit:contain}
+.rreq b{display:block;font-family:var(--display);font-weight:400;font-size:18px}
+.rmenu-title{font-family:var(--display);font-size:22px}.rmenu-title small{font-family:var(--body);font-size:13px;color:var(--ink-soft)}
+.rmenu{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.rfood{background:rgba(255,255,255,.92);border-radius:16px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 3px 0 rgba(31,43,77,.12);font-size:15px}
+.rfood>img{width:80%;aspect-ratio:1/1;object-fit:contain}
+.rfood small{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-soft)}
+.rfood small img{width:16px;border-radius:2px}
+.rplate{position:fixed;left:50%;top:50%;width:min(50vw,240px);transform:translate(-50%,-50%);z-index:60;pointer-events:none}
+.rplate img{width:100%}
+.rplate.serve{animation:serve 1.8s ease forwards}
+@keyframes serve{0%{opacity:0;transform:translate(-50%,-30%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(.9)}}
+.room-clothes .vroom-main{flex-direction:row;gap:14px}
+@media (max-width:560px){.room-clothes .vroom-main{flex-direction:column}}
+.cmirror{flex:none;width:clamp(150px,28vw,250px);align-self:flex-start;background:linear-gradient(#FFFFFF,#EAF4FB);border-radius:120px 120px 20px 20px;padding:14px 10px 10px;box-shadow:0 0 0 6px #F1C26B,0 8px 0 6px rgba(31,43,77,.12);display:flex;flex-direction:column;align-items:center;gap:6px}
+@media (max-width:560px){.cmirror{align-self:center;width:170px}}
+.cstage{position:relative;width:100%;aspect-ratio:3/4}
+.cstage .cme{position:absolute;left:50%;bottom:0;height:94%;width:auto;max-width:none;transform:translateX(-50%)}
+.cmirror b{font-family:var(--display);font-weight:400;font-size:18px;text-align:center}
+.cside{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.ctabs{display:flex;gap:8px}
+.ctabs button{flex:1;font-size:18px;border-radius:14px;padding:10px;background:rgba(255,255,255,.7)}
+.ctabs button.on{background:var(--o1);color:#fff}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+.citem{background:rgba(255,255,255,.92);border-radius:16px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 3px 0 rgba(31,43,77,.12)}
+.citem>img{height:90px;width:auto;max-width:100%;object-fit:contain}
+.citem .cph{height:90px;display:grid;place-items:center;font-family:var(--display);font-size:30px;color:var(--muted)}
+.citem .cph img{width:44px;border-radius:4px;opacity:.6}
+.citem .cname{font-size:14px;text-align:center}
+.citem small{display:flex;align-items:center;gap:2px;font-size:11px;color:var(--ink-soft);text-align:center}
+.citem small svg{width:14px;height:14px}
+.citem.on{box-shadow:0 0 0 3px var(--o1),0 3px 0 rgba(31,43,77,.12)}
+.citem.locked>img{filter:grayscale(.7);opacity:.6}
+.room-play{background-color:#DFF3C9;background-image:linear-gradient(#E9F7FF 0 35%,#CDEBA8 35%)}
+.gmenu{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.gcard{background:#fff;border-radius:20px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 5px 0 rgba(31,43,77,.14)}
+.gcard b{font-family:var(--display);font-weight:400;font-size:24px}
+.gcard small{font-size:13px;color:var(--ink-soft);text-align:center}
+.gcard.soon{opacity:.55;box-shadow:none;border:2px dashed var(--line);background:rgba(255,255,255,.6)}
+.gicon{display:grid;grid-template-columns:repeat(2,34px);gap:5px}
+.gicon i{height:44px;border-radius:7px;background:repeating-linear-gradient(45deg,#7FB8FF 0 6px,#5C9EF5 6px 12px)}
+.gicon i.up{background:#fff;box-shadow:inset 0 0 0 2px var(--line)}
+.mboard{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.mscore{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.mp{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.8);border-radius:999px;padding:4px 14px 4px 4px;transition:box-shadow .2s}
+.mp img{width:40px;height:40px;object-fit:cover;object-position:top;border-radius:50%;background:#fff}
+.mp span{font-size:14px}.mp b{font-family:var(--display);font-weight:400;font-size:26px;min-width:22px;text-align:center}
+.mp.me.on{box-shadow:0 0 0 3px #FF7AA8}.mp.ai.on{box-shadow:0 0 0 3px var(--o3)}
+.mturn{font-family:var(--display);font-size:20px;text-align:center;flex:1;white-space:nowrap}
+.mgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:min(100%,560px,calc((100dvh - 250px)*1.2));align-self:center}
+@media (max-width:560px){.mgrid{grid-template-columns:repeat(4,minmax(0,1fr));width:min(100%,calc((100dvh - 330px)*0.78))}.mp span{display:none}.mp{padding-right:10px}.mturn{font-size:16px}}
+.mcard{position:relative;aspect-ratio:1/1;padding:0;perspective:600px;border-radius:12px}
+.mcard .mback,.mcard .mface{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .35s;display:grid;place-items:center}
+.mcard .mback{background:radial-gradient(circle,#FFE27A 0 9px,transparent 10px),repeating-linear-gradient(45deg,#7FB8FF 0 8px,#5C9EF5 8px 16px);box-shadow:0 0 0 3px #fff,0 4px 0 3px rgba(31,43,77,.15)}
+.mcard .mface{background:#fff;transform:rotateY(180deg);box-shadow:0 0 0 3px #fff,0 4px 0 3px rgba(31,43,77,.15)}
+.mcard .mface img{width:84%;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.mcard.up .mback{transform:rotateY(180deg)}.mcard.up .mface{transform:rotateY(360deg)}
+.mcard.got .mface{box-shadow:0 0 0 4px #FF7AA8}
+.mcard.got.ai .mface{box-shadow:0 0 0 4px var(--o3)}
+.mcard.got{animation:gotPop .4s ease}
+@keyframes gotPop{50%{transform:scale(1.08)}}
+.mboard>.big-btn{align-self:center}
+@media (prefers-reduced-motion:reduce){.mcard .mback,.mcard .mface{transition:none}}
 .vprop{pointer-events:none}
 .vprop.edit{pointer-events:auto;cursor:grab;touch-action:none}
 .vprop.edit:not(.sel){filter:drop-shadow(0 0 2px #fff)}
@@ -405,7 +503,7 @@ const IMG = window.IMG || {};
 
 // ===== 설정 =====
 // 아바타 그림: ChatGPT로 만든 PNG를 받으면 여기에 넣습니다 (data URL 또는 같은 폴더 파일 이름).
-const AVATAR_IMG = { basic:IMG.style_basic||'', hanbok:IMG.style_hanbok||'', idol:'', princess:'' };
+const AVATAR_IMG = new Proxy({}, { get:(_,id)=> IMG['o_'+id] || IMG['style_'+id] || '' });
 // 가게 아이템: 값(별), 처음 붙는 자리(x,y: 무대 기준 %), 크기(w: 무대 너비 %), back=캐릭터 뒤
 const ITEMS = [
   { id:'pink_bow',       name:'분홍 리본',     price:5,  x:67, y:16, w:22 },
@@ -716,11 +814,38 @@ Object.assign(ABOUT, {
   pg:'오스트레일리아 위쪽에 있는 섬나라예요. 말의 종류가 팔백 개도 넘어요.',
 });
 
+// 옷: basic은 처음부터, country는 그 나라 ★★ 카드를 얻으면, need는 레벨 통과 상, price는 옷가게에서 별로 사기
+// 그림 이름: o_아이디 (기본·한복은 예전 이름 style_basic, style_hanbok)
 const STYLES = [
-  { id:'basic',    name:'기본',   need:null, hint:'처음부터' },
-  { id:'hanbok',   name:'한복',   need:'A',  hint:'A 통과' },
-  { id:'idol',     name:'아이돌', need:'B',  hint:'B 통과' },
-  { id:'princess', name:'공주',   need:'C',  hint:'C 통과' },
+  { id:'basic',    name:'기본 옷' },
+  { id:'hanbok',   name:'한복',        country:'kr' },
+  { id:'kimono',   name:'기모노',      country:'jp' },
+  { id:'sari',     name:'사리',        country:'in' },
+  { id:'aodai',    name:'아오자이',    country:'vn' },
+  { id:'flamenco', name:'플라멩코 드레스', country:'es' },
+  { id:'samba',    name:'삼바 축제 옷', country:'br' },
+  { id:'tango',    name:'탱고 드레스', country:'ar' },
+  { id:'guard',    name:'근위병 옷',   country:'gb' },
+  { id:'dirndl',   name:'독일 전통 옷', country:'de' },
+  { id:'apsara',   name:'압사라 춤 옷', country:'kh' },
+  { id:'sinh',     name:'라오스 전통 옷', country:'la' },
+  { id:'longyi',   name:'롱지',        country:'mm' },
+  { id:'vyshyvanka', name:'비쉬반카',  country:'ua' },
+  { id:'pollera',  name:'폴레라',      country:'pa' },
+  { id:'bula',     name:'불라 셔츠',   country:'fj' },
+  { id:'kente',    name:'켄테 옷',     country:'gh' },
+  { id:'idol',     name:'아이돌 무대 옷', need:'B' },
+  { id:'princess', name:'공주 드레스', need:'C' },
+  { id:'pajama',   name:'잠옷',        price:8 },
+  { id:'raincoat', name:'노란 비옷',   price:8 },
+  { id:'swim',     name:'수영복',      price:10 },
+  { id:'padding',  name:'겨울 패딩',   price:10 },
+  { id:'chefsuit', name:'요리사 옷',   price:12 },
+  { id:'police',   name:'경찰관 옷',   price:12 },
+  { id:'firesuit', name:'소방관 옷',   price:12 },
+  { id:'ballet',   name:'발레복',      price:15 },
+  { id:'fairy',    name:'요정 옷',     price:20 },
+  { id:'space',    name:'우주복',      price:25 },
 ];
 // 레벨: list는 유명한 순서 (처음 보는 나라를 뽑을 때 앞쪽 나라가 먼저 나오기 쉬움), need는 통과 기준
 const LEVELS = {
@@ -745,7 +870,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v15';
+const APP_VERSION = 'v17';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -950,7 +1075,14 @@ function renderHome(){
 
 // ===== 옷장: 코디 + 스티커 꾸미기 =====
 let selected = -1; // 선택한 스티커(placed 배열 번호)
-const styleOpen = s => !s.need || S.passed[s.need] || S.allOpen;
+function styleOpen(s){
+  if(!s) return false; if(s.id==='basic' || S.allOpen) return true;
+  if(s.country) return (K(2)[s.country]||0)>=1 || (s.id==='hanbok' && S.passed.A);
+  if(s.need) return !!S.passed[s.need];
+  if(s.price) return !!(S.outfits||{})[s.id];
+  return false;
+}
+function styleHint(s){ return s.country ? `${C[s.country].name} ★★ 카드` : s.need ? `${s.need} 레벨 통과` : s.price ? `옷가게 별 ${s.price}개` : ''; }
 function stickerHTML(p,k){
   const it=ITEM[p.id];
   return `<img class="sticker ${it.back?'back':''} ${k===selected?'sel':''}" data-k="${k}" src="${IMG['item_'+p.id]}" alt="${it.name}" draggable="false"
@@ -970,8 +1102,9 @@ function wardrobeHTML(){
     <div class="sel-bar" ${sel?'':'hidden'}>
       <button id="szDown" aria-label="작게">작게</button><button id="szUp" aria-label="크게">크게</button><button id="unstick">떼기</button>
     </div>
-    <div class="styles">${STYLES.map(s=>{const open=styleOpen(s);
-      return `<button class="style-chip ${st.id===s.id?'on':''}" data-style="${s.id}" ${open?'':'disabled'}>${s.name}<small>${open?(AVATAR_IMG[s.id]?'입기':'그림 준비 중'):s.hint}</small></button>`}).join('')}</div>
+    <div class="styles scroll">${STYLES.filter(s=>styleOpen(s)&&AVATAR_IMG[s.id]).map(s=>
+      `<button class="style-chip ${st.id===s.id?'on':''}" data-style="${s.id}">${s.name}<small>입기</small></button>`).join('')}
+      <span class="style-more">옷은 마을 옷가게에서 더 얻어요</span></div>
     <div class="tray-head"><span>내 스티커 ${owned.length?'· 눌러서 붙이기':''}</span><button class="shop-btn" id="shopBtn">${ICON.star} 가게</button></div>
     <div class="tray">${owned.length?owned.map(i=>{const on=S.placed.some(p=>p.id===i.id);
       return `<button class="${on?'on':''}" data-item="${i.id}" aria-label="${i.name}"><img src="${IMG['item_'+i.id]}" alt=""></button>`}).join('')
@@ -1091,13 +1224,13 @@ const LOTS = [
   { id:'lot5', x:1200, y:1000, w:170 },
 ];
 const NPC_INFO = {
-  n_tailor: { name:'옷가게 사장님', lines:['어서 와요! 옷가게는 곧 문을 열어요. 예쁜 옷을 준비하고 있어요.','나라마다 멋진 전통 옷이 있어요. 보물 카드로 얻으면 입어 볼 수 있게 해 줄게요.'] },
-  n_chef:   { name:'요리사',       lines:['나라마다 맛있는 음식이 있어요. 식당은 곧 문을 열어요!','보물 카드로 모은 음식을 여기서 팔 거예요.'] },
+  n_tailor: { name:'옷가게 사장님', lines:['어서 와요! 가게에 들어오면 옷을 갈아입을 수 있어요.','나라마다 멋진 전통 옷이 있어요. ★★ 보물 카드를 얻으면 입어 볼 수 있어요.'] },
+  n_chef:   { name:'요리사',       lines:['어서 오세요! 보물 카드로 모은 음식을 만들어 줄게요.','배고픈 친구가 있으면 식당에서 음식을 가져다줘요.'] },
   n_usher:  { name:'극장 안내원',   lines:['극장에서 곧 나라 이야기를 보여 줄게요!','불이 켜진 나라가 많을수록 볼 이야기도 많아져요.'] },
   n_teacher:{ name:'유치원 선생님', lines:['안녕! 유치원에서 같이 다시 공부할 날을 기다려요.','틀린 나라는 선생님이랑 다시 보면 금방 기억나요.'] },
   n_police: { name:'경찰관',       lines:['길 잃은 친구가 생기면 도와줘요! 경찰서는 곧 열려요.','지도를 잘 보면 친구 집을 찾을 수 있어요.'] },
   n_fire:   { name:'소방관',       lines:['소방관이에요! 곧 같이 출동해요.','국기를 잘 알아야 불난 집을 빨리 찾을 수 있어요.'] },
-  n_grandpa:{ name:'놀이터 할아버지', lines:['놀이터는 곧 놀 수 있단다. 국기 짝 맞추기를 준비하고 있어.','오늘도 즐겁게 놀자꾸나.'] },
+  n_grandpa:{ name:'놀이터 할아버지', lines:['놀이터에 오면 할아버지랑 같은 그림 찾기 하자꾸나!','오늘도 즐겁게 놀자꾸나.'] },
   n_mail:   { name:'우체부',       lines:['편지 왔어요! 오늘도 나라 하나 맞혀 볼까요?','별을 모으면 마을을 예쁘게 꾸밀 수 있어요.','빈 땅에는 랜드마크를 지을 수 있어요.'] },
 };
 const PROPS = [
@@ -1120,7 +1253,14 @@ function vState(){
   if(!v.pos) v.pos = { x:640, y:520 };
   return v;
 }
-function playerImg(){ const st=STYLES.find(s=>s.id===S.style&&AVATAR_IMG[s.id])||STYLES[0]; return AVATAR_IMG[st.id]||AVATAR_IMG.basic; }
+function curStyle(){ return STYLES.find(s=>s.id===S.style&&styleOpen(s)&&AVATAR_IMG[s.id])||STYLES[0]; }
+function playerImg(){ return AVATAR_IMG[curStyle().id]||AVATAR_IMG.basic; }
+// 마을 캐릭터: 옷장 무대(3:4, 캐릭터 높이 94%)와 같은 비율의 100x133 상자에 스티커까지 그대로 옮김
+function playerBodyHTML(){
+  const st=(p,front)=>{ const it=ITEM[p.id]; if(!it||!!it.back===front) return '';
+    return `<img class="vstk" src="${IMG['item_'+p.id]}" alt="" style="left:${p.x}%;top:${p.y}%;width:${p.w}%">`; };
+  return (S.placed||[]).map(p=>st(p,false)).join('') + `<img class="vme" src="${playerImg()}" alt="나" draggable="false">` + (S.placed||[]).map(p=>st(p,true)).join('');
+}
 // 내가 지을 수 있는 랜드마크: ★★★ 단계에서 불이 켜졌고 그림이 있는 나라
 function ownedLandmarks(){ return Object.keys(K(3)||{}).filter(c=>K(3)[c]>=1 && IMG[`t_${c}_3`] && TREASURE[c]); }
 
@@ -1148,13 +1288,14 @@ function openVillage(){
         ${ent.join('')}
         <div id="vprops"></div>
         <img class="vent vnpc vmail" id="vmail" data-hit="npc" data-id="n_mail" src="${IMG.n_mail}" alt="우체부" style="height:${NPC_H}px">
-        <div class="vplayer" id="vplayer"><div class="vflip"><img src="${playerImg()}" alt="나" draggable="false"></div></div>
+        <div id="vfriends"></div>
+        <div class="vplayer" id="vplayer"><div class="vflip"><div class="vbody" id="vbody">${playerBodyHTML()}</div></div></div>
         <div class="vtarget" id="vtarget" hidden></div>
       </div>
       <div class="vbubble" id="vbubble" hidden></div>
     </div>
     <div class="vdock" id="vdock" hidden></div>`;
-  drawLots(); drawProps();
+  drawLots(); drawProps(); vFriendsInit();
   $('#vHome').onclick=()=>closeVillage();
   $('#vDecor').onclick=()=>toggleDecor();
   const view=$('#vview');
@@ -1232,6 +1373,7 @@ function vLoop(ts){
     const el=$('#vmail'); el.style.left=m.x+'px'; el.style.top=m.y+'px'; el.style.zIndex=Math.round(m.y);
     el.classList.toggle('walking', m.wait<=0); el.style.setProperty('--f', dx<0?-1:1);
   }
+  vFriendsStep(dt);
   if(!$('#vbubble').hidden && V.bubbleAt) posBubble();
   V.raf=requestAnimationFrame(vLoop);
 }
@@ -1246,9 +1388,11 @@ function posBubble(){
   const b=$('#vbubble'); let x,y;
   if(V.bubbleAt==='player'){ x=V.px; y=V.py-PLAYER_H; }
   else if(V.bubbleAt==='n_mail'){ x=V.mail.x; y=V.mail.y-NPC_H; }
+  else if(V.fr && V.fr[V.bubbleAt]){ const f=V.fr[V.bubbleAt]; x=f.x; y=f.y-FRIEND_H; }
   else { const el=document.querySelector(`[data-id="${V.bubbleAt}"]`); if(!el){ x=V.px; y=V.py-PLAYER_H; } else { x=parseFloat(el.style.left); y=parseFloat(el.style.top)-(el.classList.contains('vnpc')?NPC_H:el.offsetHeight); } }
   const sx=x*V.s+V.tx, sy=y*V.s+V.ty;
-  b.style.left=Math.max(90,Math.min(V.vw-90,sx))+'px'; b.style.top=Math.max(8,sy-8)+'px';
+  const half=Math.min(b.offsetWidth, V.vw-16)/2+8;
+  b.style.left=Math.max(half,Math.min(V.vw-half,sx))+'px'; b.style.top=Math.max(b.offsetHeight+8,sy-8)+'px';
 }
 
 // ---- 누르기 ----
@@ -1258,6 +1402,7 @@ function onVillageTap(e){
   if(!hit){ const w=toWorld(e.clientX,e.clientY); walkTo(w.x,w.y); return; }
   sfx.tap();
   const kind=hit.dataset.hit, id=hit.dataset.id;
+  if(kind==='friend'){ const f=V.fr[id]; walkTo(f.x-70, f.y+4, ()=>{ V.face=1; placePlayer(); friendTalk(id); }); return; }
   if(kind==='npc'){
     const info=NPC_INFO[id], line=info.lines[Math.floor(Math.random()*info.lines.length)];
     const nx = id==='n_mail' ? V.mail.x : parseFloat(hit.style.left), ny = id==='n_mail' ? V.mail.y : parseFloat(hit.style.top);
@@ -1267,9 +1412,12 @@ function onVillageTap(e){
   if(kind==='place'){
     const p=PLACES.find(x=>x.id===id);
     walkTo(p.x, p.y+18, ()=>{
-      if(p.npc){ const info=NPC_INFO[p.npc]; vSay(`${info.name}: ${info.lines[0]}`, p.npc); }
+      if(id==='clothes') openClothesShop();
+      else if(id==='food') openRestaurant();
+      else if(id.startsWith('house')) openHouse(p);
+      else if(id==='playground') openPlayground();
+      else if(p.npc){ const info=NPC_INFO[p.npc]; vSay(`${info.name}: ${info.lines[0]}`, p.npc); }
       else if(id==='myhouse') vSay('우리 집이에요! 집 안 꾸미기는 곧 할 수 있어요.');
-      else vSay('아직 빈집이에요. 나라 친구가 곧 이사 올 거예요!');
     });
     return;
   }
@@ -1368,6 +1516,289 @@ function openPropShop(){
   };
   draw(); document.body.appendChild(el); addX(el);
   el.addEventListener('click',e=>{ if(e.target===el){ el.remove(); renderDock(); } });
+}
+
+
+// ===================== 마을 2차: 친구 =====================
+const FRIEND_H = 100;
+// 물건 그림이라 친구로는 어색한 ★★ 카드
+const NOT_FRIEND = ['tr','nl','it','mx','no','de','se','sg','uz','pk','cu','ir'];
+const HOUSES = ['house1','house2','house3'];
+function friendOK(c){ return (K(2)[c]||0)>=1 && IMG[`t_${c}_2`] && TREASURE[c] && !NOT_FRIEND.includes(c); }
+function friendName(c){ const [kind,nm]=TREASURE[c][1]; return kind==='동물' ? nm : `${C[c].name} 친구`; }
+function fState(){ const v=vState(); v.res=v.res||{}; v.hearts=v.hearts||{}; v.talked=v.talked||{}; return v; }
+function residents(){ const v=fState(); return HOUSES.map(h=>v.res[h]).filter(c=>c&&friendOK(c)); }
+
+function vFriendsInit(){
+  const v=fState(); V.fr={};
+  HOUSES.forEach(h=>{ const c=v.res[h]; if(!c||!friendOK(c)) return; const p=PLACES.find(x=>x.id===h);
+    V.fr[c]={ c, hx:p.x, hy:p.y+40, x:p.x+50, y:p.y+40, gx:p.x+50, gy:p.y+40, wait:Math.random()*3 }; });
+  // 배고픈 친구 한 명 (그 나라 ★ 음식 카드가 있을 때만)
+  if(!v.req){ const hungry=Object.keys(V.fr).filter(c=>(K(1)[c]||0)>=1 && IMG[`t_${c}_1`]);
+    if(hungry.length && Math.random()<0.6) v.req=hungry[Math.floor(Math.random()*hungry.length)]; save(); }
+  drawFriends();
+}
+function drawFriends(){
+  const v=fState();
+  $('#vfriends').innerHTML=Object.values(V.fr).map(f=>`<div class="vent vfriend" data-hit="friend" data-id="${f.c}" style="left:${f.x}px;top:${f.y}px;z-index:${Math.round(f.y)}">
+    ${v.req===f.c?'<span class="vneed">!</span>':''}<img src="${IMG[`t_${f.c}_2`]}" alt="${friendName(f.c)}" draggable="false" style="height:${FRIEND_H}px"></div>`).join('');
+}
+function vFriendsStep(dt){
+  if(!V.fr) return;
+  for(const f of Object.values(V.fr)){
+    if(f.wait>0){ f.wait-=dt; continue; }
+    const dx=f.gx-f.x, dy=f.gy-f.y, d=Math.hypot(dx,dy), step=45*dt;
+    const el=document.querySelector(`.vfriend[data-id="${f.c}"]`); if(!el) continue;
+    if(d<=step){ f.x=f.gx; f.y=f.gy; f.wait=2+Math.random()*5; const a=Math.random()*6.28, r=60+Math.random()*120;
+      f.gx=Math.max(60,Math.min(VW-60,f.hx+Math.cos(a)*r)); f.gy=Math.max(140,Math.min(VH-10,f.hy+Math.abs(Math.sin(a))*r*0.5)); el.classList.remove('walking'); }
+    else { f.x+=dx/d*step; f.y+=dy/d*step; el.classList.add('walking'); el.style.setProperty('--f', dx<0?-1:1); }
+    el.style.left=f.x+'px'; el.style.top=f.y+'px'; el.style.zIndex=Math.round(f.y);
+  }
+}
+function heartsOf(c){ return Math.min(10, fState().hearts[c]||0); }
+function addHearts(c,n){
+  const v=fState(), before=heartsOf(c); v.hearts[c]=Math.min(10,(v.hearts[c]||0)+n); const now=heartsOf(c); save();
+  heartPop(c,n);
+  if(before<5 && now>=5){ S.stars+=5; save(); setTimeout(()=>vSay(`${friendName(c)}: 우리 친해졌다! 선물로 별 다섯 개 줄게!`, c),2600); }
+  if(before<10 && now>=10){ setTimeout(()=>vSay(`${friendName(c)}: 우리는 이제 단짝 친구야!`, c),2600); }
+  const st=$('#vStars'); if(st) st.textContent=S.stars;
+}
+function heartPop(c,n){
+  const f=V&&V.fr[c]; if(!f) return; const el=document.createElement('div'); el.className='vent vheart';
+  el.textContent='♥'.repeat(Math.min(3,n)); el.style.left=f.x+'px'; el.style.top=(f.y-FRIEND_H)+'px'; el.style.zIndex=2000;
+  $('#vworld').appendChild(el); setTimeout(()=>el.remove(),1400);
+}
+function friendLines(c){
+  const t=TREASURE[c], cc=C[c], me=friendName(c), animal=t[1][0]==='동물';
+  const L=[ animal ? `안녕! 나는 ${cc.name}에 사는 ${me}야.` : `안녕! 나는 ${cc.name}에서 왔어.`,
+    `우리 나라 수도는 ${cc.capital}${hasBatchim(cc.capital)?'이야':'야'}.`,
+    `우리 나라는 ${cc.continent}에 있어.` ];
+  if((K(1)[c]||0)>=1) L.push(`우리 나라 음식 ${t[0][1]}, 먹어 봤어? 정말 맛있어!`);
+  if((K(3)[c]||0)>=1) L.push(`우리 나라에는 ${t[2][1]}${hasBatchim(t[2][1])?'이':'가'} 있어. 언젠가 같이 가 보자!`);
+  return L;
+}
+function friendTalk(c){
+  const v=fState(), me=friendName(c);
+  if(v.req===c){ const food=TREASURE[c][0][1]; vSay(`${me}: 배고파! ${food} 먹고 싶어. 식당에서 가져다줄래?`, c); return; }
+  const lines=friendLines(c), line=lines[Math.floor(Math.random()*lines.length)];
+  vSay(`${me}: ${line}`, c);
+  if(v.talked[c]!==today()){ v.talked[c]=today(); addHearts(c,1); }
+}
+
+// 친구 집: 비었으면 초대, 살고 있으면 친구 카드
+function openHouse(p){
+  const v=fState(), c=v.res[p.id];
+  if(c && friendOK(c)) return openFriendCard(p, c);
+  const living=new Set(Object.values(v.res).filter(Boolean));
+  const cand=Object.keys(K(2)||{}).filter(x=>friendOK(x)&&!living.has(x));
+  const el=document.createElement('div'); el.className='sheet';
+  el.innerHTML=`<div class="panel shop">
+    <div class="shop-head sticky"><h3>빈집</h3><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
+    ${cand.length?`<p class="note">누구를 이 집에 초대할까요?</p><div class="lm-grid">${cand.map(x=>`<button class="lm-item" data-c="${x}">
+      <img src="${IMG[`t_${x}_2`]}" alt=""><span>${esc(friendName(x))}</span><small><img src="${C[x].flag}" alt="">${C[x].name}</small></button>`).join('')}</div>`
+    :`<p class="lm-empty">아직 초대할 친구가 없어요.<br>★★ 단계에서 나라 이름, 위치, 수도를 다 맞히면 친구 카드를 받아요.</p>`}
+    <button class="big-btn plain" id="close">닫기</button></div>`;
+  document.body.appendChild(el); addX(el);
+  say(cand.length?'누구를 초대할까요?':'아직 초대할 친구가 없어요.');
+  const close=()=>el.remove(); el.querySelector('#close').onclick=close; el.addEventListener('click',e=>{ if(e.target===el) close(); });
+  el.querySelectorAll('.lm-item').forEach(b=>b.onclick=()=>{
+    const x=b.dataset.c; v.res[p.id]=x; save(); close(); sfx.win(); burst(); vFriendsInit();
+    setTimeout(()=>vSay(`${friendName(x)}: 안녕! 오늘부터 우리 이웃이야. 반가워!`, x),300);
+  });
+}
+function openFriendCard(p, c){
+  const v=fState(), h=heartsOf(c);
+  const el=document.createElement('div'); el.className='sheet';
+  el.innerHTML=`<div class="panel country">
+    <div class="shop-head sticky"><h3>${esc(friendName(c))}</h3><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
+    <div class="fcard"><img class="fpic" src="${IMG[`t_${c}_2`]}" alt=""><div>
+      <div class="fflag"><img src="${C[c].flag}" alt="">${C[c].name}에서 왔어요</div>
+      <div class="fhearts" aria-label="하트 ${h}개">${'<i class="on">♥</i>'.repeat(h)}${'<i>♥</i>'.repeat(10-h)}</div>
+      <p class="note">${h>=10?'단짝 친구예요!':h>=5?'친한 친구예요. 하트 10개면 단짝!':'하루에 한 번 말을 걸면 하트가 생겨요. 5개면 선물을 줘요.'}</p></div></div>
+    <button class="big-btn plain" id="move">다른 친구로 바꾸기</button>
+    <button class="big-btn plain" id="close">닫기</button></div>`;
+  document.body.appendChild(el); addX(el);
+  say(`${friendName(c)}. 하트 ${h}개예요.`);
+  const close=()=>el.remove(); el.querySelector('#close').onclick=close; el.addEventListener('click',e=>{ if(e.target===el) close(); });
+  el.querySelector('#move').onclick=e=>{ const b=e.currentTarget; if(!b.dataset.sure){ b.dataset.sure=1; b.textContent='정말 바꿀까요? 한 번 더 누르세요'; return; }
+    v.res[p.id]=null; if(v.req===c) v.req=null; save(); close(); vFriendsInit(); openHouse(p); };
+}
+
+// ===================== 마을 2차: 가게 안 화면 =====================
+function openInterior(o){
+  const el=document.createElement('div'); el.className='vroom';
+  el.innerHTML=`<div class="vroom-bar"><button class="big-btn plain sm" id="rBack">마을로</button><h2>${o.title}</h2>
+      <div class="stars">${ICON.star}<span id="rStars">${S.stars}</span></div></div>
+    <div class="vroom-body ${o.cls||''}" style="${IMG[o.bg]?`background-image:url(${IMG[o.bg]})`:''}">
+      <div class="vroom-npc">${o.npc?`<img src="${IMG[o.npc]}" alt="">`:''}<div class="vroom-say" id="rSay"></div></div>
+      <div class="vroom-main" id="rMain"></div>
+    </div>`;
+  document.body.appendChild(el);
+  const r={ el, say:(t)=>{ const b=el.querySelector('#rSay'); b.textContent=t; b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); say(t); },
+    stars:()=>{ el.querySelector('#rStars').textContent=S.stars; const st=$('#vStars'); if(st) st.textContent=S.stars; },
+    close:()=>{ el.remove(); try{speechSynthesis.cancel();}catch(e){} if(o.onClose) o.onClose(); } };
+  el.querySelector('#rBack').onclick=()=>{ sfx.tap(); r.close(); };
+  return r;
+}
+
+// ---- 식당 ----
+function openRestaurant(){
+  const v=fState();
+  const foods=Object.keys(K(1)||{}).filter(c=>(K(1)[c]||0)>=1 && IMG[`t_${c}_1`] && TREASURE[c]);
+  const r=openInterior({ title:'식당', bg:'in_food', npc:'n_chef', cls:'room-food', onClose:()=>{ if(V) drawFriends(); } });
+  const draw=()=>{
+    const req=v.req && V.fr[v.req] ? v.req : null;
+    r.el.querySelector('#rMain').innerHTML = `
+      ${req?`<div class="rreq"><img src="${IMG[`t_${req}_2`]}" alt=""><span><b>${esc(friendName(req))}</b>${C[req].name} 음식을 먹고 싶대요!</span></div>`:''}
+      <div class="rmenu-title">메뉴 <small>${foods.length}가지</small></div>
+      ${foods.length?`<div class="rmenu">${foods.map(c=>`<button class="rfood" data-c="${c}"><img src="${IMG[`t_${c}_1`]}" alt=""><span>${esc(TREASURE[c][0][1])}</span><small><img src="${C[c].flag}" alt="">${C[c].name}</small></button>`).join('')}</div>`
+        :`<p class="lm-empty">아직 메뉴가 없어요.<br>★ 단계에서 나라를 맞히면 음식 카드가 생겨요.</p>`}
+      <div class="rplate" id="rPlate" hidden></div>`;
+    r.el.querySelectorAll('.rfood').forEach(b=>b.onclick=()=>pick(b.dataset.c));
+  };
+  const plate=(c)=>{ const p=r.el.querySelector('#rPlate'); p.innerHTML=`<img src="${IMG[`t_${c}_1`]}" alt="">`; p.hidden=false; p.classList.remove('serve'); void p.offsetWidth; p.classList.add('serve'); setTimeout(()=>{ p.hidden=true; },1800); };
+  const pick=(c)=>{
+    const req=v.req && V.fr[v.req] ? v.req : null, food=TREASURE[c][0][1];
+    if(req){
+      if(c===req){ plate(c); sfx.win(); burst(); v.req=null; S.stars+=2; save(); r.stars();
+        r.say(`${food} 나왔습니다! ${friendName(req)}에게 가져다줬어요. 별 두 개를 받았어요!`);
+        addHearts(req,2); draw(); setTimeout(()=>{ if(V) vSay(`${friendName(req)}: 고마워! 이게 바로 우리 나라 ${food}야!`, req); },400);
+      } else { sfx.soft(); r.say(`${food}${hasBatchim(food)?'은':'는'} ${C[c].name} 음식이에요. ${C[req].name} 음식을 찾아봐요!`); }
+      return;
+    }
+    plate(c); sfx.good(); r.say(`냠냠! ${food}${hasBatchim(food)?'은':'는'} ${C[c].name} 음식이에요.`);
+  };
+  draw();
+  const req=v.req && V.fr[v.req] ? v.req : null;
+  r.say(req ? `어서 오세요! ${friendName(req)}가 배고프대요. ${C[req].name} 음식을 골라 주세요.` : (foods.length ? '어서 오세요! 무엇을 만들어 줄까요?' : '어서 오세요! 아직 만들 수 있는 음식이 없어요.'));
+}
+
+// ---- 옷가게 ----
+function openClothesShop(){
+  if(!S.outfits) S.outfits={};
+  const r=openInterior({ title:'옷가게', bg:'in_clothes', npc:'n_tailor', cls:'room-clothes', onClose:()=>{ if(V){ $('#vbody').innerHTML=playerBodyHTML(); } } });
+  let tab='world';
+  const draw=()=>{
+    const cur=curStyle();
+    const list=STYLES.filter(s=> tab==='world' ? (s.country||s.id==='basic') : (!s.country && s.id!=='basic'));
+    r.el.querySelector('#rMain').innerHTML=`
+      <div class="cmirror"><div class="cstage">${(S.placed||[]).map(p=>ITEM[p.id]&&ITEM[p.id].back?`<img class="vstk" src="${IMG['item_'+p.id]}" alt="" style="left:${p.x}%;top:${p.y}%;width:${p.w}%">`:'').join('')}
+        <img class="cme" src="${playerImg()}" alt="${cur.name}">${(S.placed||[]).map(p=>ITEM[p.id]&&!ITEM[p.id].back?`<img class="vstk" src="${IMG['item_'+p.id]}" alt="" style="left:${p.x}%;top:${p.y}%;width:${p.w}%">`:'').join('')}</div>
+        <b>${esc(cur.name)}</b></div>
+      <div class="cside">
+        <div class="ctabs"><button class="${tab==='world'?'on':''}" data-tab="world">세계 옷</button><button class="${tab==='shop'?'on':''}" data-tab="shop">가게 옷</button></div>
+        <div class="cgrid">${list.map(s=>{ const own=styleOpen(s), img=AVATAR_IMG[s.id], on=cur.id===s.id;
+          const tag = on ? '입고 있어요' : !img ? '그림 준비 중' : own ? '입기' : s.price ? `${ICON.star} ${s.price}` : styleHint(s);
+          return `<button class="citem ${on?'on':''} ${own?'':'locked'}" data-s="${s.id}">
+            ${img?`<img src="${img}" alt="">`:`<span class="cph">${s.country?`<img src="${C[s.country].flag}" alt="">`:'?'}</span>`}
+            <span class="cname">${esc(s.name)}</span><small>${tag}</small></button>`; }).join('')}</div>
+      </div>`;
+    r.el.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; sfx.tap(); draw(); });
+    r.el.querySelectorAll('.citem').forEach(b=>b.onclick=()=>choose(STYLES.find(s=>s.id===b.dataset.s)));
+  };
+  const choose=(s)=>{
+    const img=AVATAR_IMG[s.id];
+    if(!img){ sfx.soft(); r.say(`${s.name}${hasBatchim(s.name)?'은':'는'} 아직 만들고 있어요. 조금만 기다려 줘요!`); return; }
+    if(!styleOpen(s)){
+      if(s.price){
+        if(S.stars<s.price){ sfx.soft(); r.say(`${s.name}${hasBatchim(s.name)?'은':'는'} 별 ${s.price}개예요. 별 ${s.price-S.stars}개만 더 모아 와요!`); return; }
+        S.stars-=s.price; S.outfits[s.id]=true; save(); r.stars(); sfx.win(); burst();
+      } else { sfx.soft(); r.say(s.country ? `${C[s.country].name} 옷은 ${C[s.country].name}의 ★★ 보물 카드를 얻으면 입을 수 있어요.` : `${s.need} 레벨을 통과하면 입을 수 있어요.`); return; }
+    }
+    S.style=s.id; save(); sfx.good(); draw();
+    r.say(`${s.name}${hasBatchim(s.name)?'으로':'로'} 갈아입었어요! 정말 잘 어울려요.`);
+  };
+  draw();
+  r.say('어서 와요! 입고 싶은 옷을 골라 봐요.');
+}
+
+
+// ===================== 놀이터: 미니게임 =====================
+function openPlayground(){
+  const r=openInterior({ title:'놀이터', bg:'in_play', npc:'n_grandpa', cls:'room-play' });
+  const menu=()=>{
+    r.el.querySelector('#rMain').innerHTML=`<div class="gmenu">
+      <button class="gcard" id="gMemory"><span class="gicon">${[0,1,2,3].map(i=>`<i class="${i%3===0?'up':''}"></i>`).join('')}</span>
+        <b>같은 그림 찾기</b><small>할아버지랑 국기 카드 뒤집기</small></button>
+      <div class="gcard soon"><b>곧 나와요</b><small>새 놀이를 준비하고 있어요</small></div>
+    </div>`;
+    r.el.querySelector('#gMemory').onclick=()=>{ sfx.tap(); startMemory(r, menu); };
+  };
+  menu();
+  r.say('놀이터에 온 걸 환영한다! 할아버지랑 같은 그림 찾기 할까?');
+}
+
+function startMemory(r, back){
+  const PAIRS=10, RECALL=0.35;               // 할아버지 기억력 (낮을수록 쉬움)
+  const lit=new Set([...Object.keys(K(1)||{}),...Object.keys(K(2)||{}),...Object.keys(K(3)||{})]);
+  let pool=shuffle(LV().list.filter(c=>lit.has(c)));
+  pool=pool.concat(shuffle(LV().list.filter(c=>!lit.has(c)))).slice(0,PAIRS);
+  const cards=shuffle(pool.flatMap(c=>[c,c])).map((c,i)=>({ c, i, up:false, owner:null }));
+  const g={ turn:'me', open:[], score:{me:0,ai:0}, mem:{}, busy:false, done:false };
+  const main=r.el.querySelector('#rMain');
+  main.innerHTML=`<div class="mboard">
+      <div class="mscore"><div class="mp me" id="mpMe"><img src="${playerImg()}" alt=""><span>나</span><b id="scMe">0</b></div>
+        <div class="mturn" id="mTurn">내 차례</div>
+        <div class="mp ai" id="mpAi"><img src="${IMG.n_grandpa}" alt=""><span>할아버지</span><b id="scAi">0</b></div></div>
+      <div class="mgrid">${cards.map(k=>`<button class="mcard" data-i="${k.i}" aria-label="카드"><span class="mback"></span><span class="mface"><img src="${C[k.c].flag}" alt=""></span></button>`).join('')}</div>
+      <button class="big-btn plain sm" id="mQuit">그만하기</button></div>`;
+  const el=i=>main.querySelector(`.mcard[data-i="${i}"]`);
+  const setTurn=t=>{ g.turn=t; main.querySelector('#mTurn').textContent = t==='me'?'내 차례':'할아버지 차례';
+    main.querySelector('#mpMe').classList.toggle('on',t==='me'); main.querySelector('#mpAi').classList.toggle('on',t==='ai'); };
+  const flip=(i,up)=>{ cards[i].up=up; el(i).classList.toggle('up',up); if(up){ g.mem[i]=cards[i].c; } };
+  const remain=()=>cards.filter(k=>!k.owner);
+  const finish=()=>{
+    g.done=true; const {me,ai}=g.score, prize = me>ai?3: me===ai?2:1;
+    S.stars+=prize; save(); r.stars();
+    const msg = me>ai ? `와! ${me}대 ${ai}로 이겼어요! 별 ${prize}개를 받았어요.` : me===ai ? `${me}대 ${ai} 비겼어요! 별 ${prize}개를 받았어요.` : `${me}대 ${ai}, 할아버지가 이겼어요. 그래도 잘했어요! 별 ${prize}개를 받았어요.`;
+    if(me>ai){ sfx.win(); burst(); setTimeout(burst,400); } else sfx.good();
+    main.querySelector('#mTurn').textContent = me>ai?'내가 이겼어요!':me===ai?'비겼어요!':'할아버지가 이겼어요';
+    r.say(msg);
+    const q=main.querySelector('#mQuit'); q.textContent='한 판 더'; q.onclick=()=>{ sfx.tap(); startMemory(r, back); };
+    const bk=document.createElement('button'); bk.className='big-btn plain sm'; bk.textContent='놀이 고르기'; bk.onclick=()=>{ sfx.tap(); back(); }; q.after(bk);
+  };
+  const check=(who)=>{
+    const [a,b]=g.open; g.open=[];
+    if(cards[a].c===cards[b].c){
+      cards[a].owner=cards[b].owner=who; g.score[who]++; el(a).classList.add('got',who); el(b).classList.add('got',who);
+      delete g.mem[a]; delete g.mem[b];
+      main.querySelector(who==='me'?'#scMe':'#scAi').textContent=g.score[who];
+      const nm=C[cards[a].c].name;
+      if(who==='me'){ sfx.good(); r.say(`${nm} 국기! 짝을 찾았어요. 한 번 더 해요!`); } else { sfx.soft(); r.say(`할아버지가 ${nm} 국기를 찾았어요.`); }
+      if(!remain().length){ setTimeout(finish,900); return; }
+      if(who==='ai') setTimeout(aiTurn,1600); else g.busy=false;
+    } else {
+      setTimeout(()=>{ flip(a,false); flip(b,false); g.busy=false;
+        if(who==='me'){ setTurn('ai'); g.busy=true; setTimeout(aiTurn,800); } else setTurn('me'); }, 1300);
+    }
+  };
+  const aiPick=()=>{
+    const left=remain().filter(k=>!k.up).map(k=>k.i);
+    // 1) 기억하고 있는 짝이 있으면 (기억력만큼)
+    const seen={}; for(const i of left){ const c=g.mem[i]; if(c){ (seen[c]=seen[c]||[]).push(i); } }
+    const known=Object.values(seen).find(x=>x.length>=2);
+    if(known && Math.random()<RECALL) return known.slice(0,2);
+    const unknown=left.filter(i=>!g.mem[i]), from=unknown.length?unknown:left;
+    const a=from[Math.floor(Math.random()*from.length)];
+    const others=left.filter(i=>i!==a);
+    const match=others.find(i=>g.mem[i]===cards[a].c);
+    const b = (match!==undefined && Math.random()<RECALL) ? match : others[Math.floor(Math.random()*others.length)];
+    return [a,b];
+  };
+  const aiTurn=()=>{
+    if(g.done||!r.el.isConnected) return; g.busy=true;
+    const [a,b]=aiPick();
+    flip(a,true); sfx.tap();
+    setTimeout(()=>{ flip(b,true); sfx.tap(); g.open=[a,b]; setTimeout(()=>check('ai'),700); },800);
+  };
+  main.querySelectorAll('.mcard').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i; if(g.turn!=='me'||g.busy||cards[i].up||cards[i].owner) return;
+    flip(i,true); sfx.tap(); g.open.push(i);
+    if(g.open.length===2){ g.busy=true; setTimeout(()=>check('me'),500); }
+  });
+  main.querySelector('#mQuit').onclick=()=>{ sfx.tap(); g.done=true; back(); };
+  setTurn('me');
+  r.say('같은 국기 두 장을 찾아요. 먼저 뒤집어 봐요!');
 }
 
 // ===== 보호자 메뉴 (톱니바퀴 길게 누르기) =====
@@ -1753,11 +2184,11 @@ function showTestQ(){
   bindBar();
 }
 function testDone(){
-  const lv=S.level, prize=STYLES.find(x=>x.need===lv);
+  const lv=S.level, prize=STYLES.find(x=>x.need===lv&&AVATAR_IMG[x.id]);
   const pass=P.right>=S.passMark, firstPass=pass&&!S.passed[lv];
   if(pass){ if(firstPass){ S.passed[lv]=true; S.stars+=10; } S.testLock[lv]=null; }
   else S.testLock[lv]=today();
-  const nextLv={A:'B',B:'C'}[lv], prizeTxt = prize ? `${prize.name} 옷` : '';
+  const nextLv={A:'B',B:'C'}[lv], prizeTxt = prize ? prize.name : '';
   const openTxt = nextLv && LEVELS[nextLv] ? `${nextLv} 레벨이 열렸어요!` : '';
   save();
   if(pass){ sfx.win(); burst(); setTimeout(burst,400); } else sfx.soft();
