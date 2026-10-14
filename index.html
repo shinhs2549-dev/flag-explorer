@@ -745,6 +745,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
+const APP_VERSION = 'v15';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -910,7 +911,7 @@ function renderHome(){
   const testState = testLocked() ? '내일 다시 도전!' : testReady() ? (S.passed[S.level]?'통과했어요! 또 해볼까요?':'15문제 · 4개 중에 골라요') : `★★★ 단계에서 ${LV().need}개를 맞히면 열려요`;
   $('#app').innerHTML = `
     <div class="bar">
-      <div class="grow"><h1 class="title">국기 탐험대<small>나라 · 국기 · 수도</small></h1></div>
+      <div class="grow"><h1 class="title">국기 탐험대<small>나라 · 국기 · 수도 · ${APP_VERSION}</small></h1></div>
       <div class="stars">${ICON.star}<span>${S.stars}</span></div>
       <button class="icon-btn gear" id="gear" aria-label="보호자 메뉴 (길게 누르기)">${ICON.gear}</button>
     </div>
@@ -1409,6 +1410,7 @@ function openParent(){
     <textarea id="bkText" class="bk-text" rows="3" placeholder="여기에 백업 코드를 붙여 넣고 '되살리기'를 누르세요" aria-label="백업 코드"></textarea>
     <div class="set-row" style="border:0;padding:0"><span>백업 코드로 되살리기</span><button id="rsBk">되살리기</button></div>
     <div class="set-row"><span>기록 모두 지우기</span><button class="danger" id="reset">지우기</button></div>
+    <p class="note">앱 버전 ${APP_VERSION}</p>
     <p class="note">기록은 이 기기에만 저장됩니다. 브라우저 데이터를 지우거나 앱을 지우면 함께 사라지니, 가끔 백업 코드를 복사해서 카톡 '나와의 채팅'에 보내 두세요.</p>
     <button class="big-btn plain" id="close">닫기</button></div>`;
     el.querySelector('#pmDown').onclick=()=>{ S.passMark=Math.max(8,S.passMark-1); save(); draw(); };
@@ -1779,7 +1781,12 @@ renderHome();
 </script>
 
 <script>
-if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+if('serviceWorker' in navigator){
+  const hadCtrl = !!navigator.serviceWorker.controller; let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(hadCtrl && !reloaded){ reloaded=true; location.reload(); } });
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') navigator.serviceWorker.getRegistration().then(r=>r&&r.update()).catch(()=>{}); });
+}
 </script>
 </body>
 </html>
