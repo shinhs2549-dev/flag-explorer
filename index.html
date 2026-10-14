@@ -232,6 +232,66 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .collect.many{grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
 @media (max-width:480px){.collect.many{grid-template-columns:repeat(6,minmax(0,1fr))}}
 .locked-levels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* ===== 우리 마을 ===== */
+.village-btn{border-radius:22px;padding:14px;background:var(--o3);color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 6px 0 #157544;white-space:nowrap}
+.village-btn b{font-family:var(--display);font-weight:400;font-size:30px}
+.village-btn small{font-family:var(--body);font-size:14px;opacity:.92}
+.village-btn:active{transform:translateY(4px);box-shadow:none}
+#app.vmode{max-width:none;padding:0;height:100%;min-height:0;gap:0}
+.vbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--sky);position:relative;z-index:5}
+.vtitle{flex:1;min-width:0;font-size:26px;white-space:nowrap;overflow:hidden}
+@media (max-width:420px){.vtitle{font-size:0}.vdecor-btn{padding:10px 14px}}
+.vdecor-btn{font-size:20px;border-radius:999px;padding:10px 18px;background:var(--o3);color:#fff;box-shadow:0 4px 0 #157544;white-space:nowrap;flex:none}
+.vdecor-btn.on{background:var(--sun);color:var(--ink);box-shadow:0 4px 0 #D69A12}
+.vview{position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none;background:#B8E07A;cursor:pointer}
+.vworld{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.vground{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;max-width:none}
+.vent{position:absolute;transform:translate(-50%,-100%);max-width:none;-webkit-user-drag:none;user-select:none}
+.vb{filter:drop-shadow(0 4px 3px rgba(40,80,20,.22))}
+.vnpc{transform-origin:50% 100%;animation:vsway 2.8s ease-in-out infinite}
+@keyframes vsway{0%,100%{transform:translate(-50%,-100%) rotate(-2deg)}50%{transform:translate(-50%,-100%) rotate(2deg)}}
+.vmail{animation:none;transform:translate(-50%,-100%) scaleX(var(--f,1))}
+.vmail.walking{animation:vhopN .45s ease-in-out infinite}
+@keyframes vhopN{0%,100%{transform:translate(-50%,-100%) scaleX(var(--f,1))}50%{transform:translate(-50%,-107%) scaleX(var(--f,1))}}
+.vplayer{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
+.vplayer::before{content:"";position:absolute;left:50%;bottom:-6px;width:70px;height:16px;margin-left:-35px;border-radius:50%;background:rgba(40,70,20,.22)}
+.vflip{transform-origin:50% 100%}
+.vplayer img{position:relative;height:125px;width:auto;max-width:none;display:block}
+.vplayer.walk img{animation:vhop .36s ease-in-out infinite}
+@keyframes vhop{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+.vtarget{position:absolute;width:44px;height:18px;margin:-9px 0 0 -22px;border:3px solid #fff;border-radius:50%;pointer-events:none;z-index:1}
+.vtarget.ping{animation:vping .7s ease-out}
+@keyframes vping{from{transform:scale(.3);opacity:1}to{transform:scale(1.4);opacity:.3}}
+.vbubble{position:absolute;transform:translate(-50%,-100%);width:max-content;max-width:min(80vw,340px);background:#fff;color:var(--ink);border-radius:18px;padding:10px 14px;font-size:17px;line-height:1.5;box-shadow:0 4px 0 var(--line),0 6px 18px rgba(31,43,77,.18);z-index:20;pointer-events:none;text-align:center;text-wrap:pretty}
+.vbubble::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-9px;border:9px solid transparent;border-bottom:0;border-top-color:#fff}
+.vprop{pointer-events:none}
+.vprop.edit{pointer-events:auto;cursor:grab;touch-action:none}
+.vprop.edit:not(.sel){filter:drop-shadow(0 0 2px #fff)}
+.vprop.sel{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px var(--o2))}
+.vprop.drag{filter:drop-shadow(0 10px 8px rgba(31,43,77,.3));cursor:grabbing}
+.vview.decor .vb,.vview.decor .vnpc{pointer-events:none}
+.vview.decor{cursor:default}
+.vdock{background:var(--card);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 14px rgba(31,43,77,.1);display:flex;flex-direction:column;gap:8px;position:relative;z-index:5}
+.vtray{display:flex;gap:8px;overflow-x:auto;align-items:center;padding:6px 2px}
+.vtray .note{margin:0;white-space:normal}
+.vshop{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--sun);border-radius:14px;padding:8px 10px;font-size:14px;box-shadow:0 3px 0 #D69A12;white-space:nowrap}
+.vshop svg{width:22px;height:22px}
+.vinv{position:relative;flex:none;width:64px;height:64px;border-radius:12px;background:var(--sky);padding:6px}
+.vinv img{width:100%;height:100%;object-fit:contain}
+.vinv i{position:absolute;right:-5px;top:-5px;min-width:22px;height:22px;border-radius:11px;background:var(--o2);color:#fff;font-style:normal;font-size:13px;display:grid;place-items:center;padding:0 5px}
+.vsel-bar{display:flex;align-items:center;gap:12px;justify-content:center;font-family:var(--display);font-size:20px}
+.vsel-bar button{font-family:var(--body);font-size:16px;border-radius:12px;padding:8px 14px;background:#FDE3DF;color:#A3271A}
+.shop-item{position:relative}
+.shop-item .own{position:absolute;top:6px;right:6px;font-style:normal;font-size:11px;background:var(--o3);color:#fff;border-radius:999px;padding:1px 7px}
+.lm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:480px){.lm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lm-item{border-radius:16px;background:var(--sky);padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px;box-shadow:0 3px 0 var(--line)}
+.lm-item>img{width:80%;aspect-ratio:1/1;object-fit:contain}
+.lm-item small{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-soft)}
+.lm-item small img{width:16px;border-radius:2px}
+.lm-item.on{background:#FFF0C2;box-shadow:inset 0 0 0 3px var(--sun)}
+.lm-item:disabled{opacity:.4;box-shadow:none}
+.lm-empty{margin:0;text-align:center;font-size:17px;line-height:1.7;color:var(--ink-soft);padding:10px 0}
 /* 좁은 화면(아이폰 세로)에서 버튼 이름이 글자 단위로 쪼개지지 않게 */
 .shop-btn,.x-btn,.ltab b,.level-badge,.big-btn,.play-btn,.stars{white-space:nowrap}
 .shop-btn{flex:none}
@@ -333,6 +393,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 <script src="assets/char.js"></script>
 <script src="assets/treasure-a.js"></script>
 <script src="assets/treasure-b.js"></script>
+<script src="assets/village.js"></script>
 </head>
 <body>
 <div id="app"></div>
@@ -840,6 +901,7 @@ function mapSVG(optCodes, plain){
 
 // ===== 화면: 처음 =====
 function renderHome(){
+  $('#app').classList.remove('vmode');
   try{ speechSynthesis.cancel(); }catch(e){}
   const st = STYLES.find(s=>s.id===S.style)||STYLES[0];
   const img = AVATAR_IMG[st.id];
@@ -861,6 +923,7 @@ function renderHome(){
           return `<button class="tier ${S.tier===t?'on':''} ${done?'done':''}" data-tier="${t}" ${open?'':'disabled'}>
             <span class="tstars">${ICON.star.repeat(t)}</span><small>${open?(done?'통과':`${t+1}개 중에 고르기`):`앞 단계 ${LV().need}개`}</small></button>`;}).join('')}</div>
         <button class="play-btn" id="playBtn">공부하기<small>${'★'.repeat(S.tier)} · 랜덤 나라 ${S.roundSize}개</small></button>
+        <button class="village-btn" id="villageBtn"><b>우리 마을</b><small>랜드마크 짓고 꾸미기</small></button>
         <div class="collect-head"><span>${'★'.repeat(S.tier)} 맞힌 나라 <b class="nowrap">${learned} / ${total}</b><small class="need-note">${LV().need}개면 통과</small></span><button class="shop-btn" id="bookBtn">보물 카드${unopened()?`<i class="dot">${unopened()}</i>`:''}</button></div>
         <div class="collect ${LV().list.length>30?'many':''}">${LV().list.map(code=>{
           const k=K()[code]||0, c=C[code];
@@ -870,6 +933,7 @@ function renderHome(){
       </section>
     </div>`;
   $('#playBtn').onclick=()=>{ sfx.tap(); startRound(); };
+  $('#villageBtn').onclick=()=>{ sfx.tap(); $('#app').classList.add('vmode'); openVillage(); };
   document.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{ S.level=b.dataset.level; save(); sfx.tap(); say(`${S.level} 레벨, ${LV().name}예요.`); renderHome(); });
   document.querySelectorAll('[data-tier]').forEach(b=>b.onclick=()=>{ S.tier=+b.dataset.tier; save(); sfx.tap(); say(`별 ${['','하나','두 개','세 개'][S.tier]} 단계예요. ${S.tier+1}개 중에 골라요.`); renderHome(); });
   document.querySelectorAll('.collect [data-c]').forEach(b=>b.onclick=()=>{
@@ -999,6 +1063,309 @@ function openCountry(code){
   const close=()=>{ el.remove(); try{speechSynthesis.cancel();}catch(e){} };
   el.querySelector('#close').onclick=close;
   el.addEventListener('click',e=>{ if(e.target===el) close(); });
+}
+
+// ===================== 우리 마을 (1차) =====================
+// 좌표는 마을 땅 그림(1536x1024) 기준. 건물은 (x, 바닥 y, 너비)
+const VW = 1536, VH = 1024;
+const PLACES = [
+  { id:'clothes',    img:'b_clothes',    x:250,  y:340,  w:220, name:'옷가게', npc:'n_tailor' },
+  { id:'theater',    img:'b_theater',    x:880,  y:250,  w:230, name:'극장',   npc:'n_usher' },
+  { id:'food',       img:'b_food',       x:1150, y:280,  w:220, name:'식당',   npc:'n_chef' },
+  { id:'playground', img:'b_playground', x:1380, y:620,  w:230, name:'놀이터', npc:'n_grandpa' },
+  { id:'kinder',     img:'b_kinder',     x:250,  y:680,  w:220, name:'유치원', npc:'n_teacher' },
+  { id:'myhouse',    img:'b_myhouse',    x:530,  y:700,  w:210, name:'우리 집' },
+  { id:'police',     img:'b_police',     x:800,  y:740,  w:220, name:'경찰서', npc:'n_police' },
+  { id:'fire',       img:'b_fire',       x:1150, y:820,  w:230, name:'소방서', npc:'n_fire' },
+  { id:'house1',     img:'b_house1',     x:430,  y:960,  w:200, name:'친구 집' },
+  { id:'house2',     img:'b_house2',     x:700,  y:990,  w:200, name:'친구 집' },
+  { id:'house3',     img:'b_house3',     x:960,  y:960,  w:200, name:'친구 집' },
+];
+const LOTS = [
+  { id:'lot1', x:560,  y:240,  w:180 },
+  { id:'lot2', x:1370, y:330,  w:170 },
+  { id:'lot3', x:100,  y:540,  w:170 },
+  { id:'lot4', x:1030, y:610,  w:180 },
+  { id:'lot5', x:1200, y:1000, w:170 },
+];
+const NPC_INFO = {
+  n_tailor: { name:'옷가게 사장님', lines:['어서 와요! 옷가게는 곧 문을 열어요. 예쁜 옷을 준비하고 있어요.','나라마다 멋진 전통 옷이 있어요. 보물 카드로 얻으면 입어 볼 수 있게 해 줄게요.'] },
+  n_chef:   { name:'요리사',       lines:['나라마다 맛있는 음식이 있어요. 식당은 곧 문을 열어요!','보물 카드로 모은 음식을 여기서 팔 거예요.'] },
+  n_usher:  { name:'극장 안내원',   lines:['극장에서 곧 나라 이야기를 보여 줄게요!','불이 켜진 나라가 많을수록 볼 이야기도 많아져요.'] },
+  n_teacher:{ name:'유치원 선생님', lines:['안녕! 유치원에서 같이 다시 공부할 날을 기다려요.','틀린 나라는 선생님이랑 다시 보면 금방 기억나요.'] },
+  n_police: { name:'경찰관',       lines:['길 잃은 친구가 생기면 도와줘요! 경찰서는 곧 열려요.','지도를 잘 보면 친구 집을 찾을 수 있어요.'] },
+  n_fire:   { name:'소방관',       lines:['소방관이에요! 곧 같이 출동해요.','국기를 잘 알아야 불난 집을 빨리 찾을 수 있어요.'] },
+  n_grandpa:{ name:'놀이터 할아버지', lines:['놀이터는 곧 놀 수 있단다. 국기 짝 맞추기를 준비하고 있어.','오늘도 즐겁게 놀자꾸나.'] },
+  n_mail:   { name:'우체부',       lines:['편지 왔어요! 오늘도 나라 하나 맞혀 볼까요?','별을 모으면 마을을 예쁘게 꾸밀 수 있어요.','빈 땅에는 랜드마크를 지을 수 있어요.'] },
+};
+const PROPS = [
+  { id:'p_tree',      name:'나무',       price:3,  w:110 }, { id:'p_bush',     name:'덤불',     price:3,  w:90 },
+  { id:'p_fence',     name:'울타리',     price:3,  w:90 },  { id:'p_flowerbed',name:'꽃밭',     price:4,  w:110 },
+  { id:'p_sunflower', name:'해바라기',   price:4,  w:90 },  { id:'p_sakura',   name:'벚꽃 나무', price:5,  w:120 },
+  { id:'p_palm',      name:'야자수',     price:5,  w:100 }, { id:'p_bench',    name:'벤치',     price:5,  w:90 },
+  { id:'p_lamp',      name:'가로등',     price:5,  w:60 },  { id:'p_mushroom', name:'버섯 집',   price:6,  w:90 },
+  { id:'p_mailbox',   name:'우체통',     price:6,  w:60 },  { id:'p_balloon',  name:'풍선',     price:8,  w:80 },
+  { id:'p_pond',      name:'연못',       price:10, w:130 }, { id:'p_xmas',     name:'크리스마스트리', price:10, w:100 },
+  { id:'p_fountain',  name:'분수',       price:15, w:130 }, { id:'p_rainbow',  name:'무지개',   price:20, w:150 },
+];
+const PROP = Object.fromEntries(PROPS.map(p=>[p.id,p]));
+const LANDMARK_W = 200, PLAYER_H = 125, NPC_H = 105;
+
+let V = null;   // 마을이 열려 있는 동안의 상태
+function vState(){
+  const v = S.village = S.village || {};
+  v.lots = v.lots || {}; v.props = v.props || []; v.inv = v.inv || {};
+  if(!v.pos) v.pos = { x:640, y:520 };
+  return v;
+}
+function playerImg(){ const st=STYLES.find(s=>s.id===S.style&&AVATAR_IMG[s.id])||STYLES[0]; return AVATAR_IMG[st.id]||AVATAR_IMG.basic; }
+// 내가 지을 수 있는 랜드마크: ★★★ 단계에서 불이 켜졌고 그림이 있는 나라
+function ownedLandmarks(){ return Object.keys(K(3)||{}).filter(c=>K(3)[c]>=1 && IMG[`t_${c}_3`] && TREASURE[c]); }
+
+function openVillage(){
+  const v = vState();
+  try{ speechSynthesis.cancel(); }catch(e){}
+  V = { s:1, tx:0, ty:0, px:v.pos.x, py:v.pos.y, goal:null, arrive:null, decor:false, sel:-1, raf:0, last:0, face:1,
+        mail:{ x:700, y:470, gx:700, gy:470, wait:2 } };
+  const ent = [];
+  PLACES.forEach(p=>{
+    ent.push(`<img class="vent vb" data-hit="place" data-id="${p.id}" src="${IMG[p.img]}" alt="${p.name}" style="left:${p.x}px;top:${p.y}px;width:${p.w}px;z-index:${p.y}">`);
+    if(p.npc) ent.push(`<img class="vent vnpc" data-hit="npc" data-id="${p.npc}" src="${IMG[p.npc]}" alt="${NPC_INFO[p.npc].name}" style="left:${p.x+p.w*0.46}px;top:${p.y+10}px;height:${NPC_H}px;z-index:${p.y+10};animation-delay:${(p.x%7)/7}s">`);
+  });
+  LOTS.forEach(l=>{ ent.push(`<div class="vlot" data-lot="${l.id}"></div>`); });
+  $('#app').innerHTML = `
+    <div class="vbar">
+      <button class="icon-btn" id="vHome" aria-label="처음으로">${ICON.home}</button>
+      <h2 class="vtitle">우리 마을</h2>
+      <div class="stars">${ICON.star}<span id="vStars">${S.stars}</span></div>
+      <button class="vdecor-btn" id="vDecor">꾸미기</button>
+    </div>
+    <div class="vview" id="vview">
+      <div class="vworld" id="vworld" style="width:${VW}px;height:${VH}px">
+        <img class="vground" src="${IMG.ground}" alt="" draggable="false">
+        ${ent.join('')}
+        <div id="vprops"></div>
+        <img class="vent vnpc vmail" id="vmail" data-hit="npc" data-id="n_mail" src="${IMG.n_mail}" alt="우체부" style="height:${NPC_H}px">
+        <div class="vplayer" id="vplayer"><div class="vflip"><img src="${playerImg()}" alt="나" draggable="false"></div></div>
+        <div class="vtarget" id="vtarget" hidden></div>
+      </div>
+      <div class="vbubble" id="vbubble" hidden></div>
+    </div>
+    <div class="vdock" id="vdock" hidden></div>`;
+  drawLots(); drawProps();
+  $('#vHome').onclick=()=>closeVillage();
+  $('#vDecor').onclick=()=>toggleDecor();
+  const view=$('#vview');
+  view.addEventListener('click', onVillageTap);
+  window.addEventListener('resize', vLayout);
+  vLayout(true); placePlayer();
+  V.raf=requestAnimationFrame(vLoop);
+  if(!v.visited){ v.visited=true; save(); setTimeout(()=>vSay('우리 마을에 온 걸 환영해요! 가고 싶은 곳을 눌러 보세요.'),400); }
+}
+function closeVillage(){
+  if(!V) return; cancelAnimationFrame(V.raf); window.removeEventListener('resize', vLayout);
+  vState().pos={x:Math.round(V.px),y:Math.round(V.py)}; save(); V=null; renderHome();
+}
+function drawLots(){
+  const v=vState();
+  LOTS.forEach(l=>{
+    const el=document.querySelector(`[data-lot="${l.id}"]`), code=v.lots[l.id];
+    const src = code ? IMG[`t_${code}_3`] : IMG.b_lot, w = code ? LANDMARK_W : l.w;
+    el.outerHTML = `<img class="vent vb ${code?'vland':''}" data-lot="${l.id}" data-hit="lot" data-id="${l.id}" src="${src}" alt="${code?TREASURE[code][2][1]:'빈 땅'}" style="left:${l.x}px;top:${l.y}px;width:${w}px;z-index:${l.y}">`;
+  });
+}
+function drawProps(){
+  const v=vState();
+  $('#vprops').innerHTML = v.props.map((p,k)=>`<img class="vent vprop ${V&&V.decor?'edit':''} ${V&&V.sel===k?'sel':''}" data-prop="${k}" src="${IMG[p.id]}" alt="${PROP[p.id].name}" draggable="false"
+    style="left:${p.x}px;top:${p.y}px;width:${PROP[p.id].w}px;z-index:${Math.round(p.y)}">`).join('');
+  if(V&&V.decor) bindPropDrag();
+}
+
+// ---- 화면 맞추기와 카메라 ----
+function vLayout(){
+  if(!V) return; const view=$('#vview'); if(!view) return;
+  const r=view.getBoundingClientRect(); V.vw=r.width; V.vh=r.height;
+  V.s = Math.max(r.width/VW, r.height/VH);
+  vCamera(true);
+}
+function vCamera(){
+  const minX=V.vw-VW*V.s, minY=V.vh-VH*V.s;
+  V.tx=Math.min(0,Math.max(minX, V.vw/2 - V.px*V.s));
+  V.ty=Math.min(0,Math.max(minY, V.vh/2 - (V.py-PLAYER_H/2)*V.s));
+  $('#vworld').style.transform=`translate(${V.tx}px,${V.ty}px) scale(${V.s})`;
+}
+function placePlayer(){
+  const el=$('#vplayer'); el.style.left=V.px+'px'; el.style.top=V.py+'px'; el.style.zIndex=Math.round(V.py)+1;
+  el.querySelector('.vflip').style.transform=`scaleX(${V.face})`;
+}
+function toWorld(cx,cy){ const r=$('#vview').getBoundingClientRect(); return { x:(cx-r.left-V.tx)/V.s, y:(cy-r.top-V.ty)/V.s }; }
+
+// ---- 걷기 ----
+function walkTo(x,y,arrive){
+  V.goal={ x:Math.max(30,Math.min(VW-30,x)), y:Math.max(PLAYER_H*0.6,Math.min(VH-8,y)) }; V.arrive=arrive||null;
+  const t=$('#vtarget'); t.hidden=!!arrive; t.style.left=V.goal.x+'px'; t.style.top=V.goal.y+'px';
+  t.classList.remove('ping'); void t.offsetWidth; t.classList.add('ping');
+  $('#vplayer').classList.add('walk');
+}
+function vLoop(ts){
+  if(!V) return;
+  const dt=Math.min(0.05,(ts-(V.last||ts))/1000); V.last=ts;
+  if(V.goal){
+    const dx=V.goal.x-V.px, dy=V.goal.y-V.py, d=Math.hypot(dx,dy), step=280*dt;
+    if(Math.abs(dx)>2) V.face = dx<0 ? -1 : 1;
+    if(d<=step){ V.px=V.goal.x; V.py=V.goal.y; V.goal=null; $('#vplayer').classList.remove('walk'); $('#vtarget').hidden=true;
+      const a=V.arrive; V.arrive=null; if(a) a(); }
+    else { V.px+=dx/d*step; V.py+=dy/d*step; }
+    placePlayer(); vCamera();
+  }
+  // 우체부는 길을 따라 천천히 돌아다님
+  const m=V.mail;
+  if(m.wait>0){ m.wait-=dt; }
+  else{
+    const dx=m.gx-m.x, dy=m.gy-m.y, d=Math.hypot(dx,dy), step=55*dt;
+    if(d<=step){ m.x=m.gx; m.y=m.gy; m.wait=2+Math.random()*4;
+      const pts=[[160,420],[420,520],[640,500],[900,470],[1180,440],[1420,370],[600,820],[950,860],[350,800]];
+      const p=pts[Math.floor(Math.random()*pts.length)]; m.gx=p[0]; m.gy=p[1]; }
+    else { m.x+=dx/d*step; m.y+=dy/d*step; }
+    const el=$('#vmail'); el.style.left=m.x+'px'; el.style.top=m.y+'px'; el.style.zIndex=Math.round(m.y);
+    el.classList.toggle('walking', m.wait<=0); el.style.setProperty('--f', dx<0?-1:1);
+  }
+  if(!$('#vbubble').hidden && V.bubbleAt) posBubble();
+  V.raf=requestAnimationFrame(vLoop);
+}
+
+// ---- 말풍선 ----
+function vSay(text, at){
+  const b=$('#vbubble'); b.textContent=text; b.hidden=false; V.bubbleAt=at||'player';
+  posBubble(); say(text);
+  clearTimeout(V.bt); V.bt=setTimeout(()=>{ if(V) b.hidden=true; }, Math.max(3500, text.length*170));
+}
+function posBubble(){
+  const b=$('#vbubble'); let x,y;
+  if(V.bubbleAt==='player'){ x=V.px; y=V.py-PLAYER_H; }
+  else if(V.bubbleAt==='n_mail'){ x=V.mail.x; y=V.mail.y-NPC_H; }
+  else { const el=document.querySelector(`[data-id="${V.bubbleAt}"]`); if(!el){ x=V.px; y=V.py-PLAYER_H; } else { x=parseFloat(el.style.left); y=parseFloat(el.style.top)-(el.classList.contains('vnpc')?NPC_H:el.offsetHeight); } }
+  const sx=x*V.s+V.tx, sy=y*V.s+V.ty;
+  b.style.left=Math.max(90,Math.min(V.vw-90,sx))+'px'; b.style.top=Math.max(8,sy-8)+'px';
+}
+
+// ---- 누르기 ----
+function onVillageTap(e){
+  if(!V || V.decor) { if(V&&V.decor&&!e.target.closest('.vprop')){ V.sel=-1; drawProps(); renderDock(); } return; }
+  const hit=e.target.closest('[data-hit]');
+  if(!hit){ const w=toWorld(e.clientX,e.clientY); walkTo(w.x,w.y); return; }
+  sfx.tap();
+  const kind=hit.dataset.hit, id=hit.dataset.id;
+  if(kind==='npc'){
+    const info=NPC_INFO[id], line=info.lines[Math.floor(Math.random()*info.lines.length)];
+    const nx = id==='n_mail' ? V.mail.x : parseFloat(hit.style.left), ny = id==='n_mail' ? V.mail.y : parseFloat(hit.style.top);
+    walkTo(nx-60, ny+6, ()=>{ V.face=1; placePlayer(); vSay(`${info.name}: ${line}`, id); });
+    return;
+  }
+  if(kind==='place'){
+    const p=PLACES.find(x=>x.id===id);
+    walkTo(p.x, p.y+18, ()=>{
+      if(p.npc){ const info=NPC_INFO[p.npc]; vSay(`${info.name}: ${info.lines[0]}`, p.npc); }
+      else if(id==='myhouse') vSay('우리 집이에요! 집 안 꾸미기는 곧 할 수 있어요.');
+      else vSay('아직 빈집이에요. 나라 친구가 곧 이사 올 거예요!');
+    });
+    return;
+  }
+  if(kind==='lot'){
+    const l=LOTS.find(x=>x.id===id);
+    walkTo(l.x, l.y+18, ()=>openLotPicker(l));
+  }
+}
+
+// ---- 랜드마크 짓기 ----
+function openLotPicker(l){
+  const v=vState(), cur=v.lots[l.id], owned=ownedLandmarks();
+  const used=new Set(Object.values(v.lots).filter(Boolean));
+  const el=document.createElement('div'); el.className='sheet';
+  const list=owned.map(c=>{ const busy=used.has(c)&&c!==cur;
+    return `<button class="lm-item ${c===cur?'on':''}" data-c="${c}" ${busy?'disabled':''}>
+      <img src="${IMG[`t_${c}_3`]}" alt=""><span>${esc(TREASURE[c][2][1])}</span><small><img src="${C[c].flag}" alt="">${C[c].name}${busy?' · 지었어요':''}</small></button>`; }).join('');
+  el.innerHTML=`<div class="panel shop">
+    <div class="shop-head sticky"><h3>${cur?esc(TREASURE[cur][2][1]):'빈 땅'}</h3><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
+    ${owned.length?`<p class="note">${cur?'다른 랜드마크로 바꿀 수 있어요.':'어떤 랜드마크를 지을까요?'}</p><div class="lm-grid">${list}</div>`
+      :`<p class="lm-empty">아직 지을 수 있는 랜드마크가 없어요.<br>★★★ 단계에서 나라 이름, 위치, 수도를 다 맞히면 랜드마크 카드를 받아요.</p>`}
+    ${cur?`<button class="big-btn plain" id="lmClear">빈 땅으로 되돌리기</button>`:''}
+    <button class="big-btn plain" id="close">닫기</button></div>`;
+  document.body.appendChild(el); addX(el);
+  say(cur ? treasureLine(cur,3) : (owned.length?'어떤 랜드마크를 지을까요?':'아직 지을 수 있는 랜드마크가 없어요.'));
+  const close=()=>el.remove();
+  el.querySelector('#close').onclick=close;
+  el.addEventListener('click',e=>{ if(e.target===el) close(); });
+  el.querySelectorAll('.lm-item').forEach(b=>b.onclick=()=>{
+    const c=b.dataset.c; v.lots[l.id]=c; save(); close(); drawLots(); sfx.win(); burst();
+    const nm=TREASURE[c][2][1]; vSay(`${C[c].name}의 ${nm}${hasBatchim(nm)?'을':'를'} 지었어요!`, l.id);
+  });
+  const clr=el.querySelector('#lmClear'); if(clr) clr.onclick=()=>{ v.lots[l.id]=null; save(); close(); drawLots(); sfx.tap(); };
+}
+
+// ---- 꾸미기 ----
+function toggleDecor(){
+  V.decor=!V.decor; V.sel=-1; V.goal=null; $('#vplayer').classList.remove('walk');
+  $('#vDecor').classList.toggle('on',V.decor); $('#vDecor').textContent=V.decor?'다 했어요':'꾸미기';
+  $('#vdock').hidden=!V.decor; $('#vview').classList.toggle('decor',V.decor);
+  drawProps(); renderDock();
+  if(V.decor) vSay('꾸미기를 시작해요! 아래에서 고르면 마을에 놓여요. 끌어서 옮겨 보세요.');
+}
+function renderDock(){
+  const v=vState(), sel=v.props[V.sel];
+  const owned=PROPS.filter(p=>(v.inv[p.id]||0)>0);
+  $('#vdock').innerHTML = `
+    ${sel?`<div class="vsel-bar"><span>${PROP[sel.id].name}</span><button id="vPut">넣어 두기</button></div>`:''}
+    <div class="vtray">
+      <button class="vshop" id="vShop">${ICON.star}<span>소품 가게</span></button>
+      ${owned.length?owned.map(p=>`<button class="vinv" data-p="${p.id}"><img src="${IMG[p.id]}" alt="${p.name}"><i>${v.inv[p.id]}</i></button>`).join('')
+        :`<p class="note">가게에서 소품을 사면 여기에 생겨요.</p>`}
+    </div>`;
+  $('#vShop').onclick=()=>{ sfx.tap(); openPropShop(); };
+  document.querySelectorAll('.vinv').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.p; v.inv[id]--;
+    const c=toWorld(V.vw/2+$('#vview').getBoundingClientRect().left, V.vh*0.6+$('#vview').getBoundingClientRect().top);
+    // 화면 가운데 둘레에 빙 돌아가며 놓아서 겹치지 않게
+    const n=v.props.length, ang=n*2.4, rad=40+((n*37)%90);
+    v.props.push({id, x:Math.round(Math.max(40,Math.min(VW-40,c.x+Math.cos(ang)*rad*1.4))), y:Math.round(Math.max(80,Math.min(VH-10,c.y+Math.sin(ang)*rad)))}); V.sel=v.props.length-1;
+    save(); sfx.tap(); drawProps(); renderDock();
+  });
+  const put=$('#vPut'); if(put) put.onclick=()=>{ const p=v.props.splice(V.sel,1)[0]; v.inv[p.id]=(v.inv[p.id]||0)+1; V.sel=-1; save(); drawProps(); renderDock(); };
+}
+function bindPropDrag(){
+  document.querySelectorAll('.vprop.edit').forEach(el=>{
+    el.addEventListener('pointerdown',e=>{
+      e.preventDefault(); e.stopPropagation();
+      const k=+el.dataset.prop, p=vState().props[k], sx=e.clientX, sy=e.clientY, ox=p.x, oy=p.y; let moved=false;
+      el.setPointerCapture(e.pointerId); el.classList.add('drag');
+      const move=ev=>{ const dx=(ev.clientX-sx)/V.s, dy=(ev.clientY-sy)/V.s; if(Math.abs(dx)+Math.abs(dy)>4) moved=true;
+        p.x=Math.max(20,Math.min(VW-20,ox+dx)); p.y=Math.max(40,Math.min(VH-4,oy+dy)); el.style.left=p.x+'px'; el.style.top=p.y+'px'; el.style.zIndex=Math.round(p.y); };
+      const up=()=>{ el.removeEventListener('pointermove',move); el.removeEventListener('pointerup',up); el.removeEventListener('pointercancel',up);
+        p.x=Math.round(p.x); p.y=Math.round(p.y); V.sel = moved ? k : (V.sel===k?-1:k); save(); drawProps(); renderDock(); };
+      el.addEventListener('pointermove',move); el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+    });
+    el.addEventListener('click',e=>e.stopPropagation());
+  });
+}
+function openPropShop(){
+  const v=vState(), el=document.createElement('div'); el.className='sheet';
+  const draw=()=>{ el.innerHTML=`<div class="panel shop">
+    <div class="shop-head sticky"><h3>소품 가게</h3><div class="stars">${ICON.star}<span>${S.stars}</span></div><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
+    <p class="note">같은 소품을 여러 개 살 수 있어요.</p>
+    <div class="shop-grid">${PROPS.map(p=>`<button class="shop-item" data-buy="${p.id}">
+      <img src="${IMG[p.id]}" alt=""><span>${p.name}</span>
+      <small class="${S.stars<p.price?'short':''}">${ICON.star} ${p.price}</small>${v.inv[p.id]?`<em class="own">${v.inv[p.id]}개 있어요</em>`:''}</button>`).join('')}</div>
+    <button class="big-btn plain" id="close">닫기</button></div>`;
+    el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
+      const p=PROP[b.dataset.buy];
+      if(S.stars<p.price){ sfx.soft(); say(`${p.name}${hasBatchim(p.name)?'은':'는'} 별 ${p.price}개가 필요해요. 별 ${p.price-S.stars}개만 더 모아요!`); return; }
+      S.stars-=p.price; v.inv[p.id]=(v.inv[p.id]||0)+1; save(); sfx.win(); say(`${p.name}${hasBatchim(p.name)?'을':'를'} 샀어요!`);
+      const st=$('#vStars'); if(st) st.textContent=S.stars; draw();
+    });
+    el.querySelector('#close').onclick=()=>{ el.remove(); renderDock(); };
+  };
+  draw(); document.body.appendChild(el); addX(el);
+  el.addEventListener('click',e=>{ if(e.target===el){ el.remove(); renderDock(); } });
 }
 
 // ===== 보호자 메뉴 (톱니바퀴 길게 누르기) =====
