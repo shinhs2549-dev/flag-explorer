@@ -1032,7 +1032,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v25';
+const APP_VERSION = 'v26';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -2391,6 +2391,7 @@ function openPetHome(){
 // ===================== 앱 안내문 =====================
 // 업데이트할 때마다 CHANGELOG 맨 위에 새 버전을 추가하고, 바뀐 기능은 GUIDE 본문도 고칩니다.
 const CHANGELOG = [
+  { v:'v26', items:['B레벨 ★★★ 유명한 곳 보물 그림 60개가 모두 생겼어요. 이제 보물 카드 270장이 전부 그림으로 나와요.','B레벨 랜드마크(마추픽추, 앙코르와트, 모아이 석상 등)도 마을 빈 땅에 지을 수 있어요.'] },
   { v:'v25', items:['스티커가 32개 더 생겼어요. 스티커 가게가 머리·얼굴 / 몸·손으로 나뉘었어요.','마을 우리 집에서 애완동물을 데려올 수 있어요. 첫 친구는 공짜! 이름도 지어 주고 같이 다녀요.','소품 가게에 장난감 16가지가 생겼어요. 마을에 놓고 누르면 소리가 나요.'] },
   { v:'v24', items:['앱 안에 이 안내문을 넣었어요.','효준이 대사를 다듬었어요.'] },
   { v:'v23', items:['유치원 친구 효준이 그림이 생겼어요. 마을 유치원 앞에도 서 있어요.'] },
