@@ -472,6 +472,19 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .gsec summary::before{content:"▸";font-size:14px;color:var(--ink-soft);transition:transform .2s}
 .gsec[open] summary::before{transform:rotate(90deg)}
 .gsec ul{margin-top:8px}.gsec .gver{margin-top:8px}
+.stabs button{background:var(--sky)}
+.vprop{pointer-events:none}
+.vprop.vtoy:not(.edit){pointer-events:auto;cursor:pointer}
+.vprop.boing,.vpet.boing img{animation:boing .5s ease}
+@keyframes boing{30%{transform:translate(-50%,-100%) scale(1.15,.85)}60%{transform:translate(-50%,-112%) scale(.95,1.08)}}
+.vpet.boing img{animation:boingI .5s ease}
+@keyframes boingI{30%{transform:scale(1.15,.85)}60%{transform:translateY(-10px) scale(.95,1.08)}}
+.vpet{transform:translate(-50%,-100%) scaleX(var(--f,1));transform-origin:50% 100%;cursor:pointer}
+.vpet img{display:block;width:auto;max-width:none;filter:drop-shadow(0 3px 2px rgba(40,70,20,.25))}
+.vpet.walking{animation:vhopN .32s ease-in-out infinite}
+.pet-h{margin:4px 0 0;font-family:var(--display);font-weight:400;font-size:20px}
+.pet-h small{font-family:var(--body);font-size:12px;color:var(--ink-soft);margin-left:6px}
+.pet-mine.on{background:#FFF0C2;box-shadow:inset 0 0 0 3px var(--sun)}
 .vprop{pointer-events:none}
 .vprop.edit{pointer-events:auto;cursor:grab;touch-action:none}
 .vprop.edit:not(.sel){filter:drop-shadow(0 0 2px #fff)}
@@ -635,7 +648,44 @@ const ITEMS = [
   { id:'angel_wings',    name:'천사 날개',     price:25, x:50, y:48, w:96, back:true },
   { id:'tiara',          name:'티아라',        price:30, x:50, y:13, w:34 },
 ];
+// 새 스티커 (S-2 머리·얼굴, S-3 몸·손). 그림(item_아이디)이 들어온 것만 가게에 보여요.
+ITEMS.forEach(i=>i.cat = ['heart_glasses','pink_bow','yellow_bow','cat_ears','beret','flower_crown','straw_hat','tiara'].includes(i.id)?'head':'body');
+ITEMS.push(
+  { id:'pin_heart',     name:'하트 머리핀',   price:4,  x:69, y:20, w:12, cat:'head' },
+  { id:'pin_star',      name:'별 머리핀',     price:4,  x:31, y:20, w:12, cat:'head' },
+  { id:'tie_strawberry',name:'딸기 머리끈',   price:5,  x:70, y:24, w:13, cat:'head' },
+  { id:'tie_cherry',    name:'체리 머리끈',   price:5,  x:30, y:24, w:13, cat:'head' },
+  { id:'band_rainbow',  name:'무지개 머리띠', price:8,  x:50, y:11, w:46, cat:'head' },
+  { id:'ears_bunny',    name:'토끼 귀 머리띠', price:10, x:50, y:5,  w:42, cat:'head' },
+  { id:'ears_bear',     name:'곰돌이 귀 머리띠', price:10, x:50, y:10, w:46, cat:'head' },
+  { id:'horn_unicorn',  name:'유니콘 뿔 머리띠', price:15, x:50, y:7,  w:22, cat:'head' },
+  { id:'bow_purple',    name:'보라 왕리본',   price:6,  x:50, y:9,  w:30, cat:'head' },
+  { id:'pin_daisy',     name:'데이지 머리핀', price:4,  x:70, y:18, w:14, cat:'head' },
+  { id:'glasses_round', name:'동그란 안경',   price:8,  x:50, y:35, w:34, cat:'head' },
+  { id:'glasses_star',  name:'별 선글라스',   price:10, x:50, y:35, w:36, cat:'head' },
+  { id:'cheek_heart',   name:'볼 하트',       price:3,  x:36, y:42, w:8,  cat:'head' },
+  { id:'cheek_glitter', name:'반짝이 볼터치', price:3,  x:64, y:42, w:10, cat:'head' },
+  { id:'crown_pink',    name:'분홍 왕관',     price:20, x:50, y:9,  w:26, cat:'head' },
+  { id:'party_hat',     name:'생일 고깔모자', price:8,  x:50, y:4,  w:24, cat:'head' },
+  { id:'wings_butterfly',name:'나비 날개',    price:25, x:50, y:50, w:90, back:true, cat:'body' },
+  { id:'cape_red',      name:'빨간 망토',     price:15, x:50, y:60, w:70, back:true, cat:'body' },
+  { id:'bag_strawberry',name:'딸기 백팩',     price:12, x:22, y:70, w:24, cat:'body' },
+  { id:'bag_heart',     name:'하트 크로스백', price:12, x:77, y:70, w:20, cat:'body' },
+  { id:'necklace_pearl',name:'진주 목걸이',   price:10, x:50, y:52, w:20, cat:'body' },
+  { id:'necklace_star', name:'별 목걸이',     price:10, x:50, y:53, w:16, cat:'body' },
+  { id:'bracelet_ribbon',name:'리본 팔찌',    price:6,  x:79, y:72, w:12, cat:'body' },
+  { id:'watch',         name:'손목시계',      price:8,  x:21, y:72, w:12, cat:'body' },
+  { id:'lollipop',      name:'막대사탕',      price:5,  x:81, y:66, w:18, cat:'body' },
+  { id:'icecream',      name:'아이스크림',    price:5,  x:19, y:66, w:16, cat:'body' },
+  { id:'umbrella',      name:'분홍 우산',     price:12, x:81, y:48, w:40, cat:'body' },
+  { id:'mic',           name:'마이크',        price:10, x:21, y:64, w:14, cat:'body' },
+  { id:'bouquet',       name:'꽃다발',        price:10, x:50, y:70, w:26, cat:'body' },
+  { id:'balloon_heart', name:'하트 풍선',     price:6,  x:85, y:38, w:22, cat:'body' },
+  { id:'bubble_wand',   name:'비눗방울',      price:6,  x:19, y:60, w:20, cat:'body' },
+  { id:'flag_white',    name:'작은 깃발',     price:6,  x:81, y:58, w:22, cat:'body' },
+);
 const ITEM = Object.fromEntries(ITEMS.map(i=>[i.id,i]));
+const hasItemImg = i => !!IMG['item_'+i.id];
 // 불이 켜진 국기를 누르면 나오는 나라 소개
 const ABOUT = {
   kr:'우리가 사는 나라예요. 세 면이 바다로 둘러싸인 반도에 있고, 봄 여름 가을 겨울이 뚜렷해요. 한글이라는 우리 글자가 있어요.',
@@ -982,7 +1032,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v24';
+const APP_VERSION = 'v25';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -1277,13 +1327,16 @@ function bindWardrobe(){
 }
 function openShop(){
   const el=document.createElement('div'); el.className='sheet';
+  let tab='head';
   const draw=()=>{ el.innerHTML=`<div class="panel shop">
     <div class="shop-head sticky"><h3>스티커 가게</h3><div class="stars">${ICON.star}<span>${S.stars}</span></div><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
-    <div class="shop-grid">${ITEMS.map(i=>{const have=S.owned[i.id], can=S.stars>=i.price;
+    <div class="ctabs stabs"><button class="${tab==='head'?'on':''}" data-tab="head">머리·얼굴</button><button class="${tab==='body'?'on':''}" data-tab="body">몸·손</button></div>
+    <div class="shop-grid">${ITEMS.filter(i=>i.cat===tab&&hasItemImg(i)).map(i=>{const have=S.owned[i.id], can=S.stars>=i.price;
       return `<button class="shop-item ${have?'have':''}" data-buy="${i.id}" ${have?'disabled':''}>
         <img src="${IMG['item_'+i.id]}" alt=""><span>${i.name}</span>
         <small class="${!have&&!can?'short':''}">${have?'가지고 있어요':`${ICON.star} ${i.price}`}</small></button>`}).join('')}</div>
     <button class="big-btn plain" id="close">닫기</button></div>`;
+    el.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; sfx.tap(); draw(); });
     el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
       const it=ITEM[b.dataset.buy];
       if(S.stars<it.price){ sfx.soft(); say(`${it.name}${hasBatchim(it.name)?'은':'는'} 별 ${it.price}개가 필요해요. 별 ${it.price-S.stars}개만 더 모아요!`); return; }
@@ -1351,7 +1404,7 @@ const NPC_INFO = {
   n_fire:   { name:'소방관',       lines:['소방관이에요! 곧 같이 출동해요.','국기를 잘 알아야 불난 집을 빨리 찾을 수 있어요.'] },
   n_grandpa:{ name:'놀이터 할아버지', lines:['놀이터에 오면 할아버지랑 같은 그림 찾기 하자꾸나!','오늘도 즐겁게 놀자꾸나.'] },
   n_hyo:    { name:'효준', kid:true, lines:['@! 유치원에서 같이 공부하자!','나는 국기 색칠하기가 제일 좋아. 너는 뭐가 제일 좋아?','틀린 나라는 유치원에서 다시 보면 금방 외워져!','우리 놀이터에서 같이 놀자!'] },
-  n_mail:   { name:'우체부',       lines:['편지 왔어요! 오늘도 나라 하나 맞혀 볼까요?','별을 모으면 마을을 예쁘게 꾸밀 수 있어요.','빈 땅에는 랜드마크를 지을 수 있어요.'] },
+  n_mail:   { name:'우체부',       lines:['편지 왔어요! 오늘도 나라 하나 맞혀 볼까요?','별을 모으면 마을을 예쁘게 꾸밀 수 있어요.','빈 땅에는 랜드마크를 지을 수 있어요.','우리 집에 가면 애완동물을 데려올 수 있어요.'] },
 };
 const PROPS = [
   { id:'p_tree',      name:'나무',       price:3,  w:110 }, { id:'p_bush',     name:'덤불',     price:3,  w:90 },
@@ -1363,6 +1416,25 @@ const PROPS = [
   { id:'p_pond',      name:'연못',       price:10, w:130 }, { id:'p_xmas',     name:'크리스마스트리', price:10, w:100 },
   { id:'p_fountain',  name:'분수',       price:15, w:130 }, { id:'p_rainbow',  name:'무지개',   price:20, w:150 },
 ];
+PROPS.forEach(p=>p.cat='deco');
+PROPS.push(
+  { id:'toy_bear', name:'곰 인형', price:6, w:70, cat:'toy', sound:'곰돌이가 꼭 안아 달래요!' },
+  { id:'toy_bunny', name:'토끼 인형', price:6, w:70, cat:'toy', sound:'깡총깡총!' },
+  { id:'toy_unicorn', name:'유니콘 인형', price:10, w:72, cat:'toy', sound:'반짝반짝 유니콘!' },
+  { id:'toy_dino', name:'공룡 인형', price:8, w:72, cat:'toy', sound:'크앙! 나는 착한 공룡이야.' },
+  { id:'toy_dollhouse', name:'인형의 집', price:15, w:120, cat:'toy', sound:'똑똑! 인형의 집이에요.' },
+  { id:'toy_kitchen', name:'소꿉놀이 부엌', price:12, w:100, cat:'toy', sound:'보글보글 맛있는 요리 완성!' },
+  { id:'toy_blocks', name:'블록 쌓기', price:5, w:80, cat:'toy', sound:'차곡차곡 높이 쌓자!' },
+  { id:'toy_train', name:'장난감 기차', price:10, w:100, cat:'toy', sound:'칙칙폭폭!' },
+  { id:'toy_horse', name:'목마', price:10, w:90, cat:'toy', sound:'히히힝! 흔들흔들!' },
+  { id:'toy_ball', name:'공', price:3, w:50, cat:'toy', sound:'통통통!' },
+  { id:'toy_rope', name:'줄넘기', price:4, w:60, cat:'toy', sound:'하나, 둘, 셋, 폴짝!' },
+  { id:'toy_scooter', name:'킥보드', price:8, w:70, cat:'toy', sound:'씽씽!' },
+  { id:'toy_tricycle', name:'세발자전거', price:10, w:80, cat:'toy', sound:'따르릉 따르릉!' },
+  { id:'toy_piano', name:'장난감 피아노', price:10, w:90, cat:'toy', sound:'도레미파솔!' },
+  { id:'toy_books', name:'그림책', price:5, w:60, cat:'toy', sound:'옛날 옛날에...' },
+  { id:'toy_crayons', name:'크레파스', price:4, w:60, cat:'toy', sound:'쓱쓱 그림 그리자!' },
+);
 const PROP = Object.fromEntries(PROPS.map(p=>[p.id,p]));
 const LANDMARK_W = 200, PLAYER_H = 125, NPC_H = 105;
 
@@ -1410,6 +1482,7 @@ function openVillage(){
         <div id="vprops"></div>
         <img class="vent vnpc vmail" id="vmail" data-hit="npc" data-id="n_mail" src="${IMG.n_mail}" alt="우체부" style="height:${NPC_H}px">
         <div id="vfriends"></div>
+        <div class="vent vpet" id="vpet" data-hit="pet" hidden></div>
         <div class="vplayer" id="vplayer"><div class="vflip"><div class="vbody" id="vbody">${playerBodyHTML()}</div></div></div>
         <div class="vtarget" id="vtarget" hidden></div>
       </div>
@@ -1417,7 +1490,7 @@ function openVillage(){
       <div class="vzoom"><button id="vZin" aria-label="크게 보기">+</button><button id="vZout" aria-label="작게 보기">−</button><button id="vMe" aria-label="나 찾기"><img src="${playerImg()}" alt=""></button></div>
     </div>
     <div class="vdock" id="vdock" hidden></div>`;
-  drawLots(); drawProps(); vFriendsInit();
+  drawLots(); drawProps(); vFriendsInit(); vPetInit();
   $('#vHome').onclick=()=>closeVillage();
   $('#vDecor').onclick=()=>toggleDecor();
   const view=$('#vview');
@@ -1445,7 +1518,7 @@ function drawLots(){
 }
 function drawProps(){
   const v=vState();
-  $('#vprops').innerHTML = v.props.map((p,k)=>`<img class="vent vprop ${V&&V.decor?'edit':''} ${V&&V.sel===k?'sel':''}" data-prop="${k}" src="${IMG[p.id]}" alt="${PROP[p.id].name}" draggable="false"
+  $('#vprops').innerHTML = v.props.map((p,k)=>`<img class="vent vprop ${PROP[p.id].cat==='toy'?'vtoy':''} ${V&&V.decor?'edit':''} ${V&&V.sel===k?'sel':''}" data-prop="${k}" ${PROP[p.id].cat==='toy'?`data-hit="toy" data-id="${k}"`:''} src="${IMG[p.id]}" alt="${PROP[p.id].name}" draggable="false"
     style="left:${p.x}px;top:${p.y}px;width:${PROP[p.id].w}px;z-index:${Math.round(p.y)}">`).join('');
   if(V&&V.decor) bindPropDrag();
 }
@@ -1535,7 +1608,7 @@ function vLoop(ts){
     const el=$('#vmail'); el.style.left=m.x+'px'; el.style.top=m.y+'px'; el.style.zIndex=Math.round(m.y);
     el.classList.toggle('walking', m.wait<=0); el.style.setProperty('--f', dx<0?-1:1);
   }
-  vFriendsStep(dt); if(V.follow) vCamera(dt);
+  vFriendsStep(dt); vPetStep(dt); if(V.follow) vCamera(dt);
   if(!$('#vbubble').hidden && V.bubbleAt) posBubble();
   V.raf=requestAnimationFrame(vLoop);
 }
@@ -1550,6 +1623,7 @@ function posBubble(){
   const b=$('#vbubble'); let x,y;
   if(V.bubbleAt==='player'){ x=V.px; y=V.py-PLAYER_H; }
   else if(V.bubbleAt==='n_mail'){ x=V.mail.x; y=V.mail.y-NPC_H; }
+  else if(V.bubbleAt==='pet' && V.pet){ x=V.pet.x; y=V.pet.y-PET_H; }
   else if(V.fr && V.fr[V.bubbleAt]){ const f=V.fr[V.bubbleAt]; x=f.x; y=f.y-FRIEND_H; }
   else { const el=document.querySelector(`[data-id="${V.bubbleAt}"]`); if(!el){ x=V.px; y=V.py-PLAYER_H; } else { x=parseFloat(el.style.left); y=parseFloat(el.style.top)-(el.classList.contains('vnpc')?NPC_H:el.offsetHeight); } }
   const sx=x*V.s+V.tx, sy=y*V.s+V.ty;
@@ -1566,6 +1640,9 @@ function onVillageTap(e){
   if(!hit){ const w=toWorld(e.clientX,e.clientY); walkTo(w.x,w.y); return; }
   sfx.tap();
   const kind=hit.dataset.hit, id=hit.dataset.id;
+  if(kind==='toy'){ const p=vState().props[+id], it=PROP[p.id];
+    walkTo(p.x-60, p.y+6, ()=>{ V.face=1; placePlayer(); hit.classList.remove('boing'); void hit.offsetWidth; hit.classList.add('boing'); vSay(`${it.name}: ${it.sound}`, 'player'); }); return; }
+  if(kind==='pet'){ petTalk(); return; }
   if(kind==='friend'){ const f=V.fr[id]; walkTo(f.x-70, f.y+4, ()=>{ V.face=1; placePlayer(); friendTalk(id); }); return; }
   if(kind==='npc'){
     const info=NPC_INFO[id], line=info.lines[Math.floor(Math.random()*info.lines.length)].replace(/@/g, nameYa());
@@ -1582,7 +1659,7 @@ function onVillageTap(e){
       else if(id==='playground') openPlayground();
       else if(id==='kinder') openKinder();
       else if(p.npc){ const info=NPC_INFO[p.npc]; vSay(`${info.name}: ${info.lines[0]}`, p.npc); }
-      else if(id==='myhouse') vSay('우리 집이에요! 집 안 꾸미기는 곧 할 수 있어요.');
+      else if(id==='myhouse') openPetHome();
     });
     return;
   }
@@ -1663,14 +1740,16 @@ function bindPropDrag(){
   });
 }
 function openPropShop(){
-  const v=vState(), el=document.createElement('div'); el.className='sheet';
+  const v=vState(), el=document.createElement('div'); el.className='sheet'; let tab='deco';
   const draw=()=>{ el.innerHTML=`<div class="panel shop">
     <div class="shop-head sticky"><h3>소품 가게</h3><div class="stars">${ICON.star}<span>${S.stars}</span></div><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
-    <p class="note">같은 소품을 여러 개 살 수 있어요.</p>
-    <div class="shop-grid">${PROPS.map(p=>`<button class="shop-item" data-buy="${p.id}">
+    <div class="ctabs stabs"><button class="${tab==='deco'?'on':''}" data-tab="deco">마을 꾸미기</button><button class="${tab==='toy'?'on':''}" data-tab="toy">장난감</button></div>
+    <p class="note">같은 것을 여러 개 살 수 있어요.${tab==='toy'?' 마을에 놓은 장난감을 누르면 소리가 나요.':''}</p>
+    <div class="shop-grid">${PROPS.filter(p=>p.cat===tab&&IMG[p.id]).map(p=>`<button class="shop-item" data-buy="${p.id}">
       <img src="${IMG[p.id]}" alt=""><span>${p.name}</span>
       <small class="${S.stars<p.price?'short':''}">${ICON.star} ${p.price}</small>${v.inv[p.id]?`<em class="own">${v.inv[p.id]}개 있어요</em>`:''}</button>`).join('')}</div>
     <button class="big-btn plain" id="close">닫기</button></div>`;
+    el.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ tab=b.dataset.tab; sfx.tap(); draw(); });
     el.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{
       const p=PROP[b.dataset.buy];
       if(S.stars<p.price){ sfx.soft(); say(`${p.name}${hasBatchim(p.name)?'은':'는'} 별 ${p.price}개가 필요해요. 별 ${p.price-S.stars}개만 더 모아요!`); return; }
@@ -2229,9 +2308,90 @@ function kinderStamps(r, back){
   else r.say(`칭찬 도장이 ${n}개 있어요. ${10-(n-page)}개 더 모으면 선물을 줄게요.`);
 }
 
+
+// ===================== 애완동물 =====================
+const PETS = [
+  { id:'pet_dog_white', name:'하얀 강아지', price:20, cry:'멍멍!' },
+  { id:'pet_poodle',    name:'푸들',       price:20, cry:'왈왈!' },
+  { id:'pet_cat_yellow',name:'노란 고양이', price:20, cry:'야옹~' },
+  { id:'pet_cat_gray',  name:'줄무늬 고양이', price:20, cry:'냐옹!' },
+  { id:'pet_bunny',     name:'토끼',       price:20, cry:'깡총깡총!' },
+  { id:'pet_hamster',   name:'햄스터',     price:15, cry:'찍찍! 해바라기씨 맛있어.' },
+  { id:'pet_chick',     name:'병아리',     price:15, cry:'삐약삐약!' },
+  { id:'pet_duck',      name:'아기 오리',   price:15, cry:'꽥꽥!' },
+  { id:'pet_turtle',    name:'거북이',     price:15, cry:'엉금엉금, 천천히 가자.' },
+  { id:'pet_parrot',    name:'앵무새',     price:25, cry:'@! @! 안녕!' },
+  { id:'pet_panda',     name:'아기 판다',   price:30, cry:'냠냠, 대나무 맛있다!' },
+  { id:'pet_penguin',   name:'아기 펭귄',   price:30, cry:'뒤뚱뒤뚱!' },
+  { id:'pet_fox',       name:'아기 여우',   price:30, cry:'캥캥!' },
+  { id:'pet_hedgehog',  name:'고슴도치',   price:25, cry:'꼼지락꼼지락.' },
+  { id:'pet_sheep',     name:'아기 양',     price:25, cry:'메에에~' },
+  { id:'pet_unicorn',   name:'아기 유니콘', price:40, cry:'반짝반짝! 소원을 들어줄게.' },
+];
+const PET = Object.fromEntries(PETS.map(p=>[p.id,p]));
+const PET_H = 62;
+function petState(){ S.pets=S.pets||{}; return S.pets; }
+function petName(id){ return (petState()[id]&&petState()[id].name) || PET[id].name; }
+function vPetInit(){
+  const id=S.petOn, el=$('#vpet');
+  if(!id || !petState()[id] || !IMG[id]){ el.hidden=true; V.pet=null; return; }
+  V.pet={ x:V.px-60, y:V.py+4 }; el.hidden=false;
+  el.innerHTML=`<img src="${IMG[id]}" alt="${esc(petName(id))}" draggable="false" style="height:${PET_H}px">`;
+  vPetStep(0);
+}
+function vPetStep(dt){
+  if(!V.pet) return; const el=$('#vpet');
+  const tx=V.px - V.face*62, ty=V.py+4, dx=tx-V.pet.x, dy=ty-V.pet.y, d=Math.hypot(dx,dy);
+  const moving = d>8;
+  if(moving){ const step=Math.min(d, (d>140?420:260)*(dt||0.016)); V.pet.x+=dx/d*step; V.pet.y+=dy/d*step; }
+  el.classList.toggle('walking', moving); el.style.setProperty('--f', dx<0?-1:1);
+  el.style.left=V.pet.x+'px'; el.style.top=V.pet.y+'px'; el.style.zIndex=Math.round(V.pet.y);
+}
+function petTalk(){
+  const id=S.petOn; if(!id) return; const nm=petName(id);
+  const line=PET[id].cry.replace(/@/g, NAME());
+  const el=$('#vpet'); el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing');
+  const b=$('#vbubble'); b.textContent=`${nm}: ${line}`; b.hidden=false; V.bubbleAt='pet'; posBubble();
+  say(`${nm}. ${line}`, {pitch:1.6}); clearTimeout(V.bt); V.bt=setTimeout(()=>{ if(V) b.hidden=true; },3200);
+  const h=document.createElement('div'); h.className='vent vheart'; h.textContent='♥'; h.style.left=V.pet.x+'px'; h.style.top=(V.pet.y-PET_H)+'px'; h.style.zIndex=2000;
+  $('#vworld').appendChild(h); setTimeout(()=>h.remove(),1400);
+}
+function openPetHome(){
+  const own=petState(), el=document.createElement('div'); el.className='sheet';
+  const draw=()=>{
+    const free=!Object.keys(own).length;
+    const mine=PETS.filter(p=>own[p.id]), others=PETS.filter(p=>!own[p.id]&&IMG[p.id]);
+    el.innerHTML=`<div class="panel shop">
+      <div class="shop-head sticky"><h3>우리 집</h3><div class="stars">${ICON.star}<span>${S.stars}</span></div><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
+      ${mine.length?`<h4 class="pet-h">내 애완동물 <small>눌러서 같이 다니기</small></h4>
+      <div class="shop-grid">${mine.map(p=>`<button class="shop-item pet-mine ${S.petOn===p.id?'on':''}" data-pick="${p.id}">
+        <img src="${IMG[p.id]}" alt=""><span>${esc(petName(p.id))}</span><small>${S.petOn===p.id?'같이 다니는 중':'같이 다니기'}</small></button>`).join('')}</div>
+      ${S.petOn?`<div class="set-row"><span>${esc(PET[S.petOn].name)} 이름</span><input id="petName" class="name-in" maxlength="6" value="${esc(petName(S.petOn))}" aria-label="애완동물 이름"></div>`:''}`:''}
+      <h4 class="pet-h">애완동물 데려오기 ${free?'<small>첫 친구는 공짜예요!</small>':''}</h4>
+      <div class="shop-grid">${others.map(p=>`<button class="shop-item" data-adopt="${p.id}"><img src="${IMG[p.id]}" alt=""><span>${p.name}</span>
+        <small class="${!free&&S.stars<p.price?'short':''}">${free?'공짜':`${ICON.star} ${p.price}`}</small></button>`).join('')}</div>
+      <button class="big-btn plain" id="close">닫기</button></div>`;
+    el.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{ const id=b.dataset.pick; S.petOn = S.petOn===id?null:id; save(); sfx.tap();
+      if(S.petOn) say(`${petName(id)}${hasBatchim(petName(id))?'이랑':'랑'} 같이 다녀요!`, {pitch:1.3}); draw(); });
+    el.querySelectorAll('[data-adopt]').forEach(b=>b.onclick=()=>{
+      const p=PET[b.dataset.adopt], isFree=!Object.keys(own).length;
+      if(!isFree && S.stars<p.price){ sfx.soft(); say(`${p.name}${hasBatchim(p.name)?'은':'는'} 별 ${p.price}개가 필요해요. 별 ${p.price-S.stars}개만 더 모아요!`); return; }
+      if(!isFree) S.stars-=p.price; own[p.id]={name:p.name}; S.petOn=p.id; save(); sfx.win(); burst();
+      say(`${p.name}${hasBatchim(p.name)?'이':'가'} 우리 집에 왔어요! 이름을 지어 주세요.`, {pitch:1.3}); const st=$('#vStars'); if(st) st.textContent=S.stars; draw();
+    });
+    const nm=el.querySelector('#petName'); if(nm) nm.onchange=e=>{ own[S.petOn].name=e.target.value.trim()||PET[S.petOn].name; save(); sfx.tap(); draw(); };
+    el.querySelector('#close').onclick=close;
+  };
+  const close=()=>{ el.remove(); if(V) vPetInit(); };
+  draw(); document.body.appendChild(el); addX(el);
+  el.addEventListener('click',e=>{ if(e.target===el) close(); });
+  say(!Object.keys(own).length?'우리 집이에요! 애완동물 친구를 한 마리 데려올까요? 첫 친구는 공짜예요.':'우리 집이에요! 누구랑 같이 다닐까요?');
+}
+
 // ===================== 앱 안내문 =====================
 // 업데이트할 때마다 CHANGELOG 맨 위에 새 버전을 추가하고, 바뀐 기능은 GUIDE 본문도 고칩니다.
 const CHANGELOG = [
+  { v:'v25', items:['스티커가 32개 더 생겼어요. 스티커 가게가 머리·얼굴 / 몸·손으로 나뉘었어요.','마을 우리 집에서 애완동물을 데려올 수 있어요. 첫 친구는 공짜! 이름도 지어 주고 같이 다녀요.','소품 가게에 장난감 16가지가 생겼어요. 마을에 놓고 누르면 소리가 나요.'] },
   { v:'v24', items:['앱 안에 이 안내문을 넣었어요.','효준이 대사를 다듬었어요.'] },
   { v:'v23', items:['유치원 친구 효준이 그림이 생겼어요. 마을 유치원 앞에도 서 있어요.'] },
   { v:'v22', items:['유치원이 문을 열었어요. 틀린 나라를 효준이와 다시 공부하고 칭찬 도장을 모아요.','주인공 이름(승아)을 보호자 메뉴에서 바꿀 수 있어요.'] },
@@ -2264,7 +2424,7 @@ const GUIDE = [
     '<b>A레벨</b> 유명한 나라 30개, <b>B레벨</b> 더 많은 나라 60개, C레벨은 준비 중이에요.',
   ]},
   { t:'옷과 스티커', b:[
-    '처음 화면 왼쪽 캐릭터에 스티커(리본, 왕관, 날개 등)를 별로 사서 붙일 수 있어요. 끌어서 옮기고 크기도 바꿔요.',
+    '처음 화면 왼쪽 캐릭터에 스티커 48가지(머리띠, 안경, 날개, 가방, 사탕 등)를 별로 사서 붙일 수 있어요. 끌어서 옮기고 크기도 바꿔요.',
     '옷은 마을 <b>옷가게</b>에서 갈아입어요. 세계 옷은 그 나라 ★★ 카드를 얻으면 열리고, 가게 옷은 별로 사요.',
     '입은 옷과 붙인 스티커는 마을을 걸어 다니는 캐릭터에도 그대로 보여요.',
   ]},
@@ -2281,7 +2441,9 @@ const GUIDE = [
     '<b>옷가게</b>: 옷을 사고 갈아입어요.',
     '<b>놀이터</b>: 할아버지와 같은 그림 찾기, 국기 색칠하기, 풍선 터뜨리기를 해요.',
     '<b>유치원</b>: 틀렸던 나라를 효준이와 5문제씩 다시 공부해요. 4개 이상 한 번에 맞히면 칭찬 도장! 도장 10개면 별 10개.',
-    '경찰서, 소방서, 극장, 우리 집은 준비 중이에요.',
+    '<b>우리 집</b>: 애완동물(16가지)을 데려오고 이름을 지어 줘요. 고른 애완동물은 마을에서 승아를 졸졸 따라다니고, 누르면 인사해요. 첫 친구는 공짜예요.',
+    '<b>장난감</b>: 꾸미기 → 소품 가게의 장난감 탭에서 사서 마을에 놓아요. 놓은 장난감을 누르면 소리가 나요.',
+    '경찰서, 소방서, 극장은 준비 중이에요.',
   ]},
   { t:'보호자 메뉴', b:[
     '처음 화면 오른쪽 위 <b>톱니바퀴를 1초 길게 누르거나 빠르게 5번</b> 누르면 열려요.',
