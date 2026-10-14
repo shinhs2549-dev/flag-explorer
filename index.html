@@ -459,6 +459,10 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .kdone>b{font-family:var(--display);font-weight:400;font-size:clamp(22px,5vw,30px)}
 .kdone>span{font-family:var(--display);font-size:20px;color:#D69A12}
 /* 경찰서·소방서 */
+.gtag{display:flex;justify-content:center;margin-bottom:8px}
+.gprice{display:inline-flex;align-items:center;gap:2px;font-style:normal;font-family:var(--display);font-size:19px;background:#fff;color:#B07A00;border-radius:999px;padding:3px 12px 3px 8px;box-shadow:0 2px 0 rgba(31,43,77,.1);vertical-align:middle;margin-left:6px}
+.gprice svg{width:22px;height:22px}
+.gprice.free{background:#E8F7EC;color:#1E8A4C;padding:2px 10px}
 .room-police{background-color:#E8F0FF;background-image:linear-gradient(#E3ECFF 0 62%,#9FB3D1 62%)}
 .room-fire{background-color:#FFEDE6;background-image:linear-gradient(#FFE9E0 0 62%,#D9A08A 62%)}
 .mission-go{position:relative;align-self:center;margin-top:10px;width:min(320px,80vw);padding:26px 0 22px;border-radius:28px;color:#fff;font-family:var(--display);font-size:44px;box-shadow:0 8px 0 rgba(0,0,0,.2);animation:goPulse 1.4s ease-in-out infinite}
@@ -1090,7 +1094,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v27';
+const APP_VERSION = 'v28';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -2022,10 +2026,26 @@ function openClothesShop(){
 
 
 // ===================== 놀이터: 미니게임 =====================
+// ---- 놀이터 입장: 한 판에 별 2개, 하루 첫 판은 공짜 ----
+const PLAY_PRICE = 2;
+function playFree(){ return S.playFree!==today(); }
+function payPlay(r, go){
+  if(playFree()){ S.playFree=today(); save(); go(); setTimeout(()=>r.say('오늘 첫 판은 공짜야! 재미있게 놀자.'),300); return; }
+  if(S.stars>=PLAY_PRICE){ S.stars-=PLAY_PRICE; save(); r.stars(); go(); return; }
+  sfx.soft();
+  const main=r.el.querySelector('#rMain');
+  main.innerHTML=`<div class="kwrap kdone"><b>별이 모자라요</b><span>한 판에 별 ${PLAY_PRICE}개가 필요해요 · 지금 별 ${S.stars}개</span>
+    <div class="row"><button class="big-btn" id="pStudy">공부하러 가기</button><button class="big-btn plain" id="pBack">놀이 고르기</button></div></div>`;
+  main.querySelector('#pStudy').onclick=()=>{ sfx.tap(); r.close(); closeVillage(); startRound(); };
+  main.querySelector('#pBack').onclick=()=>{ sfx.tap(); openPlaygroundMenu(r); };
+  r.say(`별이 모자라네! 공부하고 별을 모아 오면 할아버지랑 또 놀자.`);
+}
+function playTag(){ return playFree() ? '<em class="gprice free">오늘 첫 판 공짜</em>' : `<em class="gprice">${ICON.star}${PLAY_PRICE}</em>`; }
+let openPlaygroundMenu=null;
 function openPlayground(){
   const r=openInterior({ title:'놀이터', bg:'in_play', npc:'n_grandpa', cls:'room-play' });
   const menu=()=>{
-    r.el.querySelector('#rMain').innerHTML=`<div class="gmenu">
+    r.el.querySelector('#rMain').innerHTML=`<div class="gtag">${playTag()}</div><div class="gmenu">
       <button class="gcard" id="gMemory"><span class="gicon">${[0,1,2,3].map(i=>`<i class="${i%3===0?'up':''}"></i>`).join('')}</span>
         <b>같은 그림 찾기</b><small>할아버지랑 국기 카드 뒤집기</small></button>
       <button class="gcard" id="gColor"><span class="gicon gpaint"><i></i><i></i><i></i></span>
@@ -2033,10 +2053,11 @@ function openPlayground(){
       <button class="gcard" id="gBalloon"><span class="gicon gballoon"><i></i><i></i><i></i></span>
         <b>풍선 터뜨리기</b><small>이름을 듣고 국기 풍선을 찾아요</small></button>
     </div>`;
-    r.el.querySelector('#gMemory').onclick=()=>{ sfx.tap(); startMemory(r, menu); };
+    r.el.querySelector('#gMemory').onclick=()=>{ sfx.tap(); payPlay(r, ()=>startMemory(r, menu)); };
     r.el.querySelector('#gColor').onclick=()=>{ sfx.tap(); pickColorFlag(r, menu); };
-    r.el.querySelector('#gBalloon').onclick=()=>{ sfx.tap(); startBalloons(r, menu); };
+    r.el.querySelector('#gBalloon').onclick=()=>{ sfx.tap(); payPlay(r, ()=>startBalloons(r, menu)); };
   };
+  openPlaygroundMenu=()=>menu();
   menu();
   r.say('놀이터에 온 걸 환영한다! 할아버지랑 같은 그림 찾기 할까?');
 }
@@ -2061,13 +2082,12 @@ function startMemory(r, back){
   const flip=(i,up)=>{ cards[i].up=up; el(i).classList.toggle('up',up); if(up){ g.mem[i]=cards[i].c; } };
   const remain=()=>cards.filter(k=>!k.owner);
   const finish=()=>{
-    g.done=true; const {me,ai}=g.score, prize = me>ai?3: me===ai?2:1;
-    S.stars+=prize; save(); r.stars();
-    const msg = me>ai ? `와! ${me}대 ${ai}로 이겼어요! 별 ${prize}개를 받았어요.` : me===ai ? `${me}대 ${ai} 비겼어요! 별 ${prize}개를 받았어요.` : `${me}대 ${ai}, 할아버지가 이겼어요. 그래도 잘했어요! 별 ${prize}개를 받았어요.`;
+    g.done=true; const {me,ai}=g.score;
+    const msg = me>ai ? `와! ${me}대 ${ai}로 이겼어요! 할아버지가 졌다, 정말 대단하구나!` : me===ai ? `${me}대 ${ai} 비겼어요! 할아버지랑 실력이 똑같구나.` : `${me}대 ${ai}, 할아버지가 이겼어요. 그래도 잘했어요! 다음엔 이길 수 있을 거야.`;
     if(me>ai){ sfx.win(); burst(); setTimeout(burst,400); } else sfx.good();
     main.querySelector('#mTurn').textContent = me>ai?'내가 이겼어요!':me===ai?'비겼어요!':'할아버지가 이겼어요';
     r.say(msg);
-    const q=main.querySelector('#mQuit'); q.textContent='한 판 더'; q.onclick=()=>{ sfx.tap(); startMemory(r, back); };
+    const q=main.querySelector('#mQuit'); q.innerHTML=`한 판 더 ${playTag()}`; q.onclick=()=>{ sfx.tap(); payPlay(r, ()=>startMemory(r, back)); };
     const bk=document.createElement('button'); bk.className='big-btn plain sm'; bk.textContent='놀이 고르기'; bk.onclick=()=>{ sfx.tap(); back(); }; q.after(bk);
   };
   const check=(who)=>{
@@ -2128,9 +2148,9 @@ function pickColorFlag(r, back){
   const lit=c=>[1,2,3].some(t=>(K(t)[c]||0)>=1);
   const list=colorable().sort((a,b)=>(lit(b)-lit(a)));
   r.el.querySelector('#rMain').innerHTML=`<div class="cpick">
-    <div class="cpick-head"><b>어떤 국기를 칠할까요?</b><button class="big-btn plain sm" id="cBack">놀이 고르기</button></div>
+    <div class="cpick-head"><b>어떤 국기를 칠할까요?</b>${playTag()}<button class="big-btn plain sm" id="cBack">놀이 고르기</button></div>
     <div class="cpick-grid">${list.map(c=>`<button class="cpick-item ${done[c]?'done':''}" data-c="${c}"><img src="${C[c].flag}" alt=""><span>${C[c].name}</span>${done[c]?'<i>완성</i>':''}</button>`).join('')}</div></div>`;
-  r.el.querySelectorAll('.cpick-item').forEach(b=>b.onclick=()=>{ sfx.tap(); colorFlag(r, b.dataset.c, ()=>pickColorFlag(r, back)); });
+  r.el.querySelectorAll('.cpick-item').forEach(b=>b.onclick=()=>{ sfx.tap(); payPlay(r, ()=>colorFlag(r, b.dataset.c, ()=>pickColorFlag(r, back))); });
   r.el.querySelector('#cBack').onclick=()=>{ sfx.tap(); back(); };
   r.say('어떤 국기를 칠해 볼까? 마음에 드는 걸 골라 보렴.');
 }
@@ -2147,7 +2167,7 @@ function colorFlag(r, c, back){
     <div class="cbig" id="cBig">${F.svg}</div>
     <div class="cpal">${pal.map(h=>`<button class="crayon" data-h="${h}" style="--c:${h}" aria-label="${colorName(h)}"><i></i></button>`).join('')}
       <button class="crayon eraser" data-h="" aria-label="지우개"><i></i></button></div>
-    <div class="crow"><button class="big-btn plain sm" id="cReset">처음부터</button><button class="big-btn plain sm" id="cOther">다른 국기</button></div></div>`;
+    <div class="crow"><button class="big-btn plain sm" id="cReset">지우고 다시</button><button class="big-btn plain sm" id="cOther">다른 국기</button></div></div>`;
   const svg=main.querySelector('#cBig svg');
   const paint=(g,h)=>{ fill[g]=h; svg.querySelectorAll(`[data-g="${g}"]`).forEach(e=>{ e.style.fill = h || '#EEF1F5'; }); };
   for(let g=0; g<n; g++) paint(g,null);
@@ -2163,9 +2183,9 @@ function colorFlag(r, c, back){
   const check=()=>{
     const wrong=fill.map((h,g)=>h!==truth[g]?g:-1).filter(g=>g>=0);
     if(!wrong.length){
-      const first=!(S.colored||{})[c]; S.colored=S.colored||{}; S.colored[c]=true; S.stars+= first?3:1; save(); r.stars();
+      const first=!(S.colored||{})[c]; S.colored=S.colored||{}; S.colored[c]=true; save();
       sfx.win(); burst(); setTimeout(burst,400); svg.classList.add('finished');
-      r.say(`${C[c].name} 국기 완성! 정말 똑같아요. 별 ${first?3:1}개를 받았어요.`);
+      r.say(first ? `${C[c].name} 국기 완성! 정말 똑같아요. 색칠 책에 완성 도장을 찍었어요.` : `${C[c].name} 국기 완성! 이번에도 똑같이 칠했어요.`);
     } else {
       sfx.soft(); wrong.forEach(g=>svg.querySelectorAll(`[data-g="${g}"]`).forEach(e=>e.classList.add('wrong')));
       r.say('거의 다 됐어요! 반짝이는 곳의 색을 보기와 비교해 봐요.');
@@ -2246,14 +2266,14 @@ function startBalloons(r, back){
   };
   const finish=()=>{
     g.done=true; cancelAnimationFrame(g.raf);
-    const prize = g.miss<=2?3 : g.miss<=5?2 : 1; S.stars+=prize; save(); r.stars();
+    const rank = g.miss<=2?'최고예요' : g.miss<=5?'아주 잘했어요' : '잘했어요';
     sfx.win(); burst(); setTimeout(burst,400);
     g.bal.forEach(b=>b.el.remove()); g.bal=[];
-    field.innerHTML=`<div class="bdone"><b>풍선 ${GOAL}개를 다 터뜨렸어요!</b><span>별 ${prize}개</span>
-      <div class="row"><button class="big-btn" id="bAgain">한 판 더</button><button class="big-btn plain" id="bBack">놀이 고르기</button></div></div>`;
-    field.querySelector('#bAgain').onclick=()=>{ sfx.tap(); startBalloons(r, back); };
+    field.innerHTML=`<div class="bdone"><b>풍선 ${GOAL}개를 다 터뜨렸어요!</b><span>${rank}! 틀린 풍선 ${g.miss}개</span>
+      <div class="row"><button class="big-btn" id="bAgain">한 판 더 ${playTag()}</button><button class="big-btn plain" id="bBack">놀이 고르기</button></div></div>`;
+    field.querySelector('#bAgain').onclick=()=>{ sfx.tap(); payPlay(r, ()=>startBalloons(r, back)); };
     field.querySelector('#bBack').onclick=()=>{ sfx.tap(); back(); };
-    r.say(`최고예요! 풍선 ${GOAL}개를 다 터뜨렸어요. 별 ${prize}개를 받았어요.`);
+    r.say(`${rank}! 풍선 ${GOAL}개를 다 터뜨렸어요.`);
   };
   main.querySelector('#bSp').onclick=()=>say(`${C[g.target].name} 국기 풍선을 터뜨려요!`);
   main.querySelector('#bQuit').onclick=()=>{ sfx.tap(); g.done=true; cancelAnimationFrame(g.raf); back(); };
@@ -2608,6 +2628,7 @@ function openLetter(){
 // ===================== 앱 안내문 =====================
 // 업데이트할 때마다 CHANGELOG 맨 위에 새 버전을 추가하고, 바뀐 기능은 GUIDE 본문도 고칩니다.
 const CHANGELOG = [
+  { v:'v28', items:['놀이터 놀이는 한 판에 별 2개를 내고 해요. 하루 첫 판은 공짜예요. 대신 놀이터에서는 별을 주지 않아요.','별이 모자라면 할아버지가 공부하러 가는 버튼을 보여 줘요.','경찰서와 소방서 안 배경 그림이 생겼어요.'] },
   { v:'v27', items:['경찰서가 문을 열었어요. 길 잃은 친구의 나라를 지도에서 찾아 경찰차로 데려다줘요.','소방서가 문을 열었어요. 불이 난 국기 집을 찾아 물을 뿌려 불을 꺼요.','하루에 한 번 우체부 아저씨가 편지를 가져와요. 열어 보면 별, 소품, 스티커가 들어 있어요.'] },
   { v:'v26', items:['B레벨 ★★★ 유명한 곳 보물 그림 60개가 모두 생겼어요. 이제 보물 카드 270장이 전부 그림으로 나와요.','B레벨 랜드마크(마추픽추, 앙코르와트, 모아이 석상 등)도 마을 빈 땅에 지을 수 있어요.'] },
   { v:'v25', items:['스티커가 32개 더 생겼어요. 스티커 가게가 머리·얼굴 / 몸·손으로 나뉘었어요.','마을 우리 집에서 애완동물을 데려올 수 있어요. 첫 친구는 공짜! 이름도 지어 주고 같이 다녀요.','소품 가게에 장난감 16가지가 생겼어요. 마을에 놓고 누르면 소리가 나요.'] },
@@ -2624,7 +2645,7 @@ const GUIDE = [
     '처음 화면의 파란 <b>공부하기</b>를 누르면 나라 5개가 차례로 나와요.',
     '나라마다 <b>나라 이름 → 지도 위치 → 수도</b> 세 문제를 풀어요. 문제는 한 번만 고를 수 있고, 틀리면 정답을 알려 주고 넘어가요.',
     '문제는 소리로 읽어 주고, 보기는 옆의 스피커 버튼을 눌러야 읽어 줘요. 글자를 먼저 보고 모르면 눌러 보는 한글 연습이에요.',
-    '맞힌 문제마다 별 1개를 받아요.',
+    '맞힌 문제마다 별 1개를 받아요. 별은 공부, 경찰서, 소방서, 유치원, 친구, 우체부 편지에서 모으고 가게와 놀이터에서 써요.',
   ]},
   { t:'별 단계와 국기 불', b:[
     '<b>★</b>는 보기 2개, <b>★★</b>는 3개, <b>★★★</b>는 4개 중에 골라요.',
@@ -2658,7 +2679,7 @@ const GUIDE = [
     '<b>친구 집</b>: 빈집을 누르면 ★★ 카드로 얻은 나라 친구를 초대해요. 하루에 한 번 말을 걸면 하트가 생기고, 5개면 선물, 10개면 단짝이 돼요.',
     '<b>식당</b>: ★ 음식 카드로 모은 음식을 만들어요. 머리 위에 빨간 <b>!</b>가 뜬 친구는 배고픈 친구예요. 그 나라 음식을 갖다주면 별 2개와 하트 2개!',
     '<b>옷가게</b>: 옷을 사고 갈아입어요.',
-    '<b>놀이터</b>: 할아버지와 같은 그림 찾기, 국기 색칠하기, 풍선 터뜨리기를 해요.',
+    '<b>놀이터</b>: 할아버지와 같은 그림 찾기, 국기 색칠하기(국기 하나가 한 판), 풍선 터뜨리기를 해요. 한 판에 별 2개, 하루 첫 판은 공짜예요. 놀이터는 별을 쓰는 곳이라 별을 주지 않아요.',
     '<b>유치원</b>: 틀렸던 나라를 효준이와 5문제씩 다시 공부해요. 4개 이상 한 번에 맞히면 칭찬 도장! 도장 10개면 별 10개.',
     '<b>우리 집</b>: 애완동물(16가지)을 데려오고 이름을 지어 줘요. 고른 애완동물은 마을에서 승아를 졸졸 따라다니고, 누르면 인사해요. 첫 친구는 공짜예요.',
     '<b>장난감</b>: 꾸미기 → 소품 가게의 장난감 탭에서 사서 마을에 놓아요. 놓은 장난감을 누르면 소리가 나요.',
