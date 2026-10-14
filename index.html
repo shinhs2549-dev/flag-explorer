@@ -55,7 +55,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .avatar-frame img{width:100%;height:100%;object-fit:contain}
 .stage-box{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:18px;overflow:hidden;touch-action:none;
   background:radial-gradient(120% 70% at 50% 100%,#FFF4D6 0 34%,transparent 35%),linear-gradient(#CDEBF7,#EAF6FB 70%)}
-.stage-box .char{position:absolute;left:50%;bottom:0;height:94%;transform:translateX(-50%);pointer-events:none;z-index:2}
+.stage-box .char{position:absolute;left:50%;bottom:-7.21%;height:114.14%;transform:translateX(-50%);pointer-events:none;z-index:2}
 .stage-box .avatar-empty{position:absolute;inset:0;display:grid;place-content:center;z-index:2}
 .sticker{position:absolute;transform:translate(-50%,-50%);z-index:3;cursor:grab;touch-action:none;-webkit-user-drag:none;filter:drop-shadow(0 2px 2px rgba(31,43,77,.18))}
 .sticker.back{z-index:1}
@@ -261,7 +261,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .vplayer::before{content:"";position:absolute;left:50%;bottom:-6px;width:70px;height:16px;margin-left:-35px;border-radius:50%;background:rgba(40,70,20,.22)}
 .vflip{transform-origin:50% 100%}
 .vbody{position:relative;width:100px;height:133px}
-.vbody .vme{position:absolute;left:50%;bottom:0;height:125px;width:auto;max-width:none;transform:translateX(-50%)}
+.vbody .vme{position:absolute;left:50%;bottom:-9.6px;height:151.8px;width:auto;max-width:none;transform:translateX(-50%)}
 .vstk{position:absolute;transform:translate(-50%,-50%);max-width:none;pointer-events:none}
 .vplayer.walk .vbody{animation:vhop .36s ease-in-out infinite}
 @keyframes vhop{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
@@ -317,7 +317,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .cmirror{flex:none;width:clamp(150px,28vw,250px);align-self:flex-start;background:linear-gradient(#FFFFFF,#EAF4FB);border-radius:120px 120px 20px 20px;padding:14px 10px 10px;box-shadow:0 0 0 6px #F1C26B,0 8px 0 6px rgba(31,43,77,.12);display:flex;flex-direction:column;align-items:center;gap:6px}
 @media (max-width:560px){.cmirror{align-self:center;width:170px}}
 .cstage{position:relative;width:100%;aspect-ratio:3/4}
-.cstage .cme{position:absolute;left:50%;bottom:0;height:94%;width:auto;max-width:none;transform:translateX(-50%)}
+.cstage .cme{position:absolute;left:50%;bottom:-7.21%;height:114.14%;width:auto;max-width:none;transform:translateX(-50%)}
 .cmirror b{font-family:var(--display);font-weight:400;font-size:18px;text-align:center}
 .cside{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
 .ctabs{display:flex;gap:8px}
@@ -518,6 +518,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 
 <script src="assets/geo.js"></script>
 <script src="assets/char.js"></script>
+<script src="assets/outfit.js"></script>
 <script src="assets/treasure-a.js"></script>
 <script src="assets/treasure-b.js"></script>
 <script src="assets/village.js"></script>
@@ -899,7 +900,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v18';
+const APP_VERSION = 'v19';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -1658,7 +1659,7 @@ function openInterior(o){
   const el=document.createElement('div'); el.className='vroom';
   el.innerHTML=`<div class="vroom-bar"><button class="big-btn plain sm" id="rBack">마을로</button><h2>${o.title}</h2>
       <div class="stars">${ICON.star}<span id="rStars">${S.stars}</span></div></div>
-    <div class="vroom-body ${o.cls||''}" style="${IMG[o.bg]?`background-image:url(${IMG[o.bg]})`:''}">
+    <div class="vroom-body ${o.cls||''}" style="${IMG[o.bg]?`background-image:url(${IMG[o.bg]});background-size:cover;background-position:center bottom`:''}">
       <div class="vroom-npc">${o.npc?`<img src="${IMG[o.npc]}" alt="">`:''}<div class="vroom-say" id="rSay"></div></div>
       <div class="vroom-main" id="rMain"></div>
     </div>`;
