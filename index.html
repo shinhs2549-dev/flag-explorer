@@ -391,6 +391,36 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .crayon.on i{box-shadow:inset 0 -10px 0 rgba(0,0,0,.12),0 0 0 3px #fff,0 0 0 6px var(--ink)}
 .crayon.eraser i{background:repeating-linear-gradient(45deg,#fff 0 6px,#F7C7D6 6px 12px);border-radius:8px;height:40px}
 .crow{display:flex;gap:10px;justify-content:center}
+.gballoon{grid-template-columns:repeat(3,26px)!important;align-items:end}
+.gballoon i{height:34px!important;border-radius:50% 50% 48% 48%/58% 58% 42% 42%!important}
+.gballoon i:nth-child(1){background:#FF7AA8!important;margin-bottom:10px}.gballoon i:nth-child(2){background:#7FB8FF!important;margin-bottom:22px}.gballoon i:nth-child(3){background:#FFD54F!important}
+.bgame{display:flex;flex-direction:column;gap:8px;flex:1;min-height:0}
+.bhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.btarget{display:flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:6px 8px 6px 16px;box-shadow:0 3px 0 rgba(31,43,77,.12)}
+.btarget span{font-size:13px;color:var(--ink-soft)}
+.btarget b{font-family:var(--display);font-weight:400;font-size:clamp(22px,5vw,30px);white-space:nowrap}
+.bprog{display:flex;gap:4px;flex:1;min-width:110px}
+.bprog i{flex:1;max-width:22px;height:10px;border-radius:5px;background:rgba(255,255,255,.7)}
+.bprog i.on{background:#FF7AA8}
+.bfield{position:relative;flex:1;min-height:max(340px,calc(100dvh - 300px));border-radius:20px;overflow:hidden;background:linear-gradient(#BFE6FF,#E6F6FF 70%,#F4FBFF);touch-action:none}
+.bfield::before,.bfield::after{content:"";position:absolute;z-index:0;pointer-events:none;width:140px;height:44px;border-radius:30px;background:#fff;opacity:.8;top:16%;left:8%;box-shadow:40px -14px 0 4px #fff}
+.bfield::after{top:44%;left:auto;right:10%;transform:scale(.8)}
+.balloon{position:absolute;left:0;top:0;padding:0;background:none;will-change:transform;z-index:2}
+.balloon .bbody{display:grid;place-items:center;width:100%;aspect-ratio:5/6;border-radius:50% 50% 48% 48%/58% 58% 42% 42%;
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.75) 0 9%,transparent 10%),var(--bc);box-shadow:inset -8px -10px 0 rgba(0,0,0,.08)}
+.balloon .bbody img{width:58%;border-radius:4px;box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(0,0,0,.08)}
+.balloon .bknot{display:block;width:12px;height:10px;margin:-2px auto 0;background:var(--bc);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.balloon .bstring{display:block;width:2px;height:40px;margin:0 auto;background:rgba(31,43,77,.35)}
+.balloon.wobble .bbody{animation:bwob .5s ease}
+@keyframes bwob{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
+.bfield.hint .balloon.target .bbody{animation:bglow .7s ease-in-out infinite}
+@keyframes bglow{50%{box-shadow:0 0 0 6px #fff,0 0 22px 10px #FFE27A}}
+.bpiece{position:absolute;width:12px;height:12px;border-radius:50%;z-index:3;animation:bfly .55s ease-out forwards}
+@keyframes bfly{to{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
+.bdone{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.bdone b{font-family:var(--display);font-weight:400;font-size:clamp(26px,6vw,36px)}
+.bdone span{font-family:var(--display);font-size:24px;color:#D69A12}
+@media (prefers-reduced-motion:reduce){.bpiece{animation:none;opacity:0}}
 .vprop{pointer-events:none}
 .vprop.edit{pointer-events:auto;cursor:grab;touch-action:none}
 .vprop.edit:not(.sel){filter:drop-shadow(0 0 2px #fff)}
@@ -900,7 +930,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v19';
+const APP_VERSION = 'v20';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -1752,9 +1782,12 @@ function openPlayground(){
         <b>같은 그림 찾기</b><small>할아버지랑 국기 카드 뒤집기</small></button>
       <button class="gcard" id="gColor"><span class="gicon gpaint"><i></i><i></i><i></i></span>
         <b>국기 색칠하기</b><small>보기를 보고 똑같이 칠해요</small></button>
+      <button class="gcard" id="gBalloon"><span class="gicon gballoon"><i></i><i></i><i></i></span>
+        <b>풍선 터뜨리기</b><small>이름을 듣고 국기 풍선을 찾아요</small></button>
     </div>`;
     r.el.querySelector('#gMemory').onclick=()=>{ sfx.tap(); startMemory(r, menu); };
     r.el.querySelector('#gColor').onclick=()=>{ sfx.tap(); pickColorFlag(r, menu); };
+    r.el.querySelector('#gBalloon').onclick=()=>{ sfx.tap(); startBalloons(r, menu); };
   };
   menu();
   r.say('놀이터에 온 걸 환영한다! 할아버지랑 같은 그림 찾기 할까?');
@@ -1894,6 +1927,92 @@ function colorFlag(r, c, back){
   main.querySelector('#cOther').onclick=()=>{ sfx.tap(); back(); };
   main.querySelector('#cSp').onclick=()=>say(`${C[c].name} 국기`);
   r.say(`${C[c].name} 국기를 칠해 봐요. 크레파스를 고르고 칸을 눌러요.`);
+}
+
+
+// ===================== 놀이터: 풍선 터뜨리기 =====================
+const BALLOON_COLORS = ['#FF7AA8','#7FB8FF','#FFD54F','#8BD3A0','#C9A2FF','#FF9E6E','#6ED6E0'];
+function popSound(){ tone([[1200,.04],[500,.06],[220,.08]]); }
+function startBalloons(r, back){
+  const GOAL=10, MAXON=6, RISE=55;                        // 맞힐 개수, 화면에 떠 있는 풍선 수, 올라가는 속도(px/초)
+  const lit=new Set([1,2,3].flatMap(t=>Object.keys(K(t)||{}).filter(c=>K(t)[c]>=1)));
+  const all=LV().list.slice(), targets=all.filter(c=>lit.has(c));
+  const tpool = targets.length>=4 ? targets : all;
+  const g={ got:0, miss:0, missRound:0, target:null, bal:[], last:0, spawnT:0, raf:0, done:false, id:0 };
+  const main=r.el.querySelector('#rMain');
+  main.innerHTML=`<div class="bgame">
+      <div class="bhead"><div class="btarget"><span>찾아요</span><b id="bName"></b><button class="speak sm" id="bSp" aria-label="다시 듣기">${ICON.speak}</button></div>
+        <div class="bprog" id="bProg">${Array.from({length:GOAL},()=>'<i></i>').join('')}</div>
+        <button class="big-btn plain sm" id="bQuit">그만하기</button></div>
+      <div class="bfield" id="bField"></div></div>`;
+  const field=main.querySelector('#bField');
+  const newTarget=()=>{
+    let t; do{ t=tpool[Math.floor(Math.random()*tpool.length)]; } while(tpool.length>1 && t===g.target);
+    g.target=t; g.missRound=0; main.querySelector('#bName').textContent=C[t].name;
+    field.classList.remove('hint'); say(`${C[t].name} 국기 풍선을 터뜨려요!`);
+  };
+  const spawn=(forceTarget)=>{
+    const W=field.clientWidth, H=field.clientHeight, size=Math.max(78,Math.min(120,W/4.6));
+    const c = forceTarget ? g.target : (Math.random()<0.25 ? g.target : all.filter(x=>x!==g.target)[Math.floor(Math.random()*(all.length-1))]);
+    // 다른 풍선과 겹치지 않는 가로 자리
+    let x=0, tries=0; do{ x=size/2+Math.random()*(W-size); tries++; } while(tries<12 && g.bal.some(b=>Math.abs(b.x-x)<size*0.9 && b.y>H-size*1.6));
+    const el=document.createElement('button'); el.className='balloon'; el.setAttribute('aria-label',C[c].name+' 국기 풍선');
+    el.style.setProperty('--bc', BALLOON_COLORS[g.id%BALLOON_COLORS.length]); el.style.width=size+'px';
+    el.innerHTML=`<span class="bbody"><img src="${C[c].flag}" alt=""></span><span class="bknot"></span><span class="bstring"></span>`;
+    const b={ id:g.id++, c, x, y:H+size*0.2, size, ph:Math.random()*6.28, el };
+    el.addEventListener('pointerdown',e=>{ e.preventDefault(); hit(b); });
+    field.appendChild(el); g.bal.push(b); place(b);
+  };
+  const place=b=>{ b.el.style.transform=`translate(${b.x - b.size/2 + Math.sin(b.ph)*10}px, ${b.y - b.size*1.25}px)`; };
+  const pop=b=>{
+    const r0=b.el.getBoundingClientRect(), fr=field.getBoundingClientRect();
+    for(let i=0;i<10;i++){ const p=document.createElement('i'); p.className='bpiece'; const a=i/10*6.28;
+      p.style.left=(r0.left-fr.left+r0.width/2)+'px'; p.style.top=(r0.top-fr.top+r0.width*0.55)+'px';
+      p.style.setProperty('--x',Math.cos(a)*70+'px'); p.style.setProperty('--y',Math.sin(a)*70+'px'); p.style.background=getComputedStyle(b.el).getPropertyValue('--bc');
+      field.appendChild(p); setTimeout(()=>p.remove(),600); }
+    b.el.remove(); g.bal=g.bal.filter(x=>x!==b);
+  };
+  const hit=b=>{
+    if(g.done) return;
+    if(b.c===g.target){
+      popSound(); pop(b); g.got++;
+      main.querySelectorAll('#bProg i')[g.got-1].classList.add('on');
+      if(g.got>=GOAL){ finish(); return; }
+      say(`펑! ${C[b.c].name}!`); setTimeout(()=>{ if(!g.done) newTarget(); },900);
+    } else {
+      g.miss++; g.missRound++; sfx.soft(); b.el.classList.remove('wobble'); void b.el.offsetWidth; b.el.classList.add('wobble');
+      say(`그건 ${C[b.c].name} 국기예요.`);
+      if(g.missRound>=2) field.classList.add('hint');      // 두 번 틀리면 찾는 풍선이 반짝
+    }
+  };
+  const loop=ts=>{
+    if(g.done || !r.el.isConnected) return;
+    const dt=Math.min(0.05,(ts-(g.last||ts))/1000); g.last=ts;
+    const H=field.clientHeight;
+    for(const b of g.bal.slice()){ b.y-=RISE*dt*(0.85+ (b.id%3)*0.12); b.ph+=dt*1.6; place(b);
+      b.el.classList.toggle('target', b.c===g.target);
+      if(b.y < -b.size*0.2){ b.el.remove(); g.bal=g.bal.filter(x=>x!==b); } }
+    g.spawnT-=dt;
+    if(g.spawnT<=0 && g.bal.length<MAXON){ const need=!g.bal.some(b=>b.c===g.target); spawn(need); g.spawnT=1.1+Math.random()*0.6; }
+    g.raf=requestAnimationFrame(loop);
+  };
+  const finish=()=>{
+    g.done=true; cancelAnimationFrame(g.raf);
+    const prize = g.miss<=2?3 : g.miss<=5?2 : 1; S.stars+=prize; save(); r.stars();
+    sfx.win(); burst(); setTimeout(burst,400);
+    g.bal.forEach(b=>b.el.remove()); g.bal=[];
+    field.innerHTML=`<div class="bdone"><b>풍선 ${GOAL}개를 다 터뜨렸어요!</b><span>별 ${prize}개</span>
+      <div class="row"><button class="big-btn" id="bAgain">한 판 더</button><button class="big-btn plain" id="bBack">놀이 고르기</button></div></div>`;
+    field.querySelector('#bAgain').onclick=()=>{ sfx.tap(); startBalloons(r, back); };
+    field.querySelector('#bBack').onclick=()=>{ sfx.tap(); back(); };
+    r.say(`최고예요! 풍선 ${GOAL}개를 다 터뜨렸어요. 별 ${prize}개를 받았어요.`);
+  };
+  main.querySelector('#bSp').onclick=()=>say(`${C[g.target].name} 국기 풍선을 터뜨려요!`);
+  main.querySelector('#bQuit').onclick=()=>{ sfx.tap(); g.done=true; cancelAnimationFrame(g.raf); back(); };
+  newTarget(); spawn(true); g.spawnT=0.8;
+  g.raf=requestAnimationFrame(loop);
+  r.say('이름을 잘 듣고 그 나라 국기 풍선을 터뜨려요!');
+  setTimeout(()=>{ if(!g.done) say(`${C[g.target].name} 국기 풍선을 터뜨려요!`); },2600);
 }
 
 // ===== 보호자 메뉴 (톱니바퀴 길게 누르기) =====
