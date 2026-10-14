@@ -42,7 +42,8 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .stars svg{width:24px;height:24px}
 .icon-btn{width:52px;height:52px;border-radius:16px;background:var(--card);box-shadow:0 3px 0 var(--line);display:grid;place-items:center;flex:none}
 .icon-btn svg{width:26px;height:26px}
-.gear{opacity:.45}
+.gear{opacity:.45;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.gear svg{pointer-events:none}
 .gear.holding{opacity:1;animation:pulse .6s infinite}
 @keyframes pulse{50%{transform:scale(.9)}}
 
@@ -385,7 +386,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .stepper{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:22px}
 .stepper button{width:40px;height:40px;padding:0;font-family:var(--display);font-size:22px}
 .note{font-size:13px;color:var(--ink-soft);margin:0}
-.bk-text{width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:8px;resize:vertical;user-select:text;-webkit-user-select:text;background:#fff;color:var(--ink)}
+.bk-text{flex:none;min-height:76px;width:100%;box-sizing:border-box;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:8px;resize:vertical;user-select:text;-webkit-user-select:text;background:#fff;color:var(--ink)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:10px 18px;font-size:15px;z-index:70}
 </style>
 
@@ -1370,19 +1371,38 @@ function openPropShop(){
 
 // ===== 보호자 메뉴 (톱니바퀴 길게 누르기) =====
 function bindGear(){
-  const g=$('#gear'); let t=null;
-  const start=e=>{ e.preventDefault(); g.classList.add('holding'); t=setTimeout(()=>{ g.classList.remove('holding'); openParent(); },1200); };
+  // 길게 누르기(1초) 또는 빠르게 5번 누르기. 아이폰 사파리는 오래 누르면 pointercancel을 보내므로
+  // 손가락이 버튼 밖으로 크게 벗어날 때만 취소합니다.
+  const g=$('#gear'); let t=null, sx=0, sy=0, opened=false, taps=[];
+  const open=()=>{ opened=true; g.classList.remove('holding'); openParent(); };
+  const start=(x,y)=>{ opened=false; sx=x; sy=y; clearTimeout(t); g.classList.add('holding'); t=setTimeout(open,1000); };
   const stop=()=>{ clearTimeout(t); g.classList.remove('holding'); };
-  g.addEventListener('pointerdown',start); g.addEventListener('pointerup',stop); g.addEventListener('pointerleave',stop); g.addEventListener('pointercancel',stop);
-  g.onclick=()=>toast('보호자 메뉴는 길게 눌러요');
+  const move=(x,y)=>{ if(Math.hypot(x-sx,y-sy)>40) stop(); };
+  if(window.PointerEvent){
+    g.addEventListener('pointerdown',e=>{ e.preventDefault(); start(e.clientX,e.clientY); });
+    g.addEventListener('pointermove',e=>move(e.clientX,e.clientY));
+    g.addEventListener('pointerup',stop);
+  } else {
+    g.addEventListener('touchstart',e=>{ const p=e.touches[0]; start(p.clientX,p.clientY); },{passive:true});
+    g.addEventListener('touchmove',e=>{ const p=e.touches[0]; move(p.clientX,p.clientY); },{passive:true});
+    g.addEventListener('touchend',stop);
+  }
+  g.addEventListener('contextmenu',e=>e.preventDefault());
+  g.onclick=()=>{
+    if(opened){ opened=false; return; }
+    const now=Date.now(); taps=taps.filter(x=>now-x<2500); taps.push(now);
+    if(taps.length>=5){ taps=[]; open(); opened=false; return; }
+    toast(`보호자 메뉴: 길게 누르거나 ${5-taps.length}번 더 누르세요`);
+  };
 }
 function openParent(){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
   const el=document.createElement('div'); el.className='sheet';
   const draw=()=>{ el.innerHTML=`<div class="panel">
     <div class="shop-head sticky"><h3>보호자 메뉴</h3><button class="x-btn" aria-label="닫기">${ICON.x}</button></div>
-    <div class="set-row"><span>통과 기준 (15문제 중)</span><span class="stepper"><button id="pm-">−</button><span>${S.passMark}</span><button id="pm+">+</button></span></div>
+    <div class="set-row"><span>통과 기준 (15문제 중)</span><span class="stepper"><button id="pmDown">−</button><span>${S.passMark}</span><button id="pmUp">+</button></span></div>
     <div class="set-row"><span>오늘 테스트 다시 열기</span><button id="unlockTest" ${testLocked()?'':'disabled'}>${testLocked()?'열기':'열려 있음'}</button></div>
-    <div class="set-row"><span>한 번에 공부할 나라 수</span><span class="stepper"><button id="rs-">−</button><span>${S.roundSize}</span><button id="rs+">+</button></span></div>
+    <div class="set-row"><span>한 번에 공부할 나라 수</span><span class="stepper"><button id="rsDown">−</button><span>${S.roundSize}</span><button id="rsUp">+</button></span></div>
     <div class="set-row"><span>모든 별 단계·테스트 열기</span><button id="allOpen">${S.allOpen?'끄기':'켜기'}</button></div>
     <div class="set-row"><span>말하기 속도</span><button id="rate">${S.rate<0.85?'천천히':'보통'}</button></div>
     <div class="set-row"><span>기록 백업${S.lastBackup?`<br><small class="note">마지막 백업 ${S.lastBackup}</small>`:''}</span><button id="bk">백업 코드 복사</button></div>
@@ -1391,8 +1411,8 @@ function openParent(){
     <div class="set-row"><span>기록 모두 지우기</span><button class="danger" id="reset">지우기</button></div>
     <p class="note">기록은 이 기기에만 저장됩니다. 브라우저 데이터를 지우거나 앱을 지우면 함께 사라지니, 가끔 백업 코드를 복사해서 카톡 '나와의 채팅'에 보내 두세요.</p>
     <button class="big-btn plain" id="close">닫기</button></div>`;
-    el.querySelector('#pm-').onclick=()=>{ S.passMark=Math.max(8,S.passMark-1); save(); draw(); };
-    el.querySelector('#pm+').onclick=()=>{ S.passMark=Math.min(15,S.passMark+1); save(); draw(); };
+    el.querySelector('#pmDown').onclick=()=>{ S.passMark=Math.max(8,S.passMark-1); save(); draw(); };
+    el.querySelector('#pmUp').onclick=()=>{ S.passMark=Math.min(15,S.passMark+1); save(); draw(); };
     el.querySelector('#unlockTest').onclick=()=>{ S.testLock[S.level]=null; save(); draw(); toast('오늘 다시 도전할 수 있어요'); };
     el.querySelector('#bk').onclick=()=>{
       S.lastBackup=today(); save();
@@ -1407,8 +1427,8 @@ function openParent(){
       try{ restoreCode(code); toast('기록을 되살렸어요'); draw(); }
       catch(err){ b.dataset.sure=''; b.textContent='되살리기'; toast('코드가 올바르지 않아요. 전체를 다시 복사해 주세요'); }
     };
-    el.querySelector('#rs-').onclick=()=>{ S.roundSize=Math.max(5,S.roundSize-5); save(); draw(); };
-    el.querySelector('#rs+').onclick=()=>{ S.roundSize=Math.min(15,S.roundSize+5); save(); draw(); };
+    el.querySelector('#rsDown').onclick=()=>{ S.roundSize=Math.max(5,S.roundSize-5); save(); draw(); };
+    el.querySelector('#rsUp').onclick=()=>{ S.roundSize=Math.min(15,S.roundSize+5); save(); draw(); };
     el.querySelector('#allOpen').onclick=()=>{ S.allOpen=!S.allOpen; save(); draw(); };
     el.querySelector('#rate').onclick=()=>{ S.rate=S.rate<0.85?0.95:0.75; save(); draw(); say('이 속도로 말할게요'); };
     el.querySelector('#reset').onclick=e=>{ const b=e.currentTarget; if(b.dataset.sure){ S=fresh(); save(); el.remove(); renderHome(); toast('기록을 지웠어요'); } else { b.dataset.sure=1; b.textContent='한 번 더 누르면 지워져요'; } };
