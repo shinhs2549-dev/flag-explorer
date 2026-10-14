@@ -458,6 +458,64 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 .kdone{align-items:center;text-align:center}
 .kdone>b{font-family:var(--display);font-weight:400;font-size:clamp(22px,5vw,30px)}
 .kdone>span{font-family:var(--display);font-size:20px;color:#D69A12}
+/* 경찰서·소방서 */
+.room-police{background-color:#E8F0FF;background-image:linear-gradient(#E3ECFF 0 62%,#9FB3D1 62%)}
+.room-fire{background-color:#FFEDE6;background-image:linear-gradient(#FFE9E0 0 62%,#D9A08A 62%)}
+.mission-go{position:relative;align-self:center;margin-top:10px;width:min(320px,80vw);padding:26px 0 22px;border-radius:28px;color:#fff;font-family:var(--display);font-size:44px;box-shadow:0 8px 0 rgba(0,0,0,.2);animation:goPulse 1.4s ease-in-out infinite}
+.mission-go.police{background:#1E5BC6}.mission-go.fire{background:#E53935}
+.mission-go .mlight{position:absolute;top:-16px;left:50%;margin-left:-26px;width:52px;height:24px;border-radius:14px 14px 4px 4px;background:linear-gradient(90deg,#E53935 50%,#2F7BFF 50%);box-shadow:0 0 18px #ff5a5a;animation:siren .5s steps(2) infinite}
+@keyframes siren{50%{filter:hue-rotate(180deg);box-shadow:0 0 18px #5a8bff}}
+@keyframes goPulse{50%{transform:scale(1.05)}}
+.mhead{position:relative;display:flex;align-items:center;gap:10px;background:#fff;border-radius:18px;padding:8px 52px 8px 12px;box-shadow:0 4px 0 rgba(31,43,77,.1)}
+.mhead .kno{position:absolute;left:10px;top:6px;font-family:var(--display);font-size:13px;color:var(--muted)}
+.mhead .mkid{height:86px;width:auto;flex:none;margin-top:12px;filter:drop-shadow(0 3px 3px rgba(31,43,77,.2));animation:kidBob 1.6s ease-in-out infinite}
+@keyframes kidBob{50%{transform:translateY(-4px)}}
+.mhead .kbub{flex:1;box-shadow:none;background:#F3F6FF;font-size:clamp(15px,3.6vw,18px);word-break:keep-all}
+.mhead .kbub::before{border-right-color:#F3F6FF}
+.mhead .speak{position:absolute;right:8px;top:50%;transform:translateY(-50%)}
+.room-police .map-wrap{width:min(100%,calc((100vh - 360px)*1.8))}
+@media (max-width:560px) and (orientation:portrait){.room-police .map-wrap{width:min(100%,calc((100vh - 390px)*1.25))}}
+.speak.sm{width:40px;height:40px}
+.pcar .plight{animation:siren .4s steps(2) infinite}
+.fstreet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end;padding-top:56px}
+@media (max-width:560px){.fstreet{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}}
+.fhouse{position:relative;display:flex;flex-direction:column;align-items:center;padding:0;background:none;box-shadow:none;border-radius:16px}
+.fhouse .fh{width:100%;height:auto;max-height:28vh;object-fit:contain;filter:drop-shadow(0 4px 3px rgba(31,43,77,.18))}
+.fhouse .fpole{position:absolute;left:6%;top:-4px;z-index:2;height:44%;border-left:4px solid #6B5A4A;padding-left:0}
+.fhouse .fpole img{display:block;height:clamp(30px,7vw,46px);width:auto;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.15),0 3px 6px rgba(31,43,77,.2);animation:flagWave 1.6s ease-in-out infinite;transform-origin:left center}
+@keyframes flagWave{50%{transform:skewY(-4deg) scaleX(.94)}}
+.fhouse .smoke{position:absolute;left:50%;top:10%;z-index:2;width:0;height:0;pointer-events:none;transition:opacity .8s}
+.fhouse .smoke i{position:absolute;left:-22px;top:0;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle,#8a8a8a,#5c5c5c 60%,transparent 72%);opacity:0;animation:smoke 2.4s ease-out infinite}
+.fhouse .smoke i:nth-child(2){animation-delay:.8s;left:-8px}.fhouse .smoke i:nth-child(3){animation-delay:1.6s;left:-34px}
+@keyframes smoke{0%{transform:translateY(0) scale(.5);opacity:.8}100%{transform:translateY(-60px) scale(1.5);opacity:0}}
+.fhouse .flames{position:absolute;left:22%;right:22%;top:14%;height:34%;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;z-index:1;transition:opacity .6s}
+.fhouse .flames i{display:block;width:30%;transform-origin:50% 100%;animation:flame .32s ease-in-out infinite alternate}
+.fhouse .flames i:nth-child(2){width:40%;animation-delay:.12s;margin-bottom:8%}.fhouse .flames i:nth-child(3){animation-delay:.22s}
+.fhouse .flames svg{display:block;width:100%;height:auto;filter:drop-shadow(0 0 6px rgba(255,140,30,.8))}
+@keyframes flame{from{transform:scale(.9,.85) rotate(-4deg)}to{transform:scale(1.05,1.12) rotate(4deg)}}
+.fhouse.out .flames,.fhouse.out .smoke{opacity:0;animation:none}
+.fhouse.out{animation:win 1s ease}
+.fhouse .water{position:absolute;inset:0;pointer-events:none;opacity:0}
+.fhouse .water i{position:absolute;top:-10%;width:10px;height:18px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#4FA8FF;box-shadow:0 0 0 2px #fff}
+.fhouse .water i:nth-child(1){left:20%}.fhouse .water i:nth-child(2){left:38%;animation-delay:.15s}.fhouse .water i:nth-child(3){left:55%;animation-delay:.3s}.fhouse .water i:nth-child(4){left:70%;animation-delay:.1s}.fhouse .water i:nth-child(5){left:46%;animation-delay:.4s}
+.fhouse.spray .water{opacity:1}.fhouse.spray .water i{animation:drop .5s linear infinite}
+@keyframes drop{from{transform:translateY(0)}to{transform:translateY(150px);opacity:.2}}
+.fhouse.out .water{opacity:0}
+.fhouse.nope{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* 우체부 편지 */
+.letter-box{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(420px,92vw)}
+.envelope{position:relative;width:min(300px,78vw);aspect-ratio:1.5/1;background:#FFF4D6;border-radius:14px;box-shadow:0 8px 0 rgba(0,0,0,.15),inset 0 0 0 3px #E8C98A;overflow:visible;animation:envBob 1.2s ease-in-out infinite}
+.envelope .flap{position:absolute;left:0;right:0;top:0;height:58%;background:#FBE3A8;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .5s;border-radius:14px 14px 0 0}
+.envelope .seal{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#E53935;color:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.envelope .ehint{position:absolute;left:0;right:0;bottom:-44px;color:#fff;font-family:var(--display);font-size:20px;text-shadow:0 2px 4px rgba(0,0,0,.4)}
+.envelope.open{animation:none}.envelope.open .flap{transform:rotateX(180deg)}.envelope.open .seal{opacity:0;transition:opacity .2s}
+@keyframes envBob{50%{transform:translateY(-8px) rotate(-2deg)}}
+.letter{background:#fff;border-radius:22px;padding:22px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:stampIn .5s cubic-bezier(.2,1.6,.4,1);background-image:repeating-linear-gradient(transparent 0 30px,#EEF2FA 30px 32px)}
+.letter[hidden],.envelope[hidden]{display:none}
+.letter img{max-height:160px;max-width:70%;object-fit:contain}
+.letter p{margin:0;font-size:19px;line-height:1.5;word-break:keep-all}
+.letter .lstars{display:flex;gap:4px}.letter .lstars svg{width:44px;height:44px}
 .guide-btn{position:relative;font-family:var(--display);font-size:28px;color:var(--ink)}
 .guide-btn .dot{position:absolute;top:6px;right:6px;width:12px;height:12px;border-radius:50%;background:var(--o1);box-shadow:0 0 0 2px #fff}
 .guide{width:min(640px,100%)!important}
@@ -1032,7 +1090,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v26';
+const APP_VERSION = 'v27';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -1400,8 +1458,8 @@ const NPC_INFO = {
   n_chef:   { name:'요리사',       lines:['어서 오세요! 보물 카드로 모은 음식을 만들어 줄게요.','배고픈 친구가 있으면 식당에서 음식을 가져다줘요.'] },
   n_usher:  { name:'극장 안내원',   lines:['극장에서 곧 나라 이야기를 보여 줄게요!','불이 켜진 나라가 많을수록 볼 이야기도 많아져요.'] },
   n_teacher:{ name:'유치원 선생님', lines:['안녕! 유치원에 들어오면 효준이랑 같이 다시 공부할 수 있어요.','틀린 나라는 선생님이랑 다시 보면 금방 기억나요.'] },
-  n_police: { name:'경찰관',       lines:['길 잃은 친구가 생기면 도와줘요! 경찰서는 곧 열려요.','지도를 잘 보면 친구 집을 찾을 수 있어요.'] },
-  n_fire:   { name:'소방관',       lines:['소방관이에요! 곧 같이 출동해요.','국기를 잘 알아야 불난 집을 빨리 찾을 수 있어요.'] },
+  n_police: { name:'경찰관',       lines:['길 잃은 친구가 있어요! 경찰서에 들어와서 도와줘요.','지도를 잘 보면 친구 집을 찾을 수 있어요.'] },
+  n_fire:   { name:'소방관',       lines:['불이 나면 같이 출동해요! 소방서에 들어와요.','국기를 잘 알아야 불난 집을 빨리 찾을 수 있어요.'] },
   n_grandpa:{ name:'놀이터 할아버지', lines:['놀이터에 오면 할아버지랑 같은 그림 찾기 하자꾸나!','오늘도 즐겁게 놀자꾸나.'] },
   n_hyo:    { name:'효준', kid:true, lines:['@! 유치원에서 같이 공부하자!','나는 국기 색칠하기가 제일 좋아. 너는 뭐가 제일 좋아?','틀린 나라는 유치원에서 다시 보면 금방 외워져!','우리 놀이터에서 같이 놀자!'] },
   n_mail:   { name:'우체부',       lines:['편지 왔어요! 오늘도 나라 하나 맞혀 볼까요?','별을 모으면 마을을 예쁘게 꾸밀 수 있어요.','빈 땅에는 랜드마크를 지을 수 있어요.','우리 집에 가면 애완동물을 데려올 수 있어요.'] },
@@ -1502,7 +1560,9 @@ function openVillage(){
   window.addEventListener('resize', vLayout);
   vLayout(true); placePlayer();
   V.raf=requestAnimationFrame(vLoop);
+  const firstVisit=!v.visited;
   if(!v.visited){ v.visited=true; save(); setTimeout(()=>vSay(`${NAME()}의 마을에 온 걸 환영해요! 가고 싶은 곳을 눌러 보세요.`),400); }
+  if(S.mailDay!==today()) setTimeout(()=>{ if(V){ V.mail.deliver=true; } }, firstVisit?4500:900);
 }
 function closeVillage(){
   if(!V) return; cancelAnimationFrame(V.raf); window.removeEventListener('resize', vLayout);
@@ -1598,10 +1658,12 @@ function vLoop(ts){
   }
   // 우체부는 길을 따라 천천히 돌아다님
   const m=V.mail;
+  if(m.deliver){ m.wait=0; m.gx=V.px+70; m.gy=V.py+4; }
   if(m.wait>0){ m.wait-=dt; }
   else{
-    const dx=m.gx-m.x, dy=m.gy-m.y, d=Math.hypot(dx,dy), step=55*dt;
-    if(d<=step){ m.x=m.gx; m.y=m.gy; m.wait=2+Math.random()*4;
+    const dx=m.gx-m.x, dy=m.gy-m.y, d=Math.hypot(dx,dy), step=(m.deliver?170:55)*dt;
+    if(m.deliver && d<=Math.max(step,30)){ m.deliver=false; m.wait=4; V.face=1; placePlayer(); deliverLetter(); }
+    else if(d<=step){ m.x=m.gx; m.y=m.gy; m.wait=2+Math.random()*4;
       const pts=[[160,420],[420,520],[640,500],[900,470],[1180,440],[1420,370],[600,820],[950,860],[350,800]];
       const p=pts[Math.floor(Math.random()*pts.length)]; m.gx=p[0]; m.gy=p[1]; }
     else { m.x+=dx/d*step; m.y+=dy/d*step; }
@@ -1658,6 +1720,8 @@ function onVillageTap(e){
       else if(id.startsWith('house')) openHouse(p);
       else if(id==='playground') openPlayground();
       else if(id==='kinder') openKinder();
+      else if(id==='police') openPolice();
+      else if(id==='fire') openFire();
       else if(p.npc){ const info=NPC_INFO[p.npc]; vSay(`${info.name}: ${info.lines[0]}`, p.npc); }
       else if(id==='myhouse') openPetHome();
     });
@@ -2388,9 +2452,163 @@ function openPetHome(){
   say(!Object.keys(own).length?'우리 집이에요! 애완동물 친구를 한 마리 데려올까요? 첫 친구는 공짜예요.':'우리 집이에요! 누구랑 같이 다닐까요?');
 }
 
+
+// ===================== 공통: 출동 놀이 =====================
+function playPool(){
+  const lit=[...new Set([1,2,3].flatMap(t=>Object.keys(K(t)||{}).filter(c=>K(t)[c]>=1)))].filter(c=>C[c]);
+  return lit.length>=5 ? lit : LV().list.slice();
+}
+function missionDone(r, got, total, again, back, what){
+  const prize=got; S.stars+=prize; save(); r.stars(); sfx.win(); burst(); setTimeout(burst,400);
+  r.el.querySelector('#rMain').innerHTML=`<div class="kwrap kdone"><b>${what} ${total}번 출동 완료!</b>
+    <span>한 번에 해낸 출동 ${got}번 · 별 ${prize}개</span>
+    <div class="row"><button class="big-btn" id="mAgain">다시 출동</button><button class="big-btn plain" id="mBack">처음으로</button></div></div>`;
+  r.el.querySelector('#mAgain').onclick=()=>{ sfx.tap(); again(); };
+  r.el.querySelector('#mBack').onclick=()=>{ sfx.tap(); back(); };
+  r.say(`${NAME()} 대원, 정말 잘했어요! 별 ${prize}개를 받았어요.`);
+}
+function siren(){ tone([[880,.18],[660,.18],[880,.18],[660,.18]]); }
+
+// ===================== 경찰서: 길 잃은 친구 데려다주기 =====================
+function lostKidPool(){
+  const ok=c=>IMG[`t_${c}_2`] && TREASURE[c] && !NOT_FRIEND.includes(c);
+  const p=playPool().filter(ok); return p.length>=3 ? p : LV().list.filter(ok);
+}
+function openPolice(){
+  const r=openInterior({ title:'경찰서', bg:'in_police', npc:'n_police', cls:'room-police' });
+  const menu=()=>{
+    r.el.querySelector('#rMain').innerHTML=`<div class="kwrap">
+      <div class="kboard"><b>길 잃은 친구를 도와줘요!</b><span>친구가 사는 나라를 지도에서 찾아 경찰차로 데려다줘요</span></div>
+      <button class="mission-go police" id="mGo"><span class="mlight"></span>출동!</button></div>`;
+    r.el.querySelector('#mGo').onclick=()=>{ siren(); policeRun(r, menu); };
+  };
+  menu(); r.say(`${nameYa()}, 경찰서에 온 걸 환영해요! 길을 잃은 친구들이 있어요. 같이 도와줄래요?`);
+}
+function policeRun(r, back){
+  const ROUNDS=5, kids=shuffle(lostKidPool()).slice(0,ROUNDS), st={ i:0, got:0 };
+  const main=r.el.querySelector('#rMain');
+  const show=()=>{
+    const c=kids[st.i], cc=C[c], others=shuffle(LV().list.filter(x=>x!==c&&C[x])).slice(0,2), opts=shuffle([c,...others]);
+    let tries=0, lock=false;
+    const [kind,nm]=TREASURE[c][1];
+    const ask= kind==='동물' ? `나는 ${nm}${hasBatchim(nm)?'이야':'야'}. 우리 집은 ${cc.name}에 있어. 지도에서 찾아서 데려다줄래?`
+                            : `나는 ${cc.name}에서 온 친구야. 길을 잃었어. 지도에서 ${cc.name}${hasBatchim(cc.name)?'을':'를'} 찾아 줄래?`;
+    main.innerHTML=`<div class="kwrap">
+      <div class="mhead"><span class="kno">${st.i+1} / ${ROUNDS}</span><img class="mkid" src="${IMG[`t_${c}_2`]}" alt=""><div class="kbub pop">${esc(ask)}</div>
+        <button class="speak sm" id="mSp" aria-label="다시 듣기">${ICON.speak}</button></div>
+      <div class="map-wrap kmap" id="mMap">${mapSVG(opts)}</div>
+      <div class="num-row">${opts.map((_,i)=>`<button data-i="${i}" style="background:${OPT_COLORS[i]}">${i+1}</button>`).join('')}</div></div>`;
+    say(ask,{pitch:1.4}); main.querySelector('#mSp').onclick=()=>say(ask,{pitch:1.4});
+    const pick=i=>{
+      if(lock) return;
+      if(opts[i]===c){ lock=true; if(!tries) st.got++; sfx.good(); driveCar(main.querySelector('#mMap svg'), cc.c, ()=>{
+          burst(); r.say(`도착! 친구가 ${cc.name} 집에 잘 돌아갔어요. 고마워!`);
+          setTimeout(()=>{ st.i++; if(st.i<ROUNDS) show(); else missionDone(r, st.got, ROUNDS, ()=>policeRun(r,back), back, '경찰차'); },2600); });
+      } else { tries++; sfx.soft(); main.querySelector(`.num-row button[data-i="${i}"]`).classList.add('gone');
+        main.querySelector(`.map-wrap .opt[data-i="${i}"]`).classList.add('gone');
+        r.say(`거기는 ${ieyo(C[opts[i]].name)}. ${cc.name}${hasBatchim(cc.name)?'을':'를'} 다시 찾아봐요!`); }
+    };
+    main.querySelectorAll('.map-wrap .opt, .num-row button').forEach(el=>el.addEventListener('click',()=>pick(+el.dataset.i)));
+  };
+  show();
+}
+function driveCar(svg, to, done){
+  const vb=svg.viewBox.baseVal, s=vb.width*0.045, NS='http://www.w3.org/2000/svg';
+  const g=document.createElementNS(NS,'g'); g.setAttribute('class','pcar');
+  g.innerHTML=`<rect x="-1" y="-.55" width="2" height=".7" rx=".22" fill="#fff" stroke="#14285F" stroke-width=".08"/>
+    <rect x="-.55" y="-.95" width="1.1" height=".5" rx=".15" fill="#1E5BC6"/><rect x="-.15" y="-1.15" width=".3" height=".2" rx=".06" fill="#E53935" class="plight"/>
+    <rect x="-1" y="-.25" width="2" height=".16" fill="#1E5BC6"/><circle cx="-.55" cy=".15" r=".26" fill="#222"/><circle cx=".55" cy=".15" r=".26" fill="#222"/>`;
+  svg.appendChild(g);
+  const sx=vb.x+vb.width/2, sy=vb.y+vb.height*0.95, t0=performance.now(), dur=1400;
+  const step=t=>{ const k=Math.min(1,(t-t0)/dur), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+    const x=sx+(to[0]-sx)*e, y=sy+(to[1]-sy)*e; g.setAttribute('transform',`translate(${x} ${y}) scale(${s})`);
+    if(k<1) requestAnimationFrame(step); else done&&done(); };
+  siren(); requestAnimationFrame(step);
+}
+
+// ===================== 소방서: 불 끄기 =====================
+function openFire(){
+  const r=openInterior({ title:'소방서', bg:'in_fire', npc:'n_fire', cls:'room-fire' });
+  const menu=()=>{
+    r.el.querySelector('#rMain').innerHTML=`<div class="kwrap">
+      <div class="kboard"><b>불을 꺼 주세요!</b><span>국기 이름을 잘 듣고 그 국기가 꽂힌 집에 물을 뿌려요</span></div>
+      <button class="mission-go fire" id="mGo"><span class="mlight"></span>출동!</button></div>`;
+    r.el.querySelector('#mGo').onclick=()=>{ siren(); fireRun(r, menu); };
+  };
+  menu(); r.say(`${nameYa()}, 소방서에 온 걸 환영해요! 불이 나면 우리가 출동해요.`);
+}
+function fireRun(r, back){
+  const ROUNDS=5, pool=playPool(), st={ i:0, got:0 }, houses=['b_house1','b_house2','b_house3','b_myhouse'];
+  let last=null;
+  const main=r.el.querySelector('#rMain');
+  const show=()=>{
+    let c; do{ c=pool[Math.floor(Math.random()*pool.length)]; } while(pool.length>1 && c===last); last=c;
+    const opts=shuffle([c,...shuffle(LV().list.filter(x=>x!==c&&C[x])).slice(0,3)]), hs=shuffle(houses);
+    let tries=0, lock=false;
+    const ask=`${C[c].name} 국기 집에 불이 났어요! 어느 집일까요?`;
+    main.innerHTML=`<div class="kwrap">
+      <div class="kboard"><span class="kno">${st.i+1} / ${ROUNDS}</span><b>${esc(C[c].name)} 국기 집!</b><button class="speak sm" id="mSp" aria-label="다시 듣기">${ICON.speak}</button></div>
+      <div class="fstreet">${opts.map((x,i)=>`<button class="fhouse" data-i="${i}">
+        <span class="fpole"><img src="${C[x].flag}" alt=""></span><img class="fh" src="${IMG[hs[i]]}" alt="">
+        <span class="smoke"><i></i><i></i><i></i></span><span class="flames"><i><svg viewBox="0 0 24 30"><path fill="#FF7A1A" stroke="#E53935" stroke-width="1.2" d="M12 1c1.5 5 8 8 8 16a8 8 0 0 1-16 0c0-4 2.5-6.5 4-9 0 3 1.5 4.5 3 4.5C11 8 10 5 12 1z"/><path fill="#FFE45C" d="M12 13c.8 2.5 4 4 4 8a4 4 0 0 1-8 0c0-2 1.3-3.3 2-4.5.2 1.4.9 2 1.7 2-.4-2-.6-3.3.3-5.5z"/></svg></i><i><svg viewBox="0 0 24 30"><path fill="#FF7A1A" stroke="#E53935" stroke-width="1.2" d="M12 1c1.5 5 8 8 8 16a8 8 0 0 1-16 0c0-4 2.5-6.5 4-9 0 3 1.5 4.5 3 4.5C11 8 10 5 12 1z"/><path fill="#FFE45C" d="M12 13c.8 2.5 4 4 4 8a4 4 0 0 1-8 0c0-2 1.3-3.3 2-4.5.2 1.4.9 2 1.7 2-.4-2-.6-3.3.3-5.5z"/></svg></i><i><svg viewBox="0 0 24 30"><path fill="#FF7A1A" stroke="#E53935" stroke-width="1.2" d="M12 1c1.5 5 8 8 8 16a8 8 0 0 1-16 0c0-4 2.5-6.5 4-9 0 3 1.5 4.5 3 4.5C11 8 10 5 12 1z"/><path fill="#FFE45C" d="M12 13c.8 2.5 4 4 4 8a4 4 0 0 1-8 0c0-2 1.3-3.3 2-4.5.2 1.4.9 2 1.7 2-.4-2-.6-3.3.3-5.5z"/></svg></i></span><span class="water"><i></i><i></i><i></i><i></i><i></i></span></button>`).join('')}</div></div>`;
+    say(ask); main.querySelector('#mSp').onclick=()=>say(ask);
+    main.querySelectorAll('.fhouse').forEach(b=>b.onclick=()=>{
+      if(lock) return; const i=+b.dataset.i;
+      if(opts[i]===c){ lock=true; if(!tries) st.got++; b.classList.add('spray'); tone([[300,.5],[260,.5]]);
+        setTimeout(()=>{ b.classList.add('out'); sfx.good(); burst(); r.say(`치이익! 불이 꺼졌어요. ${C[c].name} 국기 집을 구했어요!`); },1100);
+        setTimeout(()=>{ st.i++; if(st.i<ROUNDS) show(); else missionDone(r, st.got, ROUNDS, ()=>fireRun(r,back), back, '소방차'); },3600);
+      } else { tries++; sfx.soft(); b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope');
+        r.say(`거기는 ${C[opts[i]].name} 국기 집이에요. 다시 찾아봐요!`); }
+    });
+  };
+  show();
+}
+
+// ===================== 우체부 편지 =====================
+function pickWeighted(list, w){ const tot=list.reduce((s,x)=>s+w(x),0); let r=Math.random()*tot; for(const x of list){ r-=w(x); if(r<=0) return x; } return list[list.length-1]; }
+function makeLetter(){
+  const v=vState(), roll=Math.random();
+  const friends=residents();
+  if(roll<0.07 && friends.length){ const c=friends[Math.floor(Math.random()*friends.length)];
+    const food=TREASURE[c][0][1];
+    return { kind:'friend', c, stars:2, text:`${nameYa()}, 안녕! 나 ${friendName(c)}${hasBatchim(friendName(c))?'이야':'야'}. 우리 나라 ${C[c].name}에 놀러 오면 ${food}${hasBatchim(food)?'을':'를'} 같이 먹자! 선물로 별 두 개를 보낼게.` }; }
+  if(roll<0.25){ const cand=ITEMS.filter(i=>!S.owned[i.id] && hasItemImg(i));
+    if(cand.length){ const it=pickWeighted(cand, i=>1/i.price); return { kind:'sticker', id:it.id, text:`${it.name} 스티커가 들어 있어요!` }; } }
+  if(roll<0.55){ const cand=PROPS.filter(p=>IMG[p.id]); const p=pickWeighted(cand, p=>1/p.price);
+    return { kind:'prop', id:p.id, text:`${p.name}${hasBatchim(p.name)?'이':'가'} 들어 있어요! 꾸미기에서 마을에 놓아 봐요.` }; }
+  const n=2+Math.floor(Math.random()*4); return { kind:'stars', n, text:`반짝이는 별 ${n}개가 들어 있어요!` };
+}
+function deliverLetter(){
+  if(S.mailDay===today()) return;
+  vSay(`우체부: ${nameYa()}, 편지 왔어요!`, 'n_mail');
+  setTimeout(openLetter, 1600);
+}
+function openLetter(){
+  const L=makeLetter(), el=document.createElement('div'); el.className='sheet';
+  const giftImg = L.kind==='sticker'?IMG['item_'+L.id] : L.kind==='prop'?IMG[L.id] : L.kind==='friend'?IMG[`t_${L.c}_1`] : '';
+  el.innerHTML=`<div class="letter-box"><button class="envelope" id="env" aria-label="편지 열기"><span class="flap"></span><span class="seal">♥</span><span class="ehint">눌러서 열어요</span></button>
+    <div class="letter" hidden>${giftImg?`<img src="${giftImg}" alt="">`:`<div class="lstars">${ICON.star.repeat(Math.min(5,L.n||2))}</div>`}<p>${esc(L.text)}</p>
+    <button class="big-btn" id="lOk">고마워요!</button></div></div>`;
+  document.body.appendChild(el);
+  el.querySelector('#env').onclick=()=>{
+    const env=el.querySelector('#env'); if(env.classList.contains('open')) return; env.classList.add('open'); sfx.win(); burst();
+    // 선물 주기
+    S.mailDay=today();
+    if(L.kind==='stars') S.stars+=L.n;
+    if(L.kind==='friend') S.stars+=L.stars;
+    if(L.kind==='sticker') S.owned[L.id]=true;
+    if(L.kind==='prop'){ const v=vState(); v.inv[L.id]=(v.inv[L.id]||0)+1; }
+    save(); const st=$('#vStars'); if(st) st.textContent=S.stars;
+    setTimeout(()=>{ env.hidden=true; el.querySelector('.letter').hidden=false; say(L.text); },650);
+  };
+  el.querySelector('#lOk').onclick=()=>{ sfx.tap(); el.remove(); };
+  say('편지를 눌러서 열어 보세요.');
+}
+
 // ===================== 앱 안내문 =====================
 // 업데이트할 때마다 CHANGELOG 맨 위에 새 버전을 추가하고, 바뀐 기능은 GUIDE 본문도 고칩니다.
 const CHANGELOG = [
+  { v:'v27', items:['경찰서가 문을 열었어요. 길 잃은 친구의 나라를 지도에서 찾아 경찰차로 데려다줘요.','소방서가 문을 열었어요. 불이 난 국기 집을 찾아 물을 뿌려 불을 꺼요.','하루에 한 번 우체부 아저씨가 편지를 가져와요. 열어 보면 별, 소품, 스티커가 들어 있어요.'] },
   { v:'v26', items:['B레벨 ★★★ 유명한 곳 보물 그림 60개가 모두 생겼어요. 이제 보물 카드 270장이 전부 그림으로 나와요.','B레벨 랜드마크(마추픽추, 앙코르와트, 모아이 석상 등)도 마을 빈 땅에 지을 수 있어요.'] },
   { v:'v25', items:['스티커가 32개 더 생겼어요. 스티커 가게가 머리·얼굴 / 몸·손으로 나뉘었어요.','마을 우리 집에서 애완동물을 데려올 수 있어요. 첫 친구는 공짜! 이름도 지어 주고 같이 다녀요.','소품 가게에 장난감 16가지가 생겼어요. 마을에 놓고 누르면 소리가 나요.'] },
   { v:'v24', items:['앱 안에 이 안내문을 넣었어요.','효준이 대사를 다듬었어요.'] },
@@ -2444,7 +2662,10 @@ const GUIDE = [
     '<b>유치원</b>: 틀렸던 나라를 효준이와 5문제씩 다시 공부해요. 4개 이상 한 번에 맞히면 칭찬 도장! 도장 10개면 별 10개.',
     '<b>우리 집</b>: 애완동물(16가지)을 데려오고 이름을 지어 줘요. 고른 애완동물은 마을에서 승아를 졸졸 따라다니고, 누르면 인사해요. 첫 친구는 공짜예요.',
     '<b>장난감</b>: 꾸미기 → 소품 가게의 장난감 탭에서 사서 마을에 놓아요. 놓은 장난감을 누르면 소리가 나요.',
-    '경찰서, 소방서, 극장은 준비 중이에요.',
+    '<b>경찰서</b>: 길 잃은 친구가 "우리 집은 브라질이야" 하고 말하면 지도에서 그 나라를 찾아 경찰차로 데려다줘요. 5번 출동하고, 한 번에 맞힌 만큼 별을 받아요.',
+    '<b>소방서</b>: "프랑스 국기 집에 불이 났어요!" 하면 국기가 꽂힌 집 4채 중에서 맞는 집을 눌러 불을 꺼요. 5번 출동하고, 한 번에 맞힌 만큼 별을 받아요.',
+    '<b>우체부 편지</b>: 하루에 처음 마을에 들어가면 우체부 아저씨가 편지를 들고 걸어와요. 봉투를 누르면 별, 소품·장난감, 스티커, 친구 편지 중 하나가 들어 있어요.',
+    '극장은 준비 중이에요.',
   ]},
   { t:'보호자 메뉴', b:[
     '처음 화면 오른쪽 위 <b>톱니바퀴를 1초 길게 누르거나 빠르게 5번</b> 누르면 열려요.',

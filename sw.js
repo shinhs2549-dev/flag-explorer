@@ -1,5 +1,5 @@
 // 오프라인에서도 열리도록 앱 파일을 저장해 둡니다. 앱을 고치면 VERSION 숫자를 올리세요.
-const VERSION = 'flag-explorer-v26';
+const VERSION = 'flag-explorer-v27';
 const FILES = ['./', 'index.html', 'manifest.webmanifest',
   'assets/geo.js', 'assets/char.js', 'assets/outfit.js', 'assets/treasure-a.js', 'assets/treasure-b.js', 'assets/village.js', 'assets/color.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'];
