@@ -363,6 +363,34 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 @keyframes gotPop{50%{transform:scale(1.08)}}
 .mboard>.big-btn{align-self:center}
 @media (prefers-reduced-motion:reduce){.mcard .mback,.mcard .mface{transition:none}}
+.gpaint{grid-template-columns:repeat(3,22px)!important}
+.gpaint i{height:54px!important;border-radius:11px 11px 4px 4px!important}
+.gpaint i:nth-child(1){background:#E53935!important}.gpaint i:nth-child(2){background:#FDD835!important}.gpaint i:nth-child(3){background:#1E5BC6!important}
+.cpick{display:flex;flex-direction:column;gap:10px}
+.cpick-head{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.cpick-head b{font-family:var(--display);font-weight:400;font-size:22px}
+.cpick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.cpick-item{position:relative;background:rgba(255,255,255,.92);border-radius:14px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:14px;box-shadow:0 3px 0 rgba(31,43,77,.12)}
+.cpick-item img{width:100%;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.1)}
+.cpick-item i{position:absolute;top:4px;right:4px;font-style:normal;font-size:11px;background:var(--o3);color:#fff;border-radius:999px;padding:1px 7px}
+.cwork{display:flex;flex-direction:column;align-items:center;gap:10px}
+.cmodel{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);border-radius:999px;padding:6px 8px 6px 14px}
+.cmodel span{font-size:13px;color:var(--ink-soft)}
+.cmodel img{height:44px;border-radius:4px;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+.cmodel b{font-family:var(--display);font-weight:400;font-size:20px}
+.cbig{width:min(100%,520px,calc((100dvh - 330px)*1.333));background:#fff;border-radius:10px;padding:6px;box-shadow:0 6px 0 rgba(31,43,77,.12)}
+.cbig svg{display:block;width:100%;height:auto;border-radius:4px}
+.cbig [data-g]{stroke:#3A4560;stroke-width:1.3;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .15s}
+.cbig svg.finished [data-g]{stroke:transparent}
+.cbig [data-g].wrong{animation:wrongBlink .8s ease-in-out 3}
+@keyframes wrongBlink{50%{opacity:.35}}
+.cpal{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:560px}
+.crayon{width:52px;height:64px;padding:0;display:grid;place-items:end center;transition:transform .15s}
+.crayon i{display:block;width:34px;height:58px;border-radius:17px 17px 6px 6px;background:var(--c);box-shadow:inset 0 -10px 0 rgba(0,0,0,.12),0 0 0 2px rgba(31,43,77,.25)}
+.crayon.on{transform:translateY(-10px)}
+.crayon.on i{box-shadow:inset 0 -10px 0 rgba(0,0,0,.12),0 0 0 3px #fff,0 0 0 6px var(--ink)}
+.crayon.eraser i{background:repeating-linear-gradient(45deg,#fff 0 6px,#F7C7D6 6px 12px);border-radius:8px;height:40px}
+.crow{display:flex;gap:10px;justify-content:center}
 .vprop{pointer-events:none}
 .vprop.edit{pointer-events:auto;cursor:grab;touch-action:none}
 .vprop.edit:not(.sel){filter:drop-shadow(0 0 2px #fff)}
@@ -493,6 +521,7 @@ h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
 <script src="assets/treasure-a.js"></script>
 <script src="assets/treasure-b.js"></script>
 <script src="assets/village.js"></script>
+<script src="assets/color.js"></script>
 </head>
 <body>
 <div id="app"></div>
@@ -870,7 +899,7 @@ const C = Object.fromEntries(GEO.countries.map(c=>[c.code,c]));
 
 // ===== 저장 (기기 저장; 나중에 Firebase로 바꿀 자리) =====
 const KEY = 'flagExplorer.v1';
-const APP_VERSION = 'v17';
+const APP_VERSION = 'v18';
 const DEFAULT = { stars:0, tier:1, know:{1:{},2:{},3:{}}, seen:{}, roundSize:5, opened:{}, owned:{}, placed:[], passed:{}, testLock:{}, level:'A', passMark:11, rate:0.9, style:'basic', allOpen:false };
 let S = load();
 function fresh(){ return JSON.parse(JSON.stringify(DEFAULT)); }
@@ -1720,9 +1749,11 @@ function openPlayground(){
     r.el.querySelector('#rMain').innerHTML=`<div class="gmenu">
       <button class="gcard" id="gMemory"><span class="gicon">${[0,1,2,3].map(i=>`<i class="${i%3===0?'up':''}"></i>`).join('')}</span>
         <b>같은 그림 찾기</b><small>할아버지랑 국기 카드 뒤집기</small></button>
-      <div class="gcard soon"><b>곧 나와요</b><small>새 놀이를 준비하고 있어요</small></div>
+      <button class="gcard" id="gColor"><span class="gicon gpaint"><i></i><i></i><i></i></span>
+        <b>국기 색칠하기</b><small>보기를 보고 똑같이 칠해요</small></button>
     </div>`;
     r.el.querySelector('#gMemory').onclick=()=>{ sfx.tap(); startMemory(r, menu); };
+    r.el.querySelector('#gColor').onclick=()=>{ sfx.tap(); pickColorFlag(r, menu); };
   };
   menu();
   r.say('놀이터에 온 걸 환영한다! 할아버지랑 같은 그림 찾기 할까?');
@@ -1799,6 +1830,69 @@ function startMemory(r, back){
   main.querySelector('#mQuit').onclick=()=>{ sfx.tap(); g.done=true; back(); };
   setTurn('me');
   r.say('같은 국기 두 장을 찾아요. 먼저 뒤집어 봐요!');
+}
+
+
+// ===================== 놀이터: 국기 색칠하기 =====================
+const CRAYONS = [['빨강','#E53935'],['주황','#FB8C00'],['노랑','#FDD835'],['초록','#43A047'],['하늘색','#4FC3F7'],['파랑','#1E5BC6'],['보라','#8E24AA'],['분홍','#F48FB1'],['갈색','#8D6E63'],['검정','#212121'],['하양','#FFFFFF']];
+const COLOR_NAMES = [['빨강','#E0202A'],['진한 빨강','#A8162C'],['주황','#FF8C1A'],['노랑','#FFD21F'],['금색','#D4A017'],['초록','#1E9E4A'],['진한 초록','#006233'],['하늘색','#5BB8F0'],['파랑','#1E5BC6'],['남색','#14285F'],['보라','#7B3FA0'],['분홍','#F48FB1'],['갈색','#7A4A2A'],['검정','#111111'],['하양','#FFFFFF'],['회색','#9AA0A6']];
+function hexRGB(h){ return [1,3,5].map(i=>parseInt(h.slice(i,i+2),16)); }
+function cdist(a,b){ const x=hexRGB(a), y=hexRGB(b); return Math.hypot(x[0]-y[0],x[1]-y[1],x[2]-y[2]); }
+function colorName(h){ let best=COLOR_NAMES[0], d=1e9; for(const n of COLOR_NAMES){ const k=cdist(h,n[1]); if(k<d){ d=k; best=n; } } return best[0]; }
+function colorable(){ const F=window.COLORFLAGS||{}; return LV().list.filter(c=>F[c]); }
+
+function pickColorFlag(r, back){
+  const F=window.COLORFLAGS||{}, done=S.colored||{};
+  const lit=c=>[1,2,3].some(t=>(K(t)[c]||0)>=1);
+  const list=colorable().sort((a,b)=>(lit(b)-lit(a)));
+  r.el.querySelector('#rMain').innerHTML=`<div class="cpick">
+    <div class="cpick-head"><b>어떤 국기를 칠할까요?</b><button class="big-btn plain sm" id="cBack">놀이 고르기</button></div>
+    <div class="cpick-grid">${list.map(c=>`<button class="cpick-item ${done[c]?'done':''}" data-c="${c}"><img src="${C[c].flag}" alt=""><span>${C[c].name}</span>${done[c]?'<i>완성</i>':''}</button>`).join('')}</div></div>`;
+  r.el.querySelectorAll('.cpick-item').forEach(b=>b.onclick=()=>{ sfx.tap(); colorFlag(r, b.dataset.c, ()=>pickColorFlag(r, back)); });
+  r.el.querySelector('#cBack').onclick=()=>{ sfx.tap(); back(); };
+  r.say('어떤 국기를 칠해 볼까? 마음에 드는 걸 골라 보렴.');
+}
+
+function colorFlag(r, c, back){
+  const F=window.COLORFLAGS[c], truth=F.colors, n=truth.length, fill=new Array(n).fill(null);
+  // 진짜 색 + 헷갈리는 크레파스 2개
+  const extra=shuffle(CRAYONS.map(x=>x[1]).filter(h=>truth.every(t=>cdist(h,t)>90))).slice(0,2);
+  const pal=shuffle([...truth, ...extra]);
+  let cur=null;
+  const main=r.el.querySelector('#rMain');
+  main.innerHTML=`<div class="cwork">
+    <div class="cmodel"><span>보기</span><img src="${C[c].flag}" alt="${C[c].name} 국기"><b>${C[c].name}</b><button class="speak sm" id="cSp" aria-label="듣기">${ICON.speak}</button></div>
+    <div class="cbig" id="cBig">${F.svg}</div>
+    <div class="cpal">${pal.map(h=>`<button class="crayon" data-h="${h}" style="--c:${h}" aria-label="${colorName(h)}"><i></i></button>`).join('')}
+      <button class="crayon eraser" data-h="" aria-label="지우개"><i></i></button></div>
+    <div class="crow"><button class="big-btn plain sm" id="cReset">처음부터</button><button class="big-btn plain sm" id="cOther">다른 국기</button></div></div>`;
+  const svg=main.querySelector('#cBig svg');
+  const paint=(g,h)=>{ fill[g]=h; svg.querySelectorAll(`[data-g="${g}"]`).forEach(e=>{ e.style.fill = h || '#EEF1F5'; }); };
+  for(let g=0; g<n; g++) paint(g,null);
+  const pick=(h,btn)=>{ cur=h; main.querySelectorAll('.crayon').forEach(b=>b.classList.toggle('on',b===btn)); sfx.tap(); say(h?colorName(h):'지우개'); };
+  main.querySelectorAll('.crayon').forEach(b=>b.onclick=()=>pick(b.dataset.h, b));
+  svg.addEventListener('click',e=>{
+    const t=e.target.closest('[data-g]'); if(!t) return;
+    if(cur===null){ sfx.soft(); r.say('먼저 아래에서 크레파스를 골라요!'); return; }
+    const g=+t.dataset.g; paint(g, cur||null); sfx.tap();
+    svg.querySelectorAll('.wrong').forEach(x=>x.classList.remove('wrong'));
+    if(fill.every(Boolean)) check();
+  });
+  const check=()=>{
+    const wrong=fill.map((h,g)=>h!==truth[g]?g:-1).filter(g=>g>=0);
+    if(!wrong.length){
+      const first=!(S.colored||{})[c]; S.colored=S.colored||{}; S.colored[c]=true; S.stars+= first?3:1; save(); r.stars();
+      sfx.win(); burst(); setTimeout(burst,400); svg.classList.add('finished');
+      r.say(`${C[c].name} 국기 완성! 정말 똑같아요. 별 ${first?3:1}개를 받았어요.`);
+    } else {
+      sfx.soft(); wrong.forEach(g=>svg.querySelectorAll(`[data-g="${g}"]`).forEach(e=>e.classList.add('wrong')));
+      r.say('거의 다 됐어요! 반짝이는 곳의 색을 보기와 비교해 봐요.');
+    }
+  };
+  main.querySelector('#cReset').onclick=()=>{ for(let g=0; g<n; g++) paint(g,null); svg.classList.remove('finished'); sfx.tap(); };
+  main.querySelector('#cOther').onclick=()=>{ sfx.tap(); back(); };
+  main.querySelector('#cSp').onclick=()=>say(`${C[c].name} 국기`);
+  r.say(`${C[c].name} 국기를 칠해 봐요. 크레파스를 고르고 칸을 눌러요.`);
 }
 
 // ===== 보호자 메뉴 (톱니바퀴 길게 누르기) =====
